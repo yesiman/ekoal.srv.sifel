@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 //START ROUTES
-//app.post('/node/cardwall/parts/save', cors(), bodyParser.json(), parts.save);
+app.get('/users/hello', cors(), bodyParser.json(), users.hello);
 //app.post('/node/cardwall/parts/saveBook', cors(), bodyParser.json(), parts.saveBook);
 //app.get('/node/cardwall/parts/:idp/:nbr', cors(), bodyParser.json(), parts.findAll);
 //END.ROUTES
