@@ -46,4 +46,10 @@ app.get('/users/getAll', cors(), bodyParser.json(), users.getAll);
 app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
 app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
 //END USERS
+//PRODS
+app.get('/prods/get/:id', cors(), bodyParser.json(), prods.get);
+app.get('/prods/getAll', cors(), bodyParser.json(), prods.getAll);
+app.delete('/prods/delete/:id', cors(), bodyParser.json(), prods.delete);
+app.post('/prods/add/:id', cors(), bodyParser.json(), prods.add);
+//END PRODS
 //END.ROUTES
