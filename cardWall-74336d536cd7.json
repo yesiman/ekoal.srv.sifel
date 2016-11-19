@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "cardwall-8a7fd",
+  "private_key_id": "74336d536cd7fe566caa069890e3ca1284e7de6d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+ijOq5EyiGnQm\nIx4fA3Xn2Lr4RTO90ddYyiM/CWNdo89pw7JE69qv81RXgE59MsAiPNkJKwy/c+GW\n1spBIRMZ7MBNqPZo4+AvrODSTKFfuw+SCtd2595IAbI57thbGPaeQVo8vH6mgmZT\noo80KzRN+3+WIT5CAP0llU/+CUX9/eV8o1Tzp98my8GuLowTgp++970mEYy50vAQ\nnYcRwnEQc6hN/8kgme56xE/+iURqFND66lwb367wDcMh5/zg26YyQmkaAinHekvo\nzOiMXOOM6MnAE6MsanU/sarcSt8DwAQzMFnHa6Xxfr1Nt7nA8kKh3qsxkATAlxSu\nMKiDluKJAgMBAAECggEBAK/fSMmYaNPHryX0jDz8KLyT5CB9X8D6C9e83MO2mq04\nIp7xL39GZFi8NUF/APO3AHmZyIsZ3W5qO/PK1m0/Zi4rxWTpbGhszeWzoOD8Mof2\nVezrbO4oH5g/WI7402Niq2Bv2ibtpclz25efGKeCqYjBd4bPsHOkDgW+yFMnpB9H\nvtxeBDF+fNAQ1zYG/FT9Uh8Dq0dr1w+ozOCsPS+dHqkS0dwEJ35zn3lRVeMxBhqK\nZu4jkVgz5sC1UdZoPRqZk6i/IbkJx4SXQK4GGsLlQl3fFhf8WaJOeHBMzmbqSZHu\nSdQ7MFLC7nIYO/OvasPnbKAwAnqbEcQJk/jYNbINNfECgYEA7XpybTPOqL+a7T72\nKZfkRlQRBje2cLe7aqChgjccBYNrFly0MKLwk9GtnpmlMiU7AV9CQxFx4gsQftdx\n1/QqkSswM8OEzjxEuf+V+87UohyACUDaQWd5TQOEItcQGt1eFt4tfQl1YNqN7xHl\nQWEzb992AYH2Tf3fkhGBWlk47t8CgYEAzWaRzEcOjzIhwAqKfeOiHGzSzDaXPlte\nt7Ck5nx0JtTaJDialUfNA1NhJSCtHjjLydmrc6O9P0pWCugVvf2+YLxw+htHM/kt\nhhtcKajUUvaOaqSOgVhvGxIFsEsA1kdbzNqRUyTnSJs0HnjZiSKtZvs7o++zHv09\nPYCVchxWo5cCgYAql21yXHpSFZtJtaMcrptIacdr4A4ehTVd2FVfL1cdPga0ygef\nOXoAaPjEmzXfmoHMqzMNKFHOgsGAnk9Stf30b1SD1Cs7ed+xpD9YHC5SrN3hyvna\nBR7iSyElxoCi8NTxMQPjixC8QDZ4jDMb2L0K8X8Ooip0rnWskusqMxpc7QKBgDkF\nqqA9cctLLZd01bHRSiX+CB9tYFuNXiQ8w+rAzjYhjVXU6QVcY4vyz9tQ0P684cZt\nyW1XHai+aFiqya5vDTUp22tzuzawjHTYj6N5HUjS7gKpIG7EMEQhoraoe9kBAnlC\njGm6qwK7I6L6BdpOaDlYsdv3JZEK2L+EPPjq6RqNAoGASaG6T2g6mCrmZbg7++ex\nRiy50eURAw/ukT/pGUR7Z2v+8UV7jfKdA12rLkv7a3h0BXjmpM6ER2DUt0bzZ2cf\nxqAEyr4hBck9i6Vl+2yS4Wbr5IIE8/es4461QUGStLdSq5mzvNSRXtXyc1rlDywf\nzAFOHxOtZG9ENNxozrfIZvU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "node-cardwall@cardwall-8a7fd.iam.gserviceaccount.com",
+  "client_id": "103604028940435030370",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/node-cardwall%40cardwall-8a7fd.iam.gserviceaccount.com"
+}
