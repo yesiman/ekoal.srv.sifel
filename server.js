@@ -12,6 +12,10 @@ var express = require('express'),
     cors = require('cors');
 
 //CHECK
+
+
+
+
 //client.ping({
 //    // ping usually has a 3000ms timeout
 //    requestTimeout: Infinity,
