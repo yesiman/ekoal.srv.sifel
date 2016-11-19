@@ -40,8 +40,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 //START ROUTES
-app.get('/users/getUser/:id', cors(), bodyParser.json(), users.getUser);
-app.get('/users/getUsers', cors(), bodyParser.json(), users.getUsers);
-//app.post('/node/cardwall/parts/saveBook', cors(), bodyParser.json(), parts.saveBook);
-//app.get('/node/cardwall/parts/:idp/:nbr', cors(), bodyParser.json(), parts.findAll);
+//USERS
+app.get('/users/get/:id', cors(), bodyParser.json(), users.get);
+app.get('/users/getAll', cors(), bodyParser.json(), users.getAll);
+app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
+app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
+//END USERS
 //END.ROUTES
