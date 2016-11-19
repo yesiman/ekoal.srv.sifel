@@ -6,21 +6,11 @@ var port = (process.env.PORT ? process.env.PORT : 3000);
 var express = require('express'),
     app = express(),
     server = require('http').createServer(app),
-    parts = require('./routes/parts'),
+    parts = require('./routes/prods'),
     users = require('./routes/users'),
     bodyParser = require('body-parser'),
-    cors = require('cors'),
-    elasticsearch = require('elasticsearch');
+    cors = require('cors');
 
-firebase = require("firebase");
-firebase.initializeApp({
-    serviceAccount: process.env.FB_SA,
-    databaseURL: process.env.FB_DU
-});
-
-client = new elasticsearch.Client({
-    host: process.env.BONSAI_URL
-});
 //CHECK
 //client.ping({
 //    // ping usually has a 3000ms timeout
@@ -46,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 //START ROUTES
-app.post('/node/cardwall/parts/save', cors(), bodyParser.json(), parts.save);
-app.post('/node/cardwall/parts/saveBook', cors(), bodyParser.json(), parts.saveBook);
-app.get('/node/cardwall/parts/:idp/:nbr', cors(), bodyParser.json(), parts.findAll);
+//app.post('/node/cardwall/parts/save', cors(), bodyParser.json(), parts.save);
+//app.post('/node/cardwall/parts/saveBook', cors(), bodyParser.json(), parts.saveBook);
+//app.get('/node/cardwall/parts/:idp/:nbr', cors(), bodyParser.json(), parts.findAll);
 //END.ROUTES
