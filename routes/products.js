@@ -7,6 +7,7 @@ exports.getAll = function (req, res) {
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
+    var ret = new Object();
     db.collection('products', function (err, collection) {
         collection.find().skip(skip).limit(limit).toArray(function (err, items) {
             ret.items = items;
