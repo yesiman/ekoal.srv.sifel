@@ -54,6 +54,6 @@ app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
 app.get('/products/get/:id', cors(), bodyParser.json(), products.get);
 app.get('/products/getAll', cors(), bodyParser.json(), products.getAll);
 app.delete('/products/delete/:id', cors(), bodyParser.json(), products.delete);
-app.get('/products/add/:id', cors(), bodyParser.json(), products.add);
+app.post('/products/add/:id', cors(), bodyParser.json(), products.add);
 //END PRODS
 //END.ROUTES
