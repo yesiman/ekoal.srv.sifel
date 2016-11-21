@@ -5,7 +5,14 @@ exports.get = function (req, res) {
 };
 exports.getAll = function (req, res) {
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
-    res.send("Hello All");
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
+    db.collection('products', function (err, collection) {
+        collection.find().skip(skip).limit(limit).toArray(function (err, items) {
+            ret.items = items;
+            res.send(ret);
+        });
+    });
 };
 exports.delete = function (req, res) {
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
