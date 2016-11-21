@@ -2,19 +2,23 @@
 //const composeMongoCstr = process.env.MONGOHQ_URL;
 var clients = [];
 var port = (process.env.PORT ? process.env.PORT : 3000);
+const composeMongoCstr = process.env.MONGOHQ_URL;
 //
 var express = require('express'),
     app = express(),
     server = require('http').createServer(app),
-    parts = require('./routes/prods'),
+    products = require('./routes/products'),
     users = require('./routes/users'),
     bodyParser = require('body-parser'),
     cors = require('cors');
 
 //CHECK
+tokenTool = require('./routes/tokenizer');
 
-
-
+var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
+MongoClient.connect(composeMongoCstr, function (err, dbr) {
+    db = dbr;
+});
 
 //client.ping({
 //    // ping usually has a 3000ms timeout
@@ -47,9 +51,9 @@ app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
 app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
 //END USERS
 //PRODS
-app.get('/prods/get/:id', cors(), bodyParser.json(), prods.get);
-app.get('/prods/getAll', cors(), bodyParser.json(), prods.getAll);
-app.delete('/prods/delete/:id', cors(), bodyParser.json(), prods.delete);
-app.post('/prods/add/:id', cors(), bodyParser.json(), prods.add);
+app.get('/products/get/:id', cors(), bodyParser.json(), prods.get);
+app.get('/products/getAll', cors(), bodyParser.json(), prods.getAll);
+app.delete('/products/delete/:id', cors(), bodyParser.json(), prods.delete);
+app.post('/products/add/:id', cors(), bodyParser.json(), prods.add);
 //END PRODS
 //END.ROUTES
