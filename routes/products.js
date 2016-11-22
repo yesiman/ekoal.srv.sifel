@@ -23,9 +23,11 @@ exports.delete = function (req, res) {
     res.send("Hello All");
 };
 exports.add = function (req, res) {
+
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
+    var pid = req.params.id;
     db.collection('products', function (err, collection) {
-        if (req.params.id == "-1")
+        if (pid == "-1")
         {
             collection.insert( req.body.product , function (err, saved) {
                 if (err || !saved) {
@@ -37,9 +39,11 @@ exports.add = function (req, res) {
             });
         }
         else {
+            
+            delete req.body.product._id;
             console.log(req.body.product);
             collection.update(
-                { _id: new require('mongodb').ObjectID(req.params.id) },
+                { _id: new require('mongodb').ObjectID(pid) },
                 req.body.product);
                 res.send(true);
         }
