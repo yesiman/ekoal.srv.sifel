@@ -1,7 +1,9 @@
 exports.get = function (req, res) {
-
-    //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
-    res.send("Hello" + req.params.id);
+    db.collection('products', function (err, collection) {
+        collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
+            res.send(item);
+        })
+    });
 };
 exports.getAll = function (req, res) {
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
