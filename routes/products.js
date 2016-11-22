@@ -19,10 +19,12 @@ exports.getAll = function (req, res) {
     });
 };
 exports.delete = function (req, res) {
+    db.collection('products', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
             res.send(result);
         });
+    });
 };
 exports.add = function (req, res) {
 
