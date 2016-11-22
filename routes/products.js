@@ -25,7 +25,7 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
     db.collection('products', function (err, collection) {
-        if (req.params.id === -1)
+        if (req.params.id == "-1")
         {
             collection.insert( req.body.product , function (err, saved) {
                 if (err || !saved) {
