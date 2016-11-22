@@ -1,4 +1,5 @@
 exports.get = function (req, res) {
+    console.log(req.params.id);
     db.collection('products', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
             res.send(item);
