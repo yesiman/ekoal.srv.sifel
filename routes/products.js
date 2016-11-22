@@ -25,13 +25,23 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
     db.collection('products', function (err, collection) {
-        collection.insert( req.body.product , function (err, saved) {
-            if (err || !saved) {
-                res.send(false)
-            }
-            else {
+        if (req.params.id === -1)
+        {
+            collection.insert( req.body.product , function (err, saved) {
+                if (err || !saved) {
+                    res.send(false)
+                }
+                else {
+                    res.send(true);
+                }
+            });
+        }
+        else {
+            collection.update(
+                { _id: new require('mongodb').ObjectID(req.params.id) },
+                req.body.product);
                 res.send(true);
-            }
-        });
+        }
+        
     });
 };
