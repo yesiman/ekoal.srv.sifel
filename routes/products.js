@@ -37,8 +37,7 @@ exports.add = function (req, res) {
             });
         }
         else {
-            console.log("update id" + req.params.id);
-            console.log("update data" + req.body.product);
+            console.log(req.body.product);
             collection.update(
                 { _id: new require('mongodb').ObjectID(req.params.id) },
                 req.body.product);
