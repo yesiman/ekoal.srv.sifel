@@ -46,7 +46,7 @@ app.use(cors());
 //START ROUTES
 //USERS
 app.get('/users/get/:id', cors(), bodyParser.json(), users.get);
-app.get('/users/getAll', cors(), bodyParser.json(), users.getAll);
+app.get('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
 app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
 app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
 //END USERS
