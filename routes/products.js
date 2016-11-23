@@ -12,9 +12,12 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
     db.collection('products', function (err, collection) {
-        collection.find().skip(skip).limit(limit).toArray(function (err, items) {
-            ret.items = items;
-            res.send(ret);
+        collection.count({}, function (err, count) {
+            ret.count = count;
+            collection.find().skip(skip).limit(limit).toArray(function (err, items) {
+                ret.items = items;
+                res.send(ret);
+            });
         });
     });
 };
