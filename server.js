@@ -8,6 +8,7 @@ var express = require('express'),
     app = express(),
     server = require('http').createServer(app),
     products = require('./routes/products'),
+    orgas = require('./routes/orgas'),
     users = require('./routes/users'),
     bodyParser = require('body-parser'),
     cors = require('cors');
@@ -55,5 +56,11 @@ app.get('/products/get/:id', cors(), bodyParser.json(), products.get);
 app.get('/products/getAll/:idp/:nbr', cors(), bodyParser.json(), products.getAll);
 app.delete('/products/delete/:id', cors(), bodyParser.json(), products.delete);
 app.post('/products/add/:id', cors(), bodyParser.json(), products.add);
+//END PRODS
+//PRODS
+app.get('/orgas/get/:id', cors(), bodyParser.json(), orgas.get);
+app.get('/orgas/getAll/:idp/:nbr', cors(), bodyParser.json(), orgas.getAll);
+app.delete('/orgas/delete/:id', cors(), bodyParser.json(), orgas.delete);
+app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END PRODS
 //END.ROUTES
