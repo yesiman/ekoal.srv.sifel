@@ -1,5 +1,4 @@
 exports.get = function (req, res) {
-    tokenTool.check(req);
     db.collection('orgas', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
             res.send(item);
@@ -7,7 +6,6 @@ exports.get = function (req, res) {
     });
 };
 exports.getAll = function (req, res) {
-    tokenTool.check(req);
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
@@ -22,7 +20,6 @@ exports.getAll = function (req, res) {
     });
 };
 exports.delete = function (req, res) {
-    tokenTool.check(req);
     db.collection('orgas', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
@@ -31,7 +28,6 @@ exports.delete = function (req, res) {
     });
 };
 exports.add = function (req, res) {
-    tokenTool.check(req);
     var pid = req.params.id;
     req.body.product.dateModif = new Date();
     db.collection('orgas', function (err, collection) {

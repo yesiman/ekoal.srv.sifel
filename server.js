@@ -21,6 +21,11 @@ MongoClient.connect(composeMongoCstr, function (err, dbr) {
     db = dbr;
 });
 
+var apiRoutes = express.Router();
+apiRoutes.use(function(req, res, next) {
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    console.log("tk",token);
+});
 //client.ping({
 //    // ping usually has a 3000ms timeout
 //    requestTimeout: Infinity,
