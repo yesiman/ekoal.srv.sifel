@@ -21,11 +21,7 @@ MongoClient.connect(composeMongoCstr, function (err, dbr) {
     db = dbr;
 });
 
-var apiRoutes = express.Router();
-apiRoutes.use(function(req, res, next) {
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    console.log("tk",token);
-});
+
 //client.ping({
 //    // ping usually has a 3000ms timeout
 //    requestTimeout: Infinity,
@@ -68,4 +64,8 @@ app.get('/orgas/getAll/:idp/:nbr', cors(), bodyParser.json(), orgas.getAll);
 app.delete('/orgas/delete/:id', cors(), bodyParser.json(), orgas.delete);
 app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END PRODS
+app.use(function(req, res, next) {
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    console.log("tk",token);
+});
 //END.ROUTES
