@@ -45,6 +45,10 @@ console.log("Server listening:" + port);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+app.use(function(req, res, next) {
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    console.log(token);
+});
 //START ROUTES
 //USERS
 app.get('/users/get/:id', cors(), bodyParser.json(), users.get);
@@ -64,8 +68,5 @@ app.get('/orgas/getAll/:idp/:nbr', cors(), bodyParser.json(), orgas.getAll);
 app.delete('/orgas/delete/:id', cors(), bodyParser.json(), orgas.delete);
 app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END PRODS
-app.use(function(req, res, next) {
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    console.log("tk",token);
-});
+
 //END.ROUTES
