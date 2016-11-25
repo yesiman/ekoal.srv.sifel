@@ -1,4 +1,5 @@
 exports.get = function (req, res) {
+    console.log(req.headers['x-access-token']);
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
     db.collection('orgas', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
@@ -7,6 +8,7 @@ exports.get = function (req, res) {
     });
 };
 exports.getAll = function (req, res) {
+    console.log(req.headers['x-access-token']);
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
@@ -22,6 +24,7 @@ exports.getAll = function (req, res) {
     });
 };
 exports.delete = function (req, res) {
+    console.log(req.headers['x-access-token']);
     db.collection('orgas', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
@@ -30,7 +33,7 @@ exports.delete = function (req, res) {
     });
 };
 exports.add = function (req, res) {
-
+    console.log(req.headers['x-access-token']);
     //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
     var pid = req.params.id;
     req.body.product.dateModif = new Date();
