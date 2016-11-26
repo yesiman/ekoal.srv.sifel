@@ -11,6 +11,7 @@
     "body-parser": "~1.0.0",
     "cors": "2.7.x",
     "express": "4.13.x",
+    "jsonwebtoken": "^7.1.9",
     "mongo-oplog": "1.x",
     "mongodb": "2.0.x",
     "socket.io": "1.4.x"

@@ -1,5 +1,11 @@
+exports.login = function (req, res) {
+    console.log(req.body);
+    var token = jwt.sign(req.body, process.env.JWT, {
+        expiresInMinutes: 1440 // expires in 24 hours
+    });
+    res.send(true);
+};
 exports.get = function (req, res) {
-    //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
     db.collection('users', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
             res.send(item);
@@ -7,7 +13,6 @@ exports.get = function (req, res) {
     });
 };
 exports.getAll = function (req, res) {
-    //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
@@ -30,8 +35,6 @@ exports.delete = function (req, res) {
     });
 };
 exports.add = function (req, res) {
-
-    //var token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['x-access-token'];
     var pid = req.params.id;
     req.body.product.dateModif = new Date();
     db.collection('users', function (err, collection) {

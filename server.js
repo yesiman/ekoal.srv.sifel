@@ -11,7 +11,8 @@ var express = require('express'),
     orgas = require('./routes/orgas'),
     users = require('./routes/users'),
     bodyParser = require('body-parser'),
-    cors = require('cors');
+    cors = require('cors'),
+    jwt = require('jsonwebtoken');;
 
 //CHECK
 tokenTool = require('./routes/tokenizer');
@@ -45,12 +46,16 @@ console.log("Server listening:" + port);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+//START ROUTES
+//AUTHENTIFICATION
+app.post('/users/login', cors(), bodyParser.json(), users.login);
+//END AUTHENTIFICATION
+//TOKEN VALIDATION
 app.use(function(req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    console.log(token);
     next();
 });
-//START ROUTES
+//END TOKEN VALIDATION
 //USERS
 app.get('/users/get/:id', cors(), bodyParser.json(), users.get);
 app.get('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
