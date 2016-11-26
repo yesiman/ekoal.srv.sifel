@@ -1,10 +1,8 @@
 exports.login = function (req, res) {
-    console.log(req.body.user);
     var token = jwt.sign(req.body, process.env.JWT, {
         expiresIn: 1440 // expires in 24 hours
     });
-    console.log(token);
-    res.send(token);
+    res.send({success:true,token:token});
 };
 exports.get = function (req, res) {
     db.collection('users', function (err, collection) {
