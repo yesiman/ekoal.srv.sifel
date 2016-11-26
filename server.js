@@ -51,6 +51,7 @@ app.post('/users/login', cors(), bodyParser.json(), users.login);
 //TOKEN VALIDATION
 app.use(function(req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    console.log(token);
     next();
 });
 //END TOKEN VALIDATION
