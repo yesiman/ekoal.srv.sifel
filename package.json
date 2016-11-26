@@ -3,7 +3,7 @@
   "description": "Sifel Middle/BackEnd",
   "version": "0.0.1",
   "engines": {
-    "node": "4.4.3"
+    "node": "6.6.0"
   },
   "private": true,
   "main": "server.js",
