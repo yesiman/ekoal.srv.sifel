@@ -7,15 +7,11 @@ const composeMongoCstr = process.env.MONGOHQ_URL;
 var express = require('express'),
     app = express(),
     server = require('http').createServer(app),
+    jwt = require('jsonwebtoken'),
     products = require('./routes/products'),
     orgas = require('./routes/orgas'),
     users = require('./routes/users'),
-    bodyParser = require('body-parser'),
-    cors = require('cors'),
-    jwt = require('jsonwebtoken');;
-
-//CHECK
-tokenTool = require('./routes/tokenizer');
+    bodyParser = require('body-parser');
 
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {
