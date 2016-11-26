@@ -3,7 +3,7 @@ exports.login = function (req, res) {
     var token = jwt.sign(req.body, process.env.JWT, {
         expiresInMinutes: 1440 // expires in 24 hours
     });
-    res.send(true);
+    res.send(token);
 };
 exports.get = function (req, res) {
     db.collection('users', function (err, collection) {
