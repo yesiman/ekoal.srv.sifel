@@ -11,7 +11,8 @@ var express = require('express'),
     products = require('./routes/products'),
     orgas = require('./routes/orgas'),
     users = require('./routes/users'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    cors = require('cors');
 
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {
