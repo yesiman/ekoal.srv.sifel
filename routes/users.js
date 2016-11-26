@@ -1,7 +1,7 @@
 exports.login = function (req, res) {
     console.log(req.body);
     var token = jwt.sign(req.body, process.env.JWT, {
-        expiresInMinutes: 1440 // expires in 24 hours
+        expiresIn: 1440 // expires in 24 hours
     });
     res.send(token);
 };
