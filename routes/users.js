@@ -1,8 +1,21 @@
 exports.login = function (req, res) {
-    var token = jwt.sign(req.body, process.env.JWT, {
-        expiresIn: 1440 // expires in 24 hours
+    db.collection('users', function (err, collection) {
+        collection.findOne({ email: req.body.user.login, pass: req.body.user.pass }, function (err, item) {
+            if (item)
+            {
+                var token = jwt.sign(item, process.env.JWT, {
+                    expiresIn: 1440 // expires in 24 hours
+                });
+                res.send({success:true, name:item.name, surn:item.surn, type:item.type , token:token}); 
+            }
+            else {
+                res.send({success:false});
+            }
+            
+        })
     });
-    res.send({success:true,token:token});
+
+    
 };
 exports.get = function (req, res) {
     db.collection('users', function (err, collection) {
