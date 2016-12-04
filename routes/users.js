@@ -31,15 +31,16 @@ exports.getAll = function (req, res) {
     var filters = {};
     switch (req.decoded.type)
     {
-        case  '1':        
+        case  1:        
             break;
-        case  '2':
+        case  2:
             filters = { type: {$gte: 1} };
             break;
         default:
             ret.count = 0;
             ret.items = [];
             res.send(ret);
+            return;
     }
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
