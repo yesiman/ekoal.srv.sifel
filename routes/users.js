@@ -28,14 +28,13 @@ exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
-var filters = {};
+    var filters = {};
     switch (req.decoded.type)
     {
-        case  '1':
-            
+        case  '1':        
             break;
         case  '2':
-            filters = { type: {$gte: 1} };
+            filters = { type: {$gte: 0} };
             break;
         default:
             ret.count = 0;
