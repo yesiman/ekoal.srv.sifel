@@ -34,7 +34,7 @@ exports.getAll = function (req, res) {
         case  1:        
             break;
         case  2:
-            filters = { type: {$gte: 1} };
+            filters = { type: {$gte: 2} };
             break;
         default:
             ret.count = 0;
