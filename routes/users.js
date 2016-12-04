@@ -28,13 +28,24 @@ exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
-
-    console.log(req.decoded);
-
+var filters = {};
+    switch (req.decoded.type)
+    {
+        case  '1':
+            
+            break;
+        case  '2':
+            filters = { type: {$gte: 1} };
+            break;
+        default:
+            ret.count = 0;
+            ret.items = [];
+            res.send(ret);
+    }
     db.collection('users', function (err, collection) {
-        collection.count({}, function (err, count) {
+        collection.count(filters, function (err, count) {
             ret.count = count;
-            collection.find().skip(skip).limit(limit).toArray(function (err, items) {
+            collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
                 res.send(ret);
             });
