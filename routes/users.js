@@ -28,6 +28,9 @@ exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
+
+    console.log(req.decoded);
+
     db.collection('users', function (err, collection) {
         collection.count({}, function (err, count) {
             ret.count = count;
