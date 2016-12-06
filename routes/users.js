@@ -56,8 +56,7 @@ exports.getAllByType = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
-    console.log(req.params.idt);
-    var filters = { type: req.params.idt };
+    var filters = { type: { $eq: req.params.idt } };
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
