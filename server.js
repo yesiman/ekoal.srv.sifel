@@ -73,6 +73,7 @@ app.use(function(req, res, next) {
 //USERS
 app.get('/users/get/:id', cors(), bodyParser.json(), users.get);
 app.get('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
+app.get('/users/getAllByType/:idp/:nbr/:idt', cors(), bodyParser.json(), users.getAllByType);
 app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
 app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
 //END USERS

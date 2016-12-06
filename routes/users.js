@@ -36,12 +36,27 @@ exports.getAll = function (req, res) {
         case  2:
             filters = { type: {$gte: 2} };
             break;
+        case  3:
+            filters = { type: {$gte: 3} };
+            break;
         default:
-            ret.count = 0;
-            ret.items = [];
-            res.send(ret);
-            return;
+            filters = { type: {$gte: 9999} };
     }
+    db.collection('users', function (err, collection) {
+        collection.count(filters, function (err, count) {
+            ret.count = count;
+            collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
+                ret.items = items;
+                res.send(ret);
+            });
+        });
+    });
+};
+exports.getAllByType = function (req, res) {
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
+    var ret = new Object();
+    var filters = { type: req.params.idt };
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
