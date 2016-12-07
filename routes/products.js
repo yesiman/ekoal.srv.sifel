@@ -25,10 +25,10 @@ exports.getAllByLib = function (req, res) {
     var ret = new Object();
     
     db.collection('products', function (err, collection) {
-        collection.count({ lib: { $regex: ".*" + req.params.req + ".*i" } }, function (err, count) {
+        collection.count({ lib: { $regex: "/" + req.params.req + "/i" } }, function (err, count) {
             ret.count = count;
             console.log(req.params.req + " " + count);
-            collection.find({ lib: { $regex: ".*" + req.params.req + ".*i" } }).skip(skip).limit(limit).toArray(function (err, items) {
+            collection.find({ lib: { $regex: "/" + req.params.req + "/i" } }).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
                 res.send(ret);
             });
