@@ -23,9 +23,11 @@ exports.getAllByLib = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
+    
     db.collection('products', function (err, collection) {
         collection.count({ lib: new RegExp('/.*' + req.params.req + '.*/') }, function (err, count) {
             ret.count = count;
+            console.log(req.params.req + " " + count);
             collection.find({ lib: new RegExp('/.*' + req.params.req + '.*/') }).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
                 res.send(ret);
