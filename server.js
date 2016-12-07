@@ -80,6 +80,7 @@ app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
 //PRODS
 app.get('/products/get/:id', cors(), bodyParser.json(), products.get);
 app.get('/products/getAll/:idp/:nbr', cors(), bodyParser.json(), products.getAll);
+app.get('/products/getAllByLib/:idp/:nbr/:req', cors(), bodyParser.json(), products.getAllByLib);
 app.delete('/products/delete/:id', cors(), bodyParser.json(), products.delete);
 app.post('/products/add/:id', cors(), bodyParser.json(), products.add);
 //END PRODS
