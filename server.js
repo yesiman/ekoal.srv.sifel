@@ -10,6 +10,7 @@ var express = require('express'),
     products = require('./routes/products'),
     orgas = require('./routes/orgas'),
     users = require('./routes/users'),
+    planifs = require('./routes/planifs'),
     bodyParser = require('body-parser'),
     cors = require('cors');
 
@@ -84,11 +85,14 @@ app.get('/products/getAllByLib/:idp/:nbr/:req', cors(), bodyParser.json(), produ
 app.delete('/products/delete/:id', cors(), bodyParser.json(), products.delete);
 app.post('/products/add/:id', cors(), bodyParser.json(), products.add);
 //END PRODS
-//PRODS
+//ORGAS
 app.get('/orgas/get/:id', cors(), bodyParser.json(), orgas.get);
 app.get('/orgas/getAll/:idp/:nbr', cors(), bodyParser.json(), orgas.getAll);
 app.delete('/orgas/delete/:id', cors(), bodyParser.json(), orgas.delete);
 app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
-//END PRODS
+//END ORGAS
+//PLANIFS
+app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
+
 
 //END.ROUTES
