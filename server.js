@@ -11,6 +11,7 @@ var express = require('express'),
     orgas = require('./routes/orgas'),
     users = require('./routes/users'),
     planifs = require('./routes/planifs'),
+    stats = require('./routes/stats'),
     bodyParser = require('body-parser'),
     cors = require('cors');
 
@@ -93,6 +94,6 @@ app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END ORGAS
 //PLANIFS
 app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
-
+app.get('/stats/prevsByDay/', cors(), bodyParser.json(), stats.prevsByDay);
 
 //END.ROUTES
