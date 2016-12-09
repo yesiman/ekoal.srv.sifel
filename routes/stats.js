@@ -10,8 +10,8 @@ exports.prevsByDay = function (req, res) {
                 count: { $sum: 1 }
             }}
         ).toArray(function (err, items) {
-                ret.items = items;
-                res.send(ret);
+                //ret.items = items;
+                res.send(items);
             });
     });  
 };
