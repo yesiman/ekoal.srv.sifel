@@ -1,7 +1,6 @@
 exports.prevsByDay = function (req, res) {
     db.collection('planifs_lines', function (err, collection) {
         collection.aggregate(
-            {},
             { $group : {
                 _id: {
                     year : { $year : "$datePlant" },        
