@@ -8,10 +8,11 @@ exports.add = function (req, res) {
         {
             collection.insert( req.body.planif , function (err, saved) {
                 if (err || !saved) {
-                    pid = saved.insertedIds[0];
+                    
                     //res.send(false)
                 }
                 else {
+                    pid = saved.insertedIds[0];
                     //res.send(true);
                 }
             });
