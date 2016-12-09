@@ -1,6 +1,8 @@
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.planif.dateModif = new Date();
+    req.body.planif.produit = new require('mongodb').ObjectID(req.body.planif.produit);
+    req.body.planif.producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
     var lines = req.body.planif.lines;
     delete req.body.planif.lines;
     db.collection('planifs', function (err, collection) {
@@ -17,6 +19,8 @@ exports.add = function (req, res) {
                     db.collection('planifs_lines', function (err, collection) {
                         for (var i = 0; i < lines.length; i++) {
                             lines[i].planif = new require('mongodb').ObjectID(pid);
+                            lines[i].produit = req.body.planif.produit;
+                            lines[i].producteur = req.body.planif.producteur;
                             collection.insert(lines[i], function (err, saved) { });
                         }
                     });
