@@ -1,5 +1,5 @@
 exports.prevsByDay = function (req, res) {
-    db.collection('products', function (err, collection) {
+    db.collection('planifs_lines', function (err, collection) {
         collection.aggregate(
             { $group : {
                 _id: {
