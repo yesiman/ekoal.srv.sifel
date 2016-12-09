@@ -13,7 +13,13 @@ exports.add = function (req, res) {
                 }
                 else {
                     pid = saved.insertedIds[0];
-                    //res.send(true);
+                    console.log(pid);
+                    db.collection('planifs_lines', function (err, collection) {
+                        for (var i = 0; i < lines.length; i++) {
+                            lines[i].planif = new require('mongodb').ObjectID(pid);
+                            collection.insert(lines[i], function (err, saved) { });
+                        }
+                    });
                 }
             });
         }
@@ -25,12 +31,6 @@ exports.add = function (req, res) {
                 //res.send(true);
         }
     });
-    db.collection('planifs_lines', function (err, collection) {
-        for (var i = 0; i < lines.length; i++)
-        {
-            lines[i].planif = new require('mongodb').ObjectID(pid);
-            collection.insert(lines[i], function (err, saved) {});
-        }
-    });
+    
     res.send(true)
 };
