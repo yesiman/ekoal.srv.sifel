@@ -7,7 +7,7 @@ exports.prevsByDay = function (req, res) {
                     month : { $month : "$datePlant" },        
                     day : { $dayOfMonth : "$datePlant" },
                 },
-                count: { $sum: 1 }
+                count: { $sum: qte }
             }}, // you can only project fields from 'group'
             function(err, summary) {
                 console.log(summary);
