@@ -10,7 +10,7 @@ exports.prevsByDay = function (req, res) {
                 count: { $sum: "$qte" }
             }}, // you can only project fields from 'group'
             function(err, summary) {
-                req.send({items:summary });
+                res.send({items:summary });
             }
         );
     });  
