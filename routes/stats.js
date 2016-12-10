@@ -12,7 +12,7 @@ exports.prevsByDay = function (req, res) {
                 },
                 count: { $sum: "$qte" }
             }},
-            { $match:{'produit': {$in: req.body.prodsIds}}},
+            { $match:{'produit': {$in:req.body.prodsIds.map(function (id) {return ObjectId(id);})}}},
             function(err, summary) {
                 res.send({items:summary });
             }
