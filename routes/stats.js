@@ -1,4 +1,7 @@
 exports.prevsByDay = function (req, res) {
+    console.log(req.body.prodsIds);
+    console.log(req.body.dateFrom);
+    console.log(req.body.dateTo);
     db.collection('planifs_lines', function (err, collection) {
         collection.aggregate(
             { $group : {
