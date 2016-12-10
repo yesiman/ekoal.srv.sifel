@@ -14,7 +14,7 @@ exports.prevsByDay = function (req, res) {
                 },
                 count: { $sum: "$qte" }
             }},
-            { $match:{'produit': { $in: obj_ids }}},
+            { $match:{ '$produit': { $in: [new require('mongodb').ObjectId('5833fde242b6351200ec4e72')] }}},
             function(err, summary) {
                 res.send({items:summary });
             }
