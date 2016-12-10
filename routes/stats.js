@@ -10,6 +10,7 @@ exports.prevsByDay = function (req, res) {
         }
         console.log(obj_ids);
         collection.aggregate(
+            { "$match":{ produit: { "$in": obj_ids }}},
             { $group : {
                 _id: {
                     year : { $year : "$datePlant" },        
@@ -18,7 +19,6 @@ exports.prevsByDay = function (req, res) {
                 },
                 count: { $sum: "$qte" }
             }},
-            { "$match":{ produit: { "$in": obj_ids }}},
             function(err, summary) {
                 console.log(err);
                 console.log(summary);
