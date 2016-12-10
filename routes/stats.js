@@ -3,6 +3,8 @@ exports.prevsByDay = function (req, res) {
     console.log(req.body.dateFrom);
     console.log(req.body.dateTo);
     db.collection('planifs_lines', function (err, collection) {
+        var obj_ids = req.body.prodsIds.map(function (item){ return ObjectId(item)});
+        console.log(obj_ids);
         collection.aggregate(
             { $group : {
                 _id: {
@@ -12,7 +14,7 @@ exports.prevsByDay = function (req, res) {
                 },
                 count: { $sum: "$qte" }
             }},
-            { $match:{'produit': {$in:req.body.prodsIds.map(function (id) {return ObjectId(id);})}}},
+            { $match:{'produit': { $in: obj_ids }}},
             function(err, summary) {
                 res.send({items:summary });
             }
