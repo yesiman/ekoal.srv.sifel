@@ -11,7 +11,8 @@ exports.prevsByDay = function (req, res) {
                     day : { $dayOfMonth : "$datePlant" },
                 },
                 count: { $sum: "$qte" }
-            }}, // you can only project fields from 'group'
+            }},
+            { $match:{'produit': {$in: req.body.prodsIds}}},
             function(err, summary) {
                 res.send({items:summary });
             }
