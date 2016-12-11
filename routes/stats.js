@@ -6,7 +6,13 @@ exports.prevsByDay = function (req, res) {
             obj_ids.push(new require('mongodb').ObjectID(req.body.prodsIds[i]));
         }
         collection.aggregate(
-            { "$match":{ produit: { "$in": obj_ids }}},
+            { "$match":{ 
+                produit: { "$in": obj_ids },
+                datePlant: {
+                    $gte: req.body.dateFrom,
+                    $lt: req.body.dateTo
+                }
+            }},
             { $group : {
                 _id: {
                     year : { $year : "$datePlant" },        
@@ -18,9 +24,6 @@ exports.prevsByDay = function (req, res) {
             }},
             { $sort : { "_id.produit" : 1, "_id.year": 1, "_id.month": 1, "_id.day": 1 }},
             function(err, summary) {
-                console.log(err);
-                console.log(summary);
-                
                 res.send({items:summary });
             }
         );
