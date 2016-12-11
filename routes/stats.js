@@ -16,6 +16,7 @@ exports.prevsByDay = function (req, res) {
                 },
                 count: { $sum: "$qte" }
             }},
+            { $sort : { produit : 1, year: 1, month: 1, day: 1 }},
             function(err, summary) {
                 console.log(err);
                 console.log(summary);
