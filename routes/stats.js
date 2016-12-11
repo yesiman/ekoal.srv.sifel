@@ -1,14 +1,10 @@
 exports.prevsByDay = function (req, res) {
-    console.log(req.body.prodsIds);
-    console.log(req.body.dateFrom);
-    console.log(req.body.dateTo);
     db.collection('planifs_lines', function (err, collection) {
         var obj_ids = [];
         for(var i=0;i<req.body.prodsIds.length;i++)
         {
             obj_ids.push(new require('mongodb').ObjectID(req.body.prodsIds[i]));
         }
-        console.log(obj_ids);
         collection.aggregate(
             { "$match":{ produit: { "$in": obj_ids }}},
             { $group : {
@@ -16,6 +12,7 @@ exports.prevsByDay = function (req, res) {
                     year : { $year : "$datePlant" },        
                     month : { $month : "$datePlant" },        
                     day : { $dayOfMonth : "$datePlant" },
+                    produit: "$produit"
                 },
                 count: { $sum: "$qte" }
             }},
