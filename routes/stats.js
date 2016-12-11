@@ -16,8 +16,8 @@ exports.prevsByDay = function (req, res) {
                     "$in": obj_ids 
                 },
                 datePlant: {
-                    $gte: req.body.dateFrom,
-                    $lt: req.body.dateTo
+                    $gte: ISODate("req.body.dateFrom"),
+                    $lt: ISODate("req.body.dateTo")
                 }
             }},
             { $group : {
