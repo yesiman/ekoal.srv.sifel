@@ -29,7 +29,7 @@ exports.delete = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.product.dateModif = new Date();
+    req.body.orga.dateModif = new Date();
     db.collection('orgas', function (err, collection) {
         if (pid == "-1")
         {
