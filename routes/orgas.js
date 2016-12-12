@@ -33,7 +33,7 @@ exports.add = function (req, res) {
     db.collection('orgas', function (err, collection) {
         if (pid == "-1")
         {
-            collection.insert( req.body.product , function (err, saved) {
+            collection.insert( req.body.orga , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
                 }

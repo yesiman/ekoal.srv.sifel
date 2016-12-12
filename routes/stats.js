@@ -5,11 +5,6 @@ exports.prevsByDay = function (req, res) {
         {
             obj_ids.push(new require('mongodb').ObjectID(req.body.prodsIds[i]));
         }
-
-        console.log("req.body.dateFrom", req.body.dateFrom);
-
-        console.log("req.body.dateTo", req.body.dateTo);
-
         collection.aggregate(
             { "$match":{ 
                 produit: { 
