@@ -46,7 +46,7 @@ exports.add = function (req, res) {
             delete req.body.product._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
-                req.body.product);
+                req.body.orga);
                 res.send(true);
         }      
     });
