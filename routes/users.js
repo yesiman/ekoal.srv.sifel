@@ -95,11 +95,15 @@ exports.delete = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.product.dateModif = new Date();
+    req.body.user.dateModif = new Date();
+    if (req.body.user.orga)
+    {
+        req.body.user.orga = new require('mongodb').ObjectID(req.body.user.orga);
+    }
     db.collection('users', function (err, collection) {
         if (pid == "-1")
         {
-            collection.insert( req.body.product , function (err, saved) {
+            collection.insert(req.body.user, function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
                 }
@@ -112,7 +116,7 @@ exports.add = function (req, res) {
             delete req.body.product._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
-                req.body.product);
+                req.body.user);
                 res.send(true);
         }      
     });
