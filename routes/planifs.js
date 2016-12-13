@@ -18,7 +18,7 @@ exports.add = function (req, res) {
                     db.collection('planifs_lines', function (err, collection) {
                         for (var i = 0; i < lines.length; i++) {
                             lines[i].planif = new require('mongodb').ObjectID(pid);
-                            lines[i].datePlant = new Date(lines[i].datePlant);
+                            lines[i].dateRec = new Date(lines[i].dateRec);
                             lines[i].produit = req.body.planif.produit;
                             lines[i].producteur = req.body.planif.producteur;
                             collection.insert(lines[i], function (err, saved) { });

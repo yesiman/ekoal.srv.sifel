@@ -17,9 +17,9 @@ exports.prevsByDay = function (req, res) {
             }},
             { $group : {
                 _id: {
-                    year : { $year : "$datePlant" },        
-                    month : { $month : "$datePlant" },        
-                    day : { $dayOfMonth : "$datePlant" },
+                    year: { $year: "$dateRec" },
+                    month: { $month: "$dateRec" },
+                    day: { $dayOfMonth: "$dateRec" },
                     produit: "$produit"
                 },
                 count: { $sum: "$qte" }
