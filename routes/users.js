@@ -114,7 +114,7 @@ exports.add = function (req, res) {
             });
         }
         else {
-            delete req.body.product._id;
+            delete req.body.user._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.user);
