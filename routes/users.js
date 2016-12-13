@@ -96,6 +96,7 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.user.dateModif = new Date();
+    console.log(req.body.user);
     if (req.body.user.orga)
     {
         req.body.user.orga = new require('mongodb').ObjectID(req.body.user.orga);
