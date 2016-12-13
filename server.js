@@ -78,6 +78,8 @@ app.get('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
 app.get('/users/getAllByType/:idp/:nbr/:idt', cors(), bodyParser.json(), users.getAllByType);
 app.get('/users/getAllByOrga/:idp/:nbr/:ido', cors(), bodyParser.json(), users.getAllByOrga);
 app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
+
+
 app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
 //END USERS
 //PRODS
