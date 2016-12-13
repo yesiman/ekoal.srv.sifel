@@ -68,6 +68,23 @@ exports.getAllByType = function (req, res) {
         });
     });
 };
+exports.getAllByOrga = function (req, res) {
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
+    var orga = req.params.ido;
+    var ret = new Object();
+    //TYPE 4 et 
+    var filters = { type: { $eq: 4 }, orga: new require('mongodb').ObjectID(orga) };
+    db.collection('users', function (err, collection) {
+        collection.count(filters, function (err, count) {
+            ret.count = count;
+            collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
+                ret.items = items;
+                res.send(ret);
+            });
+        });
+    });
+};
 exports.delete = function (req, res) {
     db.collection('users', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
