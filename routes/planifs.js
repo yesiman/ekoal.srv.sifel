@@ -38,3 +38,17 @@ exports.add = function (req, res) {
     
     res.send(true)
 };
+exports.getAll = function (req, res) {
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
+    var ret = new Object();
+    db.collection('planifs', function (err, collection) {
+        collection.count({}, function (err, count) {
+            ret.count = count;
+            collection.find().skip(skip).limit(limit).toArray(function (err, items) {
+                ret.items = items;
+                res.send(ret);
+            });
+        });
+    });
+};

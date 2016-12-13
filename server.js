@@ -94,6 +94,7 @@ app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END ORGAS
 //PLANIFS
 app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
+app.get('/planifs/getAll/:idp/:nbr', cors(), bodyParser.json(), planifs.getAll);
+//STATS
 app.post('/stats/prevsByDay/', cors(), bodyParser.json(), stats.prevsByDay);
-
 //END.ROUTES
