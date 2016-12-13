@@ -10,7 +10,7 @@ exports.prevsByDay = function (req, res) {
                 produit: { 
                     "$in": obj_ids 
                 },
-                datePlant: {
+                dateRec: {
                     $gte: new Date(req.body.dateFrom),
                     $lt: new Date(req.body.dateTo)
                 }
