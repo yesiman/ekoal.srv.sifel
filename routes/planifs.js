@@ -38,6 +38,19 @@ exports.add = function (req, res) {
     
     res.send(true)
 };
+exports.delete = function (req, res) {
+    db.collection('planifs_lines', function (err, collection) {
+        collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
+            function (err, result) {
+                db.collection('planifs', function (err, collection) {
+                    collection.remove({ planif: new require('mongodb').ObjectID(req.params.id) },
+                        function (err, result) {
+                            res.send(result);
+                        });
+                });
+            });
+    });
+};
 exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
