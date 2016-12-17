@@ -1,7 +1,7 @@
 ﻿exports.sendMailRecover = function (req, res) {
     db.collection('users', function (err, collection) {
-        console.log("req.body.mail", req.body.mail);
-        collection.findOne({ email: req.body.mail }, function (err, item) {
+        console.log("req.body.mail", req.body.email);
+        collection.findOne({ email: req.body.email }, function (err, item) {
             if (item) {
                 console.log("item", item);
                 var api_key = process.env.MAILGUN_API_KEY;
@@ -10,13 +10,13 @@
 
                 var data = {
                     from: 'Arifel <no_reply@arifel.org>',
-                    to: req.body.mail,
+                    to: req.body.email,
                     subject: 'Identifiants',
                     text: item.email + " " + item.pass
                 };
 
                 mailgun.messages().send(data, function (error, body) {
-                    console.log(req.body.mail);
+                    console.log(req.body.email);
                     console.log(error);
 
                     res.send({ success: true });
