@@ -2,6 +2,7 @@
     db.collection('users', function (err, collection) {
         collection.findOne({ email: req.body.mail }, function (err, item) {
             if (item) {
+                console.log("item", item);
                 var api_key = process.env.MAILGUN_API_KEY;
                 var domain = process.env.MAILGUN_DOMAIN;
                 var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
