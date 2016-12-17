@@ -7,13 +7,14 @@
                 var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
 
                 var data = {
-                    from: 'Arifel <no_reply@yesi.test>',
+                    from: 'Arifel <no_reply@arifel.org>',
                     to: req.body.mail,
                     subject: 'Identifiants',
                     text: item.email + " " + item.pass
                 };
 
                 mailgun.messages().send(data, function (error, body) {
+                    console.log(req.body.mail);
                     console.log(error);
 
                     res.send({ success: true });
