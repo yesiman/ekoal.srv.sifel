@@ -51,6 +51,9 @@ app.use(cors());
 //AUTHENTIFICATION
 app.post('/users/login', cors(), bodyParser.json(), users.login);
 //END AUTHENTIFICATION
+//MAILING
+app.post('/mailing/sendMailRecover/', cors(), bodyParser.json(), mailing.sendMailRecover);
+//END MAILING
 //TOKEN VALIDATION
 app.use(function(req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -100,6 +103,5 @@ app.get('/planifs/getAll/:idp/:nbr', cors(), bodyParser.json(), planifs.getAll);
 app.delete('/planifs/delete/:id', cors(), bodyParser.json(), planifs.delete);
 //STATS
 app.post('/stats/prevsByDay/', cors(), bodyParser.json(), stats.prevsByDay);
-//MAILING
-app.post('/mailing/sendMailRecover/', cors(), bodyParser.json(), mailing.sendMailRecover);
+
 //END.ROUTES
