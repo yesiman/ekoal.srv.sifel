@@ -14,6 +14,8 @@
                 };
 
                 mailgun.messages().send(data, function (error, body) {
+                    console.log(error);
+
                     res.send({ success: true });
                 });
                 
