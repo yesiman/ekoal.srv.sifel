@@ -1,5 +1,6 @@
 ﻿exports.sendMailRecover = function (req, res) {
     db.collection('users', function (err, collection) {
+        console.log("req.body.mail", req.body.mail);
         collection.findOne({ email: req.body.mail }, function (err, item) {
             if (item) {
                 console.log("item", item);
