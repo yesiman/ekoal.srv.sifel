@@ -11,14 +11,14 @@
                 var html = "Bonjour, </br></br>"
                     + " Veuillez trouver ci-dessous vos identifiants de conexion : </br>"
                     + "Identifiant : " + req.body.email + "</br>"
-                    + "Mot de passe : " + req.body.pass + "</br></br>"
+                    + "Mot de passe : " + item.pass + "</br></br>"
                     + "A bientot";
 
                 var data = {
                     from: 'Arifel <no_reply@arifel.org>',
                     to: req.body.email,
                     subject: 'Vos Identifiants de connexion',
-                    text: html
+                    html: html
                 };
 
                 mailgun.messages().send(data, function (error, body) {
