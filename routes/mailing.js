@@ -8,11 +8,17 @@
                 var domain = process.env.MAILGUN_DOMAIN;
                 var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
 
+                var html = "Bonjour, </br></br>"
+                    + " Veuillez trouver ci-dessous vos identifiants de conexion : </br>"
+                    + "Identifiant : " + req.body.email + "</br>"
+                    + "Mot de passe : " + req.body.pass + "</br></br>"
+                    + "A bientot";
+
                 var data = {
                     from: 'Arifel <no_reply@arifel.org>',
                     to: req.body.email,
-                    subject: 'Identifiants',
-                    text: item.email + " " + item.pass
+                    subject: 'Vos Identifiants de connexion',
+                    text: html
                 };
 
                 mailgun.messages().send(data, function (error, body) {
