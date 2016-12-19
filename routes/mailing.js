@@ -8,10 +8,10 @@
                 var domain = process.env.MAILGUN_DOMAIN;
                 var mailgun = require('mailgun-js')({ apiKey: api_key, domain: domain });
 
-                var html = "Bonjour, </br></br>"
-                    + " Veuillez trouver ci-dessous vos identifiants de conexion : </br>"
-                    + "Identifiant : " + req.body.email + "</br>"
-                    + "Mot de passe : " + item.pass + "</br></br>"
+                var html = "Bonjour, \r\n\r\n"
+                    + " Veuillez trouver ci-dessous vos identifiants de conexion : \r\n"
+                    + "Identifiant : " + req.body.email + "\r\n"
+                    + "Mot de passe : " + item.pass + "\r\n\r\n"
                     + "A bientot";
 
                 var data = {
