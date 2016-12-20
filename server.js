@@ -70,6 +70,8 @@ app.use(function(req, res, next) {
             }
         });
     }
+
+    
     else {
         console.log("AUTH", 'No token provided.');
         return res.status(403).send({ 
