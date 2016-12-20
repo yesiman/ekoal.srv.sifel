@@ -61,6 +61,8 @@ app.use(function(req, res, next) {
     {
         jwt.verify(token, process.env.JWT, function(err, decoded) {      
             if (err) {
+
+                console.log("err",err);
                 console.log("AUTH", 'Failed to authenticate token.');
                 return res.json({ success: false, message: 'Failed to authenticate token.' });    
 
@@ -71,7 +73,7 @@ app.use(function(req, res, next) {
         });
     }
 
-    
+
     else {
         console.log("AUTH", 'No token provided.');
         return res.status(403).send({ 
