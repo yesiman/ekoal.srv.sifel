@@ -106,6 +106,7 @@ app.delete('/orgas/delete/:id', cors(), bodyParser.json(), orgas.delete);
 app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END ORGAS
 //PLANIFS
+app.get('/planifs/get/:id', cors(), bodyParser.json(), planifs.get);
 app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
 app.get('/planifs/getAll/:idp/:nbr', cors(), bodyParser.json(), planifs.getAll);
 app.delete('/planifs/delete/:id', cors(), bodyParser.json(), planifs.delete);

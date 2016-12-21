@@ -1,3 +1,10 @@
+exports.get = function (req, res) {
+    db.collection('planifs', function (err, collection) {
+        collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
+            res.send(item);
+        })
+    });
+};
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.planif.dateModif = new Date();
