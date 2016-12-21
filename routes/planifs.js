@@ -1,7 +1,19 @@
 exports.get = function (req, res) {
+    var planif;
     db.collection('planifs', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
-            res.send(item);
+            planif = item;
+            db.collection('products', function (err, collection) {
+                collection.findOne({ _id: new require('mongodb').ObjectID(planif.produit) }, function (err, item) {
+                    planif.produit = item;
+                    db.collection('users', function (err, collection) {
+                        collection.findOne({ _id: new require('mongodb').ObjectID(planif.producteur), type:4 }, function (err, item) {
+                            planif.producteur = item;
+                            res.send(planif);
+                        })
+                    });
+                })
+            });
         })
     });
 };
