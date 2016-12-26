@@ -52,6 +52,7 @@ exports.add = function (req, res) {
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.planif);
                 //res.send(true);
+                //TOTO SUPPR ET RECREE PLANIF LINES
         }
     });
     

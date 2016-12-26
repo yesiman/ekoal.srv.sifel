@@ -94,21 +94,29 @@ exports.delete = function (req, res) {
     });
 };
 exports.add = function (req, res) {
-    var pid = req.params.id;
+    var uid = req.params.id;
     req.body.user.dateModif = new Date();
-    console.log(req.body.user);
+    var parcelles = req.body.user.parcelles;
+    delete req.body.user.parcelles;
     if (req.body.user.orga)
     {
         req.body.user.orga = new require('mongodb').ObjectID(req.body.user.orga);
     }
     db.collection('users', function (err, collection) {
-        if (pid == "-1")
+        if (uid == "-1")
         {
             collection.insert(req.body.user, function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
                 }
                 else {
+                    uid = saved.insertedIds[0];
+                    db.collection('parcelles', function (err, collection) {
+                        for (var i = 0; i < lines.length; i++) {
+                            lines[i].producteur = new require('mongodb').ObjectID(uid);
+                            collection.insert(lines[i], function (err, saved) { });
+                        }
+                    });
                     res.send(true);
                 }
             });
@@ -116,7 +124,7 @@ exports.add = function (req, res) {
         else {
             delete req.body.user._id;
             collection.update(
-                { _id: new require('mongodb').ObjectID(pid) },
+                { _id: new require('mongodb').ObjectID(uid) },
                 req.body.user);
                 res.send(true);
         }      
