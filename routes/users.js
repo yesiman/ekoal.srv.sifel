@@ -98,6 +98,8 @@ exports.add = function (req, res) {
     req.body.user.dateModif = new Date();
     var parcelles = req.body.user.parcelles;
     console.log(parcelles);
+
+    
     delete req.body.user.parcelles;
     if (req.body.user.orga)
     {
