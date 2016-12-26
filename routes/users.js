@@ -99,7 +99,7 @@ exports.add = function (req, res) {
     var parcelles = req.body.user.parcelles;
     console.log(parcelles);
 
-    
+
     delete req.body.user.parcelles;
     if (req.body.user.orga)
     {
@@ -115,9 +115,9 @@ exports.add = function (req, res) {
                 else {
                     uid = saved.insertedIds[0];
                     db.collection('parcelles', function (err, collection) {
-                        for (var i = 0; i < lines.length; i++) {
-                            lines[i].producteur = new require('mongodb').ObjectID(uid);
-                            collection.insert(lines[i], function (err, saved) { });
+                        for (var i = 0; i < parcelles.length; i++) {
+                            parcelles[i].producteur = new require('mongodb').ObjectID(uid);
+                            collection.insert(parcelles[i], function (err, saved) { });
                         }
                     });
                     res.send(true);
