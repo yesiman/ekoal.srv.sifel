@@ -97,9 +97,6 @@ exports.add = function (req, res) {
     var uid = req.params.id;
     req.body.user.dateModif = new Date();
     var parcelles = req.body.user.parcelles;
-    console.log(parcelles);
-
-
     delete req.body.user.parcelles;
     if (req.body.user.orga)
     {
@@ -117,6 +114,7 @@ exports.add = function (req, res) {
                     db.collection('parcelles', function (err, collection) {
                         for (var i = 0; i < parcelles.length; i++) {
                             parcelles[i].producteur = new require('mongodb').ObjectID(uid);
+                            delete parcelles[i].new;
                             collection.insert(parcelles[i], function (err, saved) { });
                         }
                     });
@@ -128,8 +126,26 @@ exports.add = function (req, res) {
             delete req.body.user._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(uid) },
-                req.body.user);
-                res.send(true);
+                req.body.user, function (err, saved) {
+                    db.collection('parcelles', function (err, collection) {
+                        for (var i = 0; i < parcelles.length; i++) {
+                            parcelles[i].producteur = new require('mongodb').ObjectID(uid);
+                            if (parcelles[i].new) {
+                                delete parcelles[i].new;
+                                collection.insert(parcelles[i], function (err, saved) { });
+                            }
+                            else {
+                                var pid = parcelles[i]._id;
+                                delete parcelles[i]._id;
+                                collection.update(
+                                { _id: new require('mongodb').ObjectID(pid) },
+                                parcelles[i]);
+                            }
+                        }
+                        res.send(true);
+                    });
+                 });
+                //UPDATE PARECLLES / INSERT IF "NEW"
         }      
     });
 };
