@@ -14,8 +14,6 @@ exports.login = function (req, res) {
             
         })
     });
-
-    
 };
 exports.get = function (req, res) {
     db.collection('users', function (err, collection) {
@@ -26,7 +24,7 @@ exports.get = function (req, res) {
                 {
                     //GET PARCELLES
                     db.collection('parcelles', function (err, collection) {
-                        collection.find({}).toArray(function (err, items) {
+                        collection.find({producteur:new require('mongodb').ObjectID(req.params.id)}).toArray(function (err, items) {
                             item.parcelles = items;
                             res.send(item);
                         });
