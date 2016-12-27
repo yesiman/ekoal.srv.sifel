@@ -20,7 +20,23 @@ exports.login = function (req, res) {
 exports.get = function (req, res) {
     db.collection('users', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
-            res.send(item);
+            if (item)
+            {
+                if (item.type = 4)//PRODUCTEUR
+                {
+                    //GET PARCELLES
+                    db.collection('parcelles', function (err, collection) {
+                        collection.find({}).toArray(function (err, items) {
+                            item.parcelles = items;
+                            res.send(item);
+                        });
+                    });
+                }
+                else {
+                    res.send(item);
+                }
+            }
+            
         })
     });
 };
