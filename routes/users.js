@@ -18,12 +18,14 @@ exports.login = function (req, res) {
 exports.get = function (req, res) {
     db.collection('users', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
-            console.log("req.params.id",req.params.id);
-            console.log("item",item);
+            
             if (item)
             {
+                console.log("req.params.id",req.params.id);
+                console.log("item",item);
                 if (item.type = 4)//PRODUCTEUR
                 {
+                    console.log("in get parcelles");
                     //GET PARCELLES
                     db.collection('parcelles', function (err, collection) {
                         collection.find({producteur:new require('mongodb').ObjectID(req.params.id)}).toArray(function (err, items) {
