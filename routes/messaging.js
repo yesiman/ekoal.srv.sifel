@@ -6,7 +6,7 @@ exports.testTwilio = function (req, res) {
     client.messages.create({
         body: 'Hello from Node',
         to: '+262693336223',  // Text this number
-        from: '+33644641541' // From a valid Twilio number
+        from: 'Arifel' // From a valid Twilio number
     }, function(err, message) {
         console.log("err",err);
         console.log(message.sid);
