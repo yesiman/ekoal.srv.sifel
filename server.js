@@ -13,6 +13,7 @@ var express = require('express'),
     planifs = require('./routes/planifs'),
     stats = require('./routes/stats'),
     mailing = require('./routes/mailing'),
+    messaging = require('./routes/messaging'),
     bodyParser = require('body-parser'),
     cors = require('cors');
 
@@ -113,5 +114,7 @@ app.get('/planifs/getAll/:idp/:nbr', cors(), bodyParser.json(), planifs.getAll);
 app.delete('/planifs/delete/:id', cors(), bodyParser.json(), planifs.delete);
 //STATS
 app.post('/stats/prevsByDay/', cors(), bodyParser.json(), stats.prevsByDay);
+
+app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
 
 //END.ROUTES
