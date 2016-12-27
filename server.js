@@ -86,6 +86,7 @@ app.use(function(req, res, next) {
 //END TOKEN VALIDATION
 //USERS
 app.get('/users/get/:id', cors(), bodyParser.json(), users.get);
+app.get('/users/getParcelles/:id', cors(), bodyParser.json(), users.getParcelles);
 app.get('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
 app.get('/users/getAllByType/:idp/:nbr/:idt', cors(), bodyParser.json(), users.getAllByType);
 app.get('/users/getAllByOrga/:idp/:nbr/:ido', cors(), bodyParser.json(), users.getAllByOrga);

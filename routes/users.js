@@ -38,7 +38,7 @@ exports.get = function (req, res) {
         })
     });
 };
-exports.get = function (req, res) {
+exports.getParcelles = function (req, res) {
     db.collection('users', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
             if (item)
