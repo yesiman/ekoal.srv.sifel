@@ -132,6 +132,7 @@ exports.add = function (req, res) {
                             parcelles[i].producteur = new require('mongodb').ObjectID(uid);
                             if (parcelles[i].new) {
                                 delete parcelles[i].new;
+                                parcelles[i].producteur = new require('mongodb').ObjectID(uid);
                                 collection.insert(parcelles[i], function (err, saved) { });
                             }
                             else {
