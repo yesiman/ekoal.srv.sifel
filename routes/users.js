@@ -38,6 +38,29 @@ exports.get = function (req, res) {
         })
     });
 };
+exports.get = function (req, res) {
+    db.collection('users', function (err, collection) {
+        collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
+            if (item)
+            {
+                if (item.type == 4)// IF PRODUCTEUR
+                {
+                    //GET PARCELLES
+                    db.collection('parcelles', function (err, collection) {
+                        collection.find({producteur:new require('mongodb').ObjectID(req.params.id)}).toArray(function (err, items) {
+                            var ret = {items:items};
+                            res.send(ret);
+                        });
+                    });
+                }
+                else {
+                    res.send(null);
+                }
+            }
+            
+        })
+    });
+};
 exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
