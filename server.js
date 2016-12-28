@@ -70,10 +70,11 @@ app.use(function(req, res, next) {
                 var user = decoded;
                 delete user.iat;
                 delete user.exp;
-                console.log(user);
+                
                 var newToken = jwt.sign(user, process.env.JWT, {
                     expiresIn: 1440
                 });
+                console.log(newToken);
                 res.set('Authorization', newToken);
                 req.decoded = decoded;    
                 next();
