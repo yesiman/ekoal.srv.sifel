@@ -73,8 +73,8 @@ exports.getAll = function (req, res) {
         case  2:   //VOIT TECH et Producteurs LIES OP
             filters = { type: {$gte: 3}, orga:new require('mongodb').ObjectID(req.decoded.orga) };
             break;
-        case  3:
-            filters = { type: {$gte: 4} };
+        case  3:  //VOIT Producteurs LIES OP
+            filters = { type: {$gte: 4}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:req.decoded.producteurs} };
             break;
         default:
             filters = { type: {$gte: 9999} };
