@@ -71,10 +71,10 @@ exports.getAll = function (req, res) {
         case  1:        
             break;
         case  2:
-            filters = { type: {$gte: 2} };
+            filters = { type: {$gte: 3} };
             break;
         case  3:
-            filters = { type: {$gte: 3} };
+            filters = { type: {$gte: 4} };
             break;
         default:
             filters = { type: {$gte: 9999} };
