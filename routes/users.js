@@ -4,7 +4,7 @@ exports.login = function (req, res) {
             if (item)
             {
                 var token = jwt.sign(item, process.env.JWT, {
-                    expiresIn: 1440 // expires in 24 hours
+                    expiresIn: 1440
                 });
                 res.send({success:true, name:item.name, surn:item.surn, type:item.type , token:token}); 
             }

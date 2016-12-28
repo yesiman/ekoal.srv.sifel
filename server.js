@@ -62,13 +62,15 @@ app.use(function(req, res, next) {
     {
         jwt.verify(token, process.env.JWT, function(err, decoded) {      
             if (err) {
-
                 return res.status(403).send({ 
                     success: false, 
                     message: 'Bad token or expired.' 
                 });
-
             } else {
+                var newToken = jwt.sign(decoded, process.env.JWT, {
+                    expiresIn: 1440
+                });
+                console.log(decoded);
                 req.decoded = decoded;    
                 next();
             }
@@ -77,7 +79,6 @@ app.use(function(req, res, next) {
 
 
     else {
-        console.log("AUTH", 'No token provided.');
         return res.status(403).send({ 
             success: false, 
             message: 'No token provided.' 
