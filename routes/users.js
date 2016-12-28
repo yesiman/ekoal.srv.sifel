@@ -81,7 +81,7 @@ exports.getAll = function (req, res) {
             }
             filters = { type: {$gte: 4}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:obj_ids} };
             break;
-        default:
+        default:  //VOIT AUCUNS USER
             filters = { type: {$gte: 9999} };
     }
     db.collection('users', function (err, collection) {
@@ -99,7 +99,25 @@ exports.getAllByType = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var typ = parseInt(req.params.idt);
     var ret = new Object();
-    var filters = { type: { $eq: typ } };
+    var filters = { };
+    switch (req.decoded.type)
+    {
+        case  1:   //VOIT TOUT     
+            break;
+        case  2:   //VOIT TECH et Producteurs LIES OP
+            filters = { type: { $eq: typ }, orga:new require('mongodb').ObjectID(req.decoded.orga) };
+            break;
+        case  3:  //VOIT Producteurs LIES OP
+            var obj_ids = [];
+            for(var i=0;i<req.decoded.producteurs.length;i++)
+            {
+                obj_ids.push(new require('mongodb').ObjectID(req.decoded.producteurs[i]));
+            }
+            filters = { type: { $eq: typ }, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:obj_ids} };
+            break;
+        default:  //VOIT AUCUNS USER
+            filters = { type: {$gte: 9999} };
+    }
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
