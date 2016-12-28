@@ -74,7 +74,12 @@ exports.getAll = function (req, res) {
             filters = { type: {$gte: 3}, orga:new require('mongodb').ObjectID(req.decoded.orga) };
             break;
         case  3:  //VOIT Producteurs LIES OP
-            filters = { type: {$gte: 4}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:req.decoded.producteurs} };
+            var obj_ids = [];
+            for(var i=0;i<req.decoded.producteurs.length;i++)
+            {
+                obj_ids.push(new require('mongodb').ObjectID(req.decoded.producteurs[i]));
+            }
+            filters = { type: {$gte: 4}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:obj_ids} };
             break;
         default:
             filters = { type: {$gte: 9999} };
