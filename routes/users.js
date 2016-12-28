@@ -68,10 +68,10 @@ exports.getAll = function (req, res) {
     var filters = {};
     switch (req.decoded.type)
     {
-        case  1:        
+        case  1:   //VOIT TOUT     
             break;
-        case  2:
-            filters = { type: {$gte: 3} };
+        case  2:   //VOIT TECH et Producteurs LIES OP
+            filters = { type: {$gte: 3}, orga:new require('mongodb').ObjectID(req.decoded.orga) };
             break;
         case  3:
             filters = { type: {$gte: 4} };
