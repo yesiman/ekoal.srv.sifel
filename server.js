@@ -74,7 +74,7 @@ app.use(function(req, res, next) {
                 var newToken = jwt.sign(user, process.env.JWT, {
                     expiresIn: 1440
                 });
-                console.log(newToken);
+                console.log("res.header",res.header);
                 res.set('Authorization', newToken);
                 req.decoded = decoded;    
                 next();
