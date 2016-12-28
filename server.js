@@ -67,6 +67,7 @@ app.use(function(req, res, next) {
                     message: 'Bad token or expired.' 
                 });
             } else {
+                console.log(decoded);
                 var newToken = jwt.sign(decoded, process.env.JWT, {
                     expiresIn: 1440
                 });
