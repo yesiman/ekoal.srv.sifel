@@ -21,8 +21,7 @@ exports.prevsByDay = function (req, res) {
             obj_ids.push(new require('mongodb').ObjectID(req.body.prodsIds[i]));
         }
         collection.aggregate(
-            { "$match":{
-                dynaMatch, 
+            { "$match":{ 
                 produit: { 
                     "$in": obj_ids 
                 },
