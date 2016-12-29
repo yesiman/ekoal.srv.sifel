@@ -6,7 +6,6 @@ exports.prevsByDay = function (req, res) {
             producteurs = [];
             break;
         case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
-            console.log("orga",req.decoded.orga);
             usersFilter = { orga: new require('mongodb').ObjectID(req.decoded.orga), type: { $eq: 4 } };
             break;
         case 3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
@@ -46,7 +45,6 @@ exports.prevsByDay = function (req, res) {
                     case 4:  //FILTRE SUR SES DONNEES
                         producteurs = [new require('mongodb').ObjectID(req.decoded._id)];
                 }
-                console.log("producteurs",producteurs);
                 collection.aggregate(
                     { "$match":{ 
                         produit: { 
@@ -81,14 +79,5 @@ exports.prevsByDay = function (req, res) {
                 );
             });  
         });
-    });
-
-
-
-    db.collection('users', function (err, collection) {
-        collection.findOne(usersFilter, function (err, item) {
-            var user = item;
-            
-        })
     });
 };
