@@ -22,7 +22,7 @@ exports.prevsByDay = function (req, res) {
             case 4:  //FILTRE SUR SES DONNEES
                 producteurs = [new require('mongodb').ObjectID(req.decoded._id)];
         }
-        console.log("producteur",producteur);
+        console.log("producteurs",producteurs);
         collection.aggregate(
             { "$match":{ 
                 produit: { 
