@@ -67,13 +67,12 @@ app.use(function(req, res, next) {
                     message: 'Bad token or expired.' 
                 });
             } else {
+                res.test = "test";
                 req.decoded = decoded;    
                 next();
             }
         });
     }
-
-
     else {
         return res.status(403).send({ 
             success: false, 

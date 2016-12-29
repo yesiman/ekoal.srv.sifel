@@ -15,6 +15,15 @@ exports.login = function (req, res) {
         })
     });
 };
+exports.refreshToken = function (req, res) {
+    var user = req.decoded;
+    delete user.iat;
+    delete user.exp;
+    var newToken = jwt.sign(user, process.env.JWT, {
+        expiresIn: 1440
+    });
+    res.send(newToken);
+};
 exports.get = function (req, res) {
     db.collection('users', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
