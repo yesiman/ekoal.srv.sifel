@@ -1,7 +1,20 @@
 exports.prevsByDay = function (req, res) {
+    var usersFilter = {};
+    switch (req.decoded.type)
+    {
+        case  1:   //VOIT TOUT CE QUI EST PUBLIC
+            producteurs = [];
+            break;
+        case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
+            usersFilter = { orga: new require('mongodb').ObjectID(req.decoded.orga), type: { $eq: 4 } };
+            break;
+        case 3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
+        case 4:
+            usersFilter = { _id: new require('mongodb').ObjectID(req.decoded._id) };
+    }
+
     db.collection('users', function (err, collection) {
-        collection.findOne({ _id: new require('mongodb').ObjectID(req.decoded._id) }, function (err, item) {
-            var user = item;
+        collection.find(usersFilter).toArray(function (err, items) {
             db.collection('planifs_lines', function (err, collection) {
                 var obj_ids = [];
                 var producteurs = [];
@@ -15,12 +28,13 @@ exports.prevsByDay = function (req, res) {
                         producteurs = [];
                         break;
                     case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
-                        producteurs = [];
-                        break;
                     case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
-                        for(var i=0;i<user.producteurs.length;i++)
+                        for(var i1=0;i1<items.length;i1++)
                         {
-                            producteurs.push(new require('mongodb').ObjectID(user.producteurs[i]));
+                            for(var i=0;i<items[i1].producteurs.length;i++)
+                            {
+                                producteurs.push(new require('mongodb').ObjectID(items[i1].producteurs[i]));
+                            }
                         }
                         break;
                     case 4:  //FILTRE SUR SES DONNEES
@@ -59,6 +73,16 @@ exports.prevsByDay = function (req, res) {
                     }
                 );
             });  
+            res.send(ret);
+        });
+    });
+
+
+
+    db.collection('users', function (err, collection) {
+        collection.findOne(usersFilter, function (err, item) {
+            var user = item;
+            
         })
     });
 };
