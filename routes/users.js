@@ -6,12 +6,11 @@ exports.login = function (req, res) {
                 var token = jwt.sign(item, process.env.JWT, {
                     expiresIn: 1440
                 });
-                res.send({success:true, name:item.name, surn:item.surn, type:item.type , token:token}); 
+                res.send({success:true,_id:item._id, name:item.name, surn:item.surn, type:item.type , token:token}); 
             }
             else {
                 res.send({success:false});
-            }
-            
+            }  
         })
     });
 };
