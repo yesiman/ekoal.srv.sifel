@@ -73,7 +73,6 @@ exports.prevsByDay = function (req, res) {
                     }
                 );
             });  
-            res.send(ret);
         });
     });
 
