@@ -6,6 +6,7 @@ exports.prevsByDay = function (req, res) {
             producteurs = [];
             break;
         case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
+            console.log("orga",req.decoded.orga);
             usersFilter = { orga: new require('mongodb').ObjectID(req.decoded.orga), type: { $eq: 4 } };
             break;
         case 3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
