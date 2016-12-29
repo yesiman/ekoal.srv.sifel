@@ -11,13 +11,13 @@ exports.prevsByDay = function (req, res) {
         switch (req.decoded.type)
         {
             case  1:   //VOIT TOUT CE QUI EST PUBLIC
-                producteurs = { };
+                producteurs = [];
                 break;
             case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
-                producteurs = { };
+                producteurs = [];
                 break;
             case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
-                producteurs = {  };
+                producteurs = [];
                 break;
             case 4:  //FILTRE SUR SES DONNEES
                 producteurs = [new require('mongodb').ObjectID(req.decoded._id)];
