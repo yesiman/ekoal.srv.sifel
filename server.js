@@ -68,8 +68,6 @@ app.use(function(req, res, next) {
                 });
             } else {
                 res.header("test","test");
-                res.eheader("test","test");
-                
                 req.decoded = decoded;    
                 next();
             }
