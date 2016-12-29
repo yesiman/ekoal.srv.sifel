@@ -21,8 +21,7 @@ exports.prevsByDay = function (req, res) {
                         for(var i=0;i<user.producteurs.length;i++)
                         {
                             producteurs.push(new require('mongodb').ObjectID(user.producteurs[i]));
-                        }   
-                        producteurs = [];
+                        }
                         break;
                     case 4:  //FILTRE SUR SES DONNEES
                         producteurs = [new require('mongodb').ObjectID(req.decoded._id)];
