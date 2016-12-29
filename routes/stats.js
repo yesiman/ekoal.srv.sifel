@@ -29,6 +29,11 @@ exports.prevsByDay = function (req, res) {
                         producteurs = [];
                         break;
                     case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
+                        for(var i1=0;i1<items.length;i1++)
+                        {
+                            producteurs.push(new require('mongodb').ObjectID(items[i1]._id));
+                        }
+                        break;
                     case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
                         for(var i1=0;i1<items.length;i1++)
                         {
