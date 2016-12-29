@@ -67,7 +67,6 @@ app.use(function(req, res, next) {
                     message: 'Bad token or expired.' 
                 });
             } else {
-                res.set("test", "test");
                 req.decoded = decoded;    
                 next();
             }
