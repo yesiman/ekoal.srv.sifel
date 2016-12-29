@@ -2,33 +2,33 @@ exports.prevsByDay = function (req, res) {
     db.collection('planifs_lines', function (err, collection) {
         var obj_ids = [];
         var dynaMatch = {};
-        switch (req.decoded.type)
-        {
-            case  1:   //VOIT TOUT CE QUI EST PUBLIC
-                dynaMatch = { };
-                break;
-            case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
-                dynaMatch = { };
-                break;
-            case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
-                dynaMatch = {  };
-                break;
-            case 4:  //FILTRE SUR SES DONNEES
-                dynaMatch = { };
-        }
         for(var i=0;i<req.body.prodsIds.length;i++)
         {
             obj_ids.push(new require('mongodb').ObjectID(req.body.prodsIds[i]));
         }
+
+        dynaMatch.produit = { "$in": obj_ids };
+        dynaMatch.dateRec = {
+                    $gte: new Date(req.body.dateFrom),
+                    $lt: new Date(req.body.dateTo)};
+
+        switch (req.decoded.type)
+        {
+            case  1:   //VOIT TOUT CE QUI EST PUBLIC
+                //dynaMatch = { };
+                break;
+            case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
+                //dynaMatch = { };
+                break;
+            case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
+                //dynaMatch = {  };
+                break;
+            case 4:  //FILTRE SUR SES DONNEES
+                //dynaMatch = { };
+        }
         collection.aggregate(
             { "$match":{ 
-                produit: { 
-                    "$in": obj_ids 
-                },
-                dateRec: {
-                    $gte: new Date(req.body.dateFrom),
-                    $lt: new Date(req.body.dateTo)
-                }
+                dynaMatch
             }},
             { $group : {
                 _id: {
