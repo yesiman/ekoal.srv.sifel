@@ -51,10 +51,9 @@ exports.prevsByDay = function (req, res) {
                 }
 
                 var query = {};
-                query["$match"]=[];
-                query["$match"].push({"produit":{ "$in": obj_ids }});
-                query["$match"].push({"producteur":{ "$in": producteurs }});
-                query["$match"].push({"dateRec":{ $gte: new Date(req.body.dateFrom),$lt: new Date(req.body.dateTo)}});
+                query["$match"]["produit"] = { "$in": obj_ids };
+                query["$match"]["producteur"] = { "$in": producteurs };
+                query["$match"]["dateRec"] = { $gte: new Date(req.body.dateFrom),$lt: new Date(req.body.dateTo)};
 
                 console.log("query",query);
 
