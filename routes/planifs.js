@@ -9,7 +9,12 @@ exports.get = function (req, res) {
                     db.collection('users', function (err, collection) {
                         collection.findOne({ _id: new require('mongodb').ObjectID(planif.producteur), type:4 }, function (err, item) {
                             planif.producteur = item;
-                            res.send(planif);
+                            db.collection('planifs_lines', function (err, collection) {
+                                collection.find({planif: new require('mongodb').ObjectID(planif._id)}).toArray(function (err, items) {
+                                    planif.lines = items;
+                                    res.send(planif);
+                                });
+                            });       
                         })
                     });
                 })
@@ -107,14 +112,12 @@ exports.getAll = function (req, res) {
                         db.collection('users', function (err, collection) {
                             collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
                                 producteurs = items;
-                                console.log(producteurs);
                                 for(var i=0;i<planifs.length;i++)
                                 {
                                     for(var ip1=0;ip1<produits.length;ip1++)
                                     {
                                         if (produits[ip1]._id.toString() == planifs[i].produit.toString())
                                         {
-                                            console.log(planifs[i].produit,produits[ip1]._id);
                                             planifs[i].produitLib = produits[ip1].lib;
                                             break;
                                         }
@@ -123,14 +126,11 @@ exports.getAll = function (req, res) {
                                     {
                                         if (producteurs[ip2]._id.toString() == planifs[i].producteur.toString())
                                         {
-                                            console.log(planifs[i].producteur,producteurs[ip2]._id);
                                             planifs[i].producteurLib = producteurs[ip2].name + " " + producteurs[ip2].surn;
                                             break;
                                         }
                                     }
                                 }
-
-
                                 ret.items = planifs;
                                 res.send(ret);
                             });
