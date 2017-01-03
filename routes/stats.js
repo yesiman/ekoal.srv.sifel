@@ -16,7 +16,6 @@ exports.prevsByDay = function (req, res) {
     db.collection('users', function (err, collection) {
         collection.find(usersFilter).toArray(function (err, items) {
             db.collection('planifs_lines', function (err, collection) {
-                var filtreOnProucteurs = false;
                 var obj_ids = [];
                 var producteurs = [];
                 for(var i=0;i<req.body.prodsIds.length;i++)
@@ -33,7 +32,6 @@ exports.prevsByDay = function (req, res) {
                         {
                             producteurs.push(new require('mongodb').ObjectID(items[i1]._id));
                         }
-                        filtreOnProucteurs = true;
                         break;
                     case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
                         for(var i1=0;i1<items.length;i1++)
@@ -43,17 +41,18 @@ exports.prevsByDay = function (req, res) {
                                 producteurs.push(new require('mongodb').ObjectID(items[i1].producteurs[i]));
                             }
                         }
-                        filtreOnProucteurs = true;
                         break;
                     case 4:  //FILTRE SUR SES DONNEES
                         producteurs = [new require('mongodb').ObjectID(req.decoded._id)];
-                        filtreOnProucteurs = true;
                 }
 
                 var query = {};
                 query["$match"] = {};
                 query["$match"]["produit"] = { "$in": obj_ids };
-                if (filtreOnProucteurs){
+                if (req.decoded.type == 1){
+                    //filtre produits publiques
+                }
+                else {
                     query["$match"]["producteur"] = { "$in": producteurs };
                 }
                 query["$match"]["dateRec"] = { $gte: new Date(req.body.dateFrom),$lt: new Date(req.body.dateTo)};

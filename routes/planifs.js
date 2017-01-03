@@ -75,10 +75,32 @@ exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
+
+    //ADD LIKE STATS WORKFLOW
+
     db.collection('planifs', function (err, collection) {
         collection.count({}, function (err, count) {
             ret.count = count;
             collection.find().skip(skip).limit(limit).toArray(function (err, items) {
+                var produitsIds = [];
+                var producteursIds = [];
+                for(var i=0;i<items.length;i++)
+                {
+                    if (!produitsIds[new require('mongodb').ObjectID(items[i]).produit])
+                    {
+                        produitsIds.push(new require('mongodb').ObjectID(items[i].produit));
+                    }
+                    if (!producteursIds[new require('mongodb').ObjectID(items[i].producteur)])
+                    {
+                        producteursIds.push(new require('mongodb').ObjectID(items[i].producteur));
+                    }
+                }
+                //GET PRODUITS
+                //GET PRODUCTEURS
+                //ASSIGN
+                //SEND
+                console.log("produitsIds",produitsIds);
+                console.log("producteursIds",producteursIds);
                 ret.items = items;
                 res.send(ret);
             });
