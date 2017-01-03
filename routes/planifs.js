@@ -109,8 +109,8 @@ exports.getAll = function (req, res) {
                                 producteurs = items;
                                 for(var i=0;i<planifs.length;i++)
                                 {
-                                    console.log("productLib",produits[planif[i].produit]);
-                                    console.log("producteurLib",producteurs[planif[i].producteur]);
+                                    console.log("productLib",produits[planifs[i].produit]);
+                                    console.log("producteurLib",producteurs[planifs[i].producteur]);
                                 }
 
 
