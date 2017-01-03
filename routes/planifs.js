@@ -86,11 +86,11 @@ exports.getAll = function (req, res) {
                 var producteursIds = [];
                 for(var i=0;i<items.length;i++)
                 {
-                    if (!produitsIds[items[i].produit])
+                    if (produitsIds.indexOf(items[i].produit) > -1)
                     {
                         produitsIds.push(new require('mongodb').ObjectID(items[i].produit));
                     }
-                    if (!producteursIds[items[i].producteur])
+                    if (producteursIds.indexOf(items[i].producteur) > -1)
                     {
                         producteursIds.push(new require('mongodb').ObjectID(items[i].producteur));
                     }
