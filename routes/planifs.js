@@ -107,7 +107,7 @@ exports.getAll = function (req, res) {
                         db.collection('users', function (err, collection) {
                             collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
                                 producteurs = items;
-                                console.log(producteurs);
+                                console.log(producteursIds);
                                 for(var i=0;i<planifs.length;i++)
                                 {
                                     for(var ip1=0;ip1<produits.length;ip1++)
