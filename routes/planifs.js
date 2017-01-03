@@ -121,7 +121,7 @@ exports.getAll = function (req, res) {
                                     }
                                     for(var ip2=0;ip2<producteurs.length;ip2++)
                                     {
-                                        if (producteurs[ip2]._id == planifs[i].producteur)
+                                        if (producteurs[ip2]._id.toString() == planifs[i].producteur.toString())
                                         {
                                             console.log(planifs[i].producteur,producteurs[ip2]._id);
                                             planifs[i].producteurLib = producteurs[ip2].name + " " + producteurs[ip2].surn;
