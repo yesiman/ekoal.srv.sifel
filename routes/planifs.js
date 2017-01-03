@@ -109,8 +109,22 @@ exports.getAll = function (req, res) {
                                 producteurs = items;
                                 for(var i=0;i<planifs.length;i++)
                                 {
-                                    console.log("productLib",produits[planifs[i].produit]);
-                                    console.log("producteurLib",producteurs[planifs[i].producteur]);
+                                    for(var ip1=0;ip1<produits.length;ip1++)
+                                    {
+                                        if (produits[ip1] === planifs[i].produit)
+                                        {
+                                            planifs[i].produitLib = produits[ip1].lib;
+                                            break;
+                                        }
+                                    }
+                                    for(var ip2=0;ip2<producteurs.length;ip2++)
+                                    {
+                                        if (producteurs[ip2] === planifs[i].producteur)
+                                        {
+                                            planifs[i].producteurLib = producteurs[ip2].name + " " + producteurs[ip2].surn;
+                                            break;
+                                        }
+                                    }
                                 }
 
 
