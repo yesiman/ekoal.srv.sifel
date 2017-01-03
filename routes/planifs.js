@@ -107,6 +107,13 @@ exports.getAll = function (req, res) {
                         db.collection('users', function (err, collection) {
                             collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
                                 producteurs = items;
+                                for(var i=0;i<planifs.length;i++)
+                                {
+                                    console.log("productLib",produits[planif[i].produit]);
+                                    console.log("producteurLib",producteurs[planif[i].producteur]);
+                                }
+
+
                                 ret.items = planifs;
                                 res.send(ret);
                             });
