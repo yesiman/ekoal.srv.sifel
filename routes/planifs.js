@@ -84,6 +84,10 @@ exports.getAll = function (req, res) {
             collection.find().skip(skip).limit(limit).toArray(function (err, items) {
                 var produitsIds = [];
                 var producteursIds = [];
+                var planifs = [];
+                var produits = [];
+                var producteurs = [];
+                planifs = items;
                 for(var i=0;i<items.length;i++)
                 {
                     if (!(produitsIds.indexOf(new require('mongodb').ObjectID(items[i].produit)) > -1))
@@ -96,13 +100,21 @@ exports.getAll = function (req, res) {
                     }
                 }
                 //GET PRODUITS
-                //GET PRODUCTEURS
+                db.collection('products', function (err, collection) {
+                    collection.find({_id: {$in:produitsIds}}).toArray(function (err, items) {
+                        produits = items;
+                        //GET PRODUCTEURS
+                        db.collection('users', function (err, collection) {
+                            collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
+                                producteurs = items;
+                                ret.items = planifs;
+                                res.send(ret);
+                            });
+                        });        
+                    });
+                });
                 //ASSIGN
                 //SEND
-                console.log("produitsIds",produitsIds);
-                console.log("producteursIds",producteursIds);
-                ret.items = items;
-                res.send(ret);
             });
         });
     });
