@@ -111,7 +111,8 @@ exports.getAll = function (req, res) {
                                 {
                                     for(var ip1=0;ip1<produits.length;ip1++)
                                     {
-                                        if (produits[ip1] === planifs[i].produit)
+                                        console.log(planifs[i].produit,produits[ip1]);
+                                        if (produits[ip1] == planifs[i].produit)
                                         {
                                             planifs[i].produitLib = produits[ip1].lib;
                                             break;
@@ -119,7 +120,8 @@ exports.getAll = function (req, res) {
                                     }
                                     for(var ip2=0;ip2<producteurs.length;ip2++)
                                     {
-                                        if (producteurs[ip2] === planifs[i].producteur)
+                                        console.log(planifs[i].producteur,producteurs[ip2]);
+                                        if (producteurs[ip2] == planifs[i].producteur)
                                         {
                                             planifs[i].producteurLib = producteurs[ip2].name + " " + producteurs[ip2].surn;
                                             break;
