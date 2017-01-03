@@ -111,7 +111,7 @@ exports.getAll = function (req, res) {
                                 {
                                     for(var ip1=0;ip1<produits.length;ip1++)
                                     {
-                                        if (produits[ip1]._id == planifs[i].produit)
+                                        if (produits[ip1]._id.toString() == planifs[i].produit.toString())
                                         {
                                             console.log(planifs[i].produit,produits[ip1]._id);
                                             planifs[i].produitLib = produits[ip1].lib;
