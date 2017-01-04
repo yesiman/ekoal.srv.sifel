@@ -60,7 +60,14 @@ exports.add = function (req, res) {
                             lines[i].dateRec = new Date(lines[i].dateRec);
                             lines[i].produit = req.body.planif.produit;
                             lines[i].producteur = req.body.planif.producteur;
-                            collection.insert(lines[i], function (err, saved) { });
+                            if (lines[i]._id)
+                            {
+                                collection.update(lines[i], function (err, saved) { });
+                            }
+                            else {
+                                delete lines[i].id;
+                                collection.insert(lines[i], function (err, saved) { });
+                            }
                         }
                     });
                 }
