@@ -12,7 +12,18 @@ exports.get = function (req, res) {
                             db.collection('planifs_lines', function (err, collection) {
                                 collection.find({planif: new require('mongodb').ObjectID(planif._id)}).toArray(function (err, items) {
                                     planif.lines = items;
-                                    res.send(planif);
+                                    if (planif.parcelle)
+                                    {
+                                        db.collection('parcelles', function (err, collection) {
+                                            collection.findOne({ _id: new require('mongodb').ObjectID(planif.parcelle)}, function (err, item) {
+                                                planif.parcelle = item;
+                                                res.send(planif);
+                                            });
+                                        }); 
+                                    }
+                                    else {
+                                        res.send(planif);
+                                    }
                                 });
                             });       
                         })
@@ -27,6 +38,10 @@ exports.add = function (req, res) {
     req.body.planif.dateModif = new Date();
     req.body.planif.produit = new require('mongodb').ObjectID(req.body.planif.produit);
     req.body.planif.producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
+    if(req.body.parcelle)
+    {
+        req.body.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
+    }
     var lines = req.body.planif.lines;
     delete req.body.planif.lines;
     db.collection('planifs', function (err, collection) {
