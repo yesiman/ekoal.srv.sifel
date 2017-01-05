@@ -70,7 +70,7 @@ exports.add = function (req, res) {
         }
         else {
             delete req.body.planif._id;
-            console.log(req.body.planif);
+            console.log(req.body.planif + "/" + pid);
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.planif);
