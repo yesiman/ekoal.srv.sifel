@@ -94,10 +94,14 @@ exports.add = function (req, res) {
                                     collection.update({_id:new require('mongodb').ObjectID(lid)},lines[i], function (err, object) { });
                                 }
                                 else {
-                                    console.log("_id NOT EXIST");
-                                    console.log("xxx",lines[i]);
-                                    delete lines[i].id;
-                                    collection.insert(lines[i], function (err, saved) { });
+                                    if (lines[i].id)
+                                    {
+                                        console.log("_id NOT EXIST");
+                                        console.log("xxx",lines[i]);
+                                        delete lines[i].id;
+                                        collection.insert(lines[i], function (err, saved) { });
+                                    }
+                                    
                                 }
                             }
                             for (var i = 0; i < linesToRem.length; i++) {
