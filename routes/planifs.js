@@ -70,7 +70,7 @@ exports.add = function (req, res) {
         }
         else {
             delete req.body.planif._id;
-            console.log(req.body.planif + "/" + pid);
+            
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.planif);
@@ -82,6 +82,7 @@ exports.add = function (req, res) {
                     lines[i].producteur = req.body.planif.producteur;
                     if (lines[i]._id)
                     {
+                        console.log(lines[i]._id + "/" + pid);
                         collection.update({_id:new require('mongodb').ObjectID(lines[i]._id)},lines[i], function (err, saved) { });
                     }
                     else {
