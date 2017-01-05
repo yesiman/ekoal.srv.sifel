@@ -62,7 +62,7 @@ exports.add = function (req, res) {
                             lines[i].producteur = req.body.planif.producteur;
                             if (lines[i]._id)
                             {
-                                collection.update(lines[i], function (err, saved) { });
+                                collection.update({_id:new require('mongodb').ObjectID(lines[i]._id)},lines[i], function (err, saved) { });
                             }
                             else {
                                 delete lines[i].id;
