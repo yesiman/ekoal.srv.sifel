@@ -86,13 +86,15 @@ exports.add = function (req, res) {
                                 lines[i].dateRec = new Date(lines[i].dateRec);
                                 lines[i].produit = req.body.planif.produit;
                                 lines[i].producteur = req.body.planif.producteur;
-                                if (lines[i].hasOwnProperty("_id"))
+                                if (lines[i]._id)
                                 {
+                                    console.log("_id EXIST");
                                     var lid = lines[i]._id;
                                     delete lines[i]._id;
                                     collection.update({_id:new require('mongodb').ObjectID(lid)},lines[i], function (err, object) { });
                                 }
                                 else {
+                                    console.log("_id NOT EXIST");
                                     console.log("xxx",lines[i]);
                                     delete lines[i].id;
                                     collection.insert(lines[i], function (err, saved) { });
