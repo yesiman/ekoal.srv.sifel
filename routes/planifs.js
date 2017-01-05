@@ -87,8 +87,9 @@ exports.add = function (req, res) {
                                 lines[i].producteur = req.body.planif.producteur;
                                 if (lines[i]._id)
                                 {
-                                    console.log(lines[i]._id + "/" + pid);
-                                    collection.update({_id:new require('mongodb').ObjectID(lines[i]._id)},lines[i], function (err, object) { });
+                                    var lid = lines[i]._id;
+                                    delete lines[i]._id;
+                                    collection.update({_id:new require('mongodb').ObjectID(lid)},lines[i], function (err, object) { });
                                 }
                                 else {
                                     delete lines[i].id;
