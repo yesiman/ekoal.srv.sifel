@@ -74,7 +74,7 @@ exports.add = function (req, res) {
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.planif);
-            db.collection('planifs_lines', function (err, collection) {
+            /*db.collection('planifs_lines', function (err, collection) {
                 for (var i = 0; i < lines.length; i++) {
                     lines[i].planif = new require('mongodb').ObjectID(pid);
                     lines[i].dateRec = new Date(lines[i].dateRec);
@@ -97,7 +97,7 @@ exports.add = function (req, res) {
                 {
                     collection.remove({ _id : {$in:linesToRem}}, function (err, saved) { });
                 }
-            });
+            });*/
         }
     });
     
