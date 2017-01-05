@@ -104,13 +104,18 @@ exports.add = function (req, res) {
                                     
                                 }
                             }
-                            for (var i = 0; i < linesToRem.length; i++) {
-                                linesToRem[i] = new require('mongodb').ObjectID(linesToRem[i]);
-                            }
-                            if(linesToRem.length > 0)
+                            if (linesToRem)
                             {
-                                collection.remove({ _id : {$in:linesToRem}}, function (err, saved) { });
+                                
+                                if(linesToRem.length > 0)
+                                {
+                                    for (var i = 0; i < linesToRem.length; i++) {
+                                        linesToRem[i] = new require('mongodb').ObjectID(linesToRem[i]);
+                                    }
+                                    collection.remove({ _id : {$in:linesToRem}}, function (err, saved) { });
+                                }
                             }
+                            
                         });
                     }
                 });
