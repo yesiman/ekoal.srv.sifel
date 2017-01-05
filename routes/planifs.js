@@ -111,7 +111,7 @@ exports.add = function (req, res) {
                                     for (var i = 0; i < linesToRem.length; i++) {
                                         linesToRem[i] = new require('mongodb').ObjectID(linesToRem[i]);
                                     }
-                                    collection.remove({ _id : {$in:linesToRem}}, function (err, saved) { });
+                                    collection.remove({ _id : {$in:linesToRem}});
                                 }
                             }
                             
