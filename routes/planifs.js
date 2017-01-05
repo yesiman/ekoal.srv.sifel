@@ -49,12 +49,12 @@ exports.add = function (req, res) {
         {
             collection.insert( req.body.planif , function (err, saved) {
                 if (err || !saved) {
-                    
                     //res.send(false)
                 }
                 else {
                     pid = saved.insertedIds[0];
                     db.collection('planifs_lines', function (err, collection) {
+                        console.log(lines);
                         for (var i = 0; i < lines.length; i++) {
                             lines[i].planif = new require('mongodb').ObjectID(pid);
                             lines[i].dateRec = new Date(lines[i].dateRec);
