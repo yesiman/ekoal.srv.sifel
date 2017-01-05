@@ -79,6 +79,7 @@ exports.add = function (req, res) {
                         //console.warn(err.message);  // returns error if no matching object found
                     }else{
                         //console.dir(object);
+                        console.log(lines);
                         db.collection('planifs_lines', function (err, collection) {
                             for (var i = 0; i < lines.length; i++) {
                                 lines[i].planif = new require('mongodb').ObjectID(pid);
