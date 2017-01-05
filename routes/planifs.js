@@ -86,7 +86,7 @@ exports.add = function (req, res) {
                                 lines[i].dateRec = new Date(lines[i].dateRec);
                                 lines[i].produit = req.body.planif.produit;
                                 lines[i].producteur = req.body.planif.producteur;
-                                if (lines[i]._id)
+                                if (lines[i].hasOwnProperty("_id"))
                                 {
                                     var lid = lines[i]._id;
                                     delete lines[i]._id;
