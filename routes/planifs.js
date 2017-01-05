@@ -73,7 +73,38 @@ exports.add = function (req, res) {
             
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
-                req.body.planif);
+                req.body.planif, // options
+                function(err, object) {
+                    if (err){
+                        console.warn(err.message);  // returns error if no matching object found
+                    }else{
+                        console.dir(object);
+                        db.collection('planifs_lines', function (err, collection) {
+                            for (var i = 0; i < lines.length; i++) {
+                                lines[i].planif = new require('mongodb').ObjectID(pid);
+                                lines[i].dateRec = new Date(lines[i].dateRec);
+                                lines[i].produit = req.body.planif.produit;
+                                lines[i].producteur = req.body.planif.producteur;
+                                if (lines[i]._id)
+                                {
+                                    console.log(lines[i]._id + "/" + pid);
+                                    collection.update({_id:new require('mongodb').ObjectID(lines[i]._id)},lines[i], function (err, saved) { });
+                                }
+                                else {
+                                    delete lines[i].id;
+                                    collection.insert(lines[i], function (err, saved) { });
+                                }
+                            }
+                            for (var i = 0; i < linesToRem.length; i++) {
+                                linesToRem[i] = new require('mongodb').ObjectID(linesToRem[i]);
+                            }
+                            if(linesToRem.length > 0)
+                            {
+                                collection.remove({ _id : {$in:linesToRem}}, function (err, saved) { });
+                            }
+                        });
+                    }
+                });
             /*db.collection('planifs_lines', function (err, collection) {
                 for (var i = 0; i < lines.length; i++) {
                     lines[i].planif = new require('mongodb').ObjectID(pid);
