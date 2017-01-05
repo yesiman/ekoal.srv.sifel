@@ -43,7 +43,9 @@ exports.add = function (req, res) {
         req.body.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
     }
     var lines = req.body.planif.lines;
+    var linesToRem = req.body.planif.linesToRem;
     delete req.body.planif.lines;
+    delete req.body.planif.linesToRem;
     db.collection('planifs', function (err, collection) {
         if (pid == "-1")
         {
@@ -84,6 +86,13 @@ exports.add = function (req, res) {
                         delete lines[i].id;
                         collection.insert(lines[i], function (err, saved) { });
                     }
+                }
+                for (var i = 0; i < linesToRem.length; i++) {
+                    linesToRem[i] = new require('mongodb').ObjectID(linesToRem[i]);
+                }
+                if(linesToRem.length > 0)
+                {
+                    collection.remove({ _id : {$in:linesToRem}}, function (err, saved) { });
                 }
             });
         }
