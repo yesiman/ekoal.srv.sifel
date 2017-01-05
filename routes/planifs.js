@@ -103,6 +103,7 @@ exports.add = function (req, res) {
                                     
                                 }
                             }
+                            console.log("linesToRem",linesToRem);
                             if (linesToRem)
                             {
                                 if(linesToRem.length > 0)
