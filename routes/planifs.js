@@ -76,9 +76,9 @@ exports.add = function (req, res) {
                 req.body.planif, // options
                 function(err, object) {
                     if (err){
-                        console.warn(err.message);  // returns error if no matching object found
+                        //console.warn(err.message);  // returns error if no matching object found
                     }else{
-                        console.dir(object);
+                        //console.dir(object);
                         db.collection('planifs_lines', function (err, collection) {
                             for (var i = 0; i < lines.length; i++) {
                                 lines[i].planif = new require('mongodb').ObjectID(pid);
@@ -88,7 +88,7 @@ exports.add = function (req, res) {
                                 if (lines[i]._id)
                                 {
                                     console.log(lines[i]._id + "/" + pid);
-                                    collection.update({_id:new require('mongodb').ObjectID(lines[i]._id)},lines[i], function (err, saved) { });
+                                    collection.update({_id:new require('mongodb').ObjectID(lines[i]._id)},lines[i], function (err, object) { });
                                 }
                                 else {
                                     delete lines[i].id;
