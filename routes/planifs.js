@@ -70,7 +70,6 @@ exports.add = function (req, res) {
         }
         else {
             delete req.body.planif._id;
-            
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.planif, // options
@@ -106,7 +105,6 @@ exports.add = function (req, res) {
                             }
                             if (linesToRem)
                             {
-                                
                                 if(linesToRem.length > 0)
                                 {
                                     for (var i = 0; i < linesToRem.length; i++) {
