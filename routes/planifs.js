@@ -54,20 +54,12 @@ exports.add = function (req, res) {
                 else {
                     pid = saved.insertedIds[0];
                     db.collection('planifs_lines', function (err, collection) {
-                        console.log(lines);
                         for (var i = 0; i < lines.length; i++) {
                             lines[i].planif = new require('mongodb').ObjectID(pid);
                             lines[i].dateRec = new Date(lines[i].dateRec);
                             lines[i].produit = req.body.planif.produit;
                             lines[i].producteur = req.body.planif.producteur;
-                            if (lines[i]._id)
-                            {
-                                collection.update({_id:new require('mongodb').ObjectID(lines[i]._id)},lines[i], function (err, saved) { });
-                            }
-                            else {
-                                delete lines[i].id;
-                                collection.insert(lines[i], function (err, saved) { });
-                            }
+                            collection.insert(lines[i], function (err, saved) { });
                         }
                     });
                 }
@@ -78,8 +70,22 @@ exports.add = function (req, res) {
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.planif);
-                //res.send(true);
-                //TOTO SUPPR ET RECREE PLANIF LINES
+            db.collection('planifs_lines', function (err, collection) {
+                for (var i = 0; i < lines.length; i++) {
+                    lines[i].planif = new require('mongodb').ObjectID(pid);
+                    lines[i].dateRec = new Date(lines[i].dateRec);
+                    lines[i].produit = req.body.planif.produit;
+                    lines[i].producteur = req.body.planif.producteur;
+                    if (lines[i]._id)
+                    {
+                        collection.update({_id:new require('mongodb').ObjectID(lines[i]._id)},lines[i], function (err, saved) { });
+                    }
+                    else {
+                        delete lines[i].id;
+                        collection.insert(lines[i], function (err, saved) { });
+                    }
+                }
+            });
         }
     });
     
