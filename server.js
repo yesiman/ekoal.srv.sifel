@@ -12,6 +12,7 @@ var express = require('express'),
     users = require('./routes/users'),
     planifs = require('./routes/planifs'),
     stats = require('./routes/stats'),
+    rules = require('./routes/rules'),
     mailing = require('./routes/mailing'),
     messaging = require('./routes/messaging'),
     bodyParser = require('body-parser'),
@@ -107,6 +108,12 @@ app.get('/planifs/get/:id', cors(), bodyParser.json(), planifs.get);
 app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
 app.get('/planifs/getAll/:idp/:nbr', cors(), bodyParser.json(), planifs.getAll);
 app.delete('/planifs/delete/:id', cors(), bodyParser.json(), planifs.delete);
+//RULES
+app.get('/rules/get/:id', cors(), bodyParser.json(), rules.get);
+app.post('/rules/add/:id', cors(), bodyParser.json(), rules.add);
+app.get('/rules/getAllByProduit/:id', cors(), bodyParser.json(), rules.getAllByProduit);
+app.delete('/rules/delete/:id', cors(), bodyParser.json(), rules.delete);
+//END RULES
 //STATS
 app.post('/stats/prevsByDay/', cors(), bodyParser.json(), stats.prevsByDay);
 

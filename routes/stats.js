@@ -56,9 +56,6 @@ exports.prevsByDay = function (req, res) {
                     query["$match"]["producteur"] = { "$in": producteurs };
                 }
                 query["$match"]["dateRec"] = { $gte: new Date(req.body.dateFrom),$lt: new Date(req.body.dateTo)};
-
-                console.log("query",query);
-
                 collection.aggregate(
                     query,
                     { $group : {
