@@ -9,12 +9,9 @@ exports.getAllByProduit = function (req, res) {
     var ret = new Object();
     //TODO ADD WORKFLOW RULES
     db.collection('products_rules', function (err, collection) {
-        collection.count({produit:new require('mongodb').ObjectID(req.params.id)}, function (err, count) {
-            ret.count = count;
-            collection.find().toArray(function (err, items) {
-                ret.items = items;
-                res.send(ret);
-            });
+        collection.find({produit:new require('mongodb').ObjectID(req.params.id)}).toArray(function (err, items) {
+            ret.items = items;
+            res.send(ret);
         });
     });
 };
