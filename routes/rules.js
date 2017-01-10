@@ -28,7 +28,7 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.rule.dateModif = new Date();
-    req.body.planif.produit = new require('mongodb').ObjectID(req.body.planif.produit);
+    req.body.rule.produit = new require('mongodb').ObjectID(req.body.rule.produit);
     //var lines = req.body.planif.lines;
     //var linesToRem = req.body.planif.linesToRem;
     delete req.body.planif.lines;
