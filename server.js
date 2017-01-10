@@ -68,7 +68,7 @@ app.use(function(req, res, next) {
                     message: 'Bad token or expired.' 
                 });
             } else {
-                res.aut = {tk:"ok"};
+                res.auth = {tk:"ok"};
                 req.decoded = decoded;    
                 next();
             }
