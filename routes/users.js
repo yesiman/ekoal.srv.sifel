@@ -21,7 +21,7 @@ exports.refreshToken = function (req, res) {
     var newToken = jwt.sign(user, process.env.JWT, {
         expiresIn: 1440
     });
-    res.send(newToken);
+    res.send({tk:newToken});
 };
 exports.get = function (req, res) {
     db.collection('users', function (err, collection) {
@@ -70,7 +70,6 @@ exports.getParcelles = function (req, res) {
     });
 };
 exports.getAll = function (req, res) {
-    console.log("res.auth",res.auth);
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
