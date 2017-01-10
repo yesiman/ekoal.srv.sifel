@@ -70,6 +70,7 @@ exports.getParcelles = function (req, res) {
     });
 };
 exports.getAll = function (req, res) {
+    console.log("res.auth",res.auth);
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();

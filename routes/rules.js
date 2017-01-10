@@ -31,7 +31,7 @@ exports.add = function (req, res) {
     console.log("req.body.rule.produit",req.body.rule.produit);
     req.body.rule.produit = new require('mongodb').ObjectID(req.body.rule.produit);
     //var lines = req.body.planif.lines;
-    //var linesToRem = req.body.planif.linesToRem;
+    var linesToRem = req.body.rule.linesToRem;
     db.collection('products_rules', function (err, collection) {
         if (pid == "-1")
         {
