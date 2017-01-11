@@ -165,33 +165,45 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
 
+    var collect = "";
     var usersFilter = {};
     switch (req.decoded.type)
     {
         case  1:   //VOIT TOUT CE QUI EST PUBLIC
             producteurs = [];
+            usersFilter = { public: true };
+            collect = "products";
             break;
         case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
             usersFilter = { orga: new require('mongodb').ObjectID(req.decoded.orga), type: { $eq: 4 } };
+            collect = "users";
             break;
         case 3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
         case 4:
             usersFilter = { _id: new require('mongodb').ObjectID(req.decoded._id) };
+            collect = "users";
     }
-    db.collection('users', function (err, collection) {
+    db.collection(collect, function (err, collection) {
         collection.find(usersFilter).toArray(function (err, items) {
             db.collection('planifs', function (err, collection) {
                 var producteurs = [];
+                var produits = [];
+                var finalFilter;
                 switch (req.decoded.type)
                 {
                     case  1:   //VOIT TOUT CE QUI EST PUBLIC
-                        producteurs = [];
+                        for(var i1=0;i1<items.length;i1++)
+                        {
+                            produits.push(new require('mongodb').ObjectID(items[i1]._id));
+                        }
+                        finalFilter = { produit:{$in:produits} };
                         break;
                     case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
                         for(var i1=0;i1<items.length;i1++)
                         {
                             producteurs.push(new require('mongodb').ObjectID(items[i1]._id));
                         }
+                        finalFilter = { producteur:{$in:producteurs} };
                         break;
                     case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
                         for(var i1=0;i1<items.length;i1++)
@@ -201,13 +213,16 @@ exports.getAll = function (req, res) {
                                 producteurs.push(new require('mongodb').ObjectID(items[i1].producteurs[i]));
                             }
                         }
+                        finalFilter = { producteur:{$in:producteurs} };
                         break;
                     case 4:  //FILTRE SUR SES DONNEES
                         producteurs.push(new require('mongodb').ObjectID(req.decoded._id));
+                        finalFilter = { producteur:{$in:producteurs} };
                 }
-                collection.count({ producteur:{$in:producteurs} }, function (err, count) {
+                
+                collection.count(finalFilter, function (err, count) {
                     ret.count = count;
-                    collection.find({ producteur:{$in:producteurs} }).skip(skip).limit(limit).toArray(function (err, items) {
+                    collection.find(finalFilter).skip(skip).limit(limit).toArray(function (err, items) {
                         var produitsIds = [];
                         var producteursIds = [];
                         var planifs = [];
