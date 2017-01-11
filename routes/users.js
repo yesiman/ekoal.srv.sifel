@@ -4,8 +4,9 @@ exports.login = function (req, res) {
             if (item)
             {
                 var token = jwt.sign(item, process.env.JWT, {
-                    expiresIn: 1440
+                    expiresIn: 60 
                 });
+                //1440
                 res.send({success:true,_id:item._id, name:item.name, surn:item.surn, type:item.type ,orga:item.orga, token:token}); 
             }
             else {
@@ -19,7 +20,7 @@ exports.refreshToken = function (req, res) {
     delete user.iat;
     delete user.exp;
     var newToken = jwt.sign(user, process.env.JWT, {
-        expiresIn: 1440
+        expiresIn: 60
     });
     res.send({tk:newToken});
 };
