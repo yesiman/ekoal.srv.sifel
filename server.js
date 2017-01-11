@@ -82,7 +82,7 @@ app.use(function(req, res, next) {
 });
 //END TOKEN VALIDATION
 //USERS
-app.get('/users/refreshToken', cors(), bodyParser.json(), users.login);
+app.get('/users/refreshToken', cors(), bodyParser.json(), users.refreshToken);
 app.get('/users/get/:id', cors(), bodyParser.json(), users.get);
 app.get('/users/getParcelles/:id', cors(), bodyParser.json(), users.getParcelles);
 app.get('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
