@@ -24,6 +24,7 @@ exports.getAllByLib = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
     var filters;
+
     if (req.decoded.type === 1)
     {
         filters = { lib: { '$regex': req.params.req, $options: 'i' }, public:true};
@@ -32,9 +33,9 @@ exports.getAllByLib = function (req, res) {
         filters = { lib: { '$regex': req.params.req, $options: 'i' }};
     }
     db.collection('products', function (err, collection) {
-        collection.count({ lib: { '$regex': req.params.req, $options: 'i' } }, function (err, count) {
+        collection.count(filters, function (err, count) {
             ret.count = count;
-            collection.find({ lib: { '$regex': req.params.req, $options: 'i' } }).skip(skip).limit(limit).toArray(function (err, items) {
+            collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
                 res.send(ret);
             });
