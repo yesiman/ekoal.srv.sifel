@@ -165,65 +165,105 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
 
-    //ADD LIKE STATS WORKFLOW
-
-    db.collection('planifs', function (err, collection) {
-        collection.count({}, function (err, count) {
-            ret.count = count;
-            collection.find().skip(skip).limit(limit).toArray(function (err, items) {
-                var produitsIds = [];
-                var producteursIds = [];
-                var planifs = [];
-                var produits = [];
+    var usersFilter = {};
+    switch (req.decoded.type)
+    {
+        case  1:   //VOIT TOUT CE QUI EST PUBLIC
+            producteurs = [];
+            break;
+        case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
+            usersFilter = { orga: new require('mongodb').ObjectID(req.decoded.orga), type: { $eq: 4 } };
+            break;
+        case 3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
+        case 4:
+            usersFilter = { _id: new require('mongodb').ObjectID(req.decoded._id) };
+    }
+    db.collection('users', function (err, collection) {
+        collection.find(usersFilter).toArray(function (err, items) {
+            db.collection('planifs', function (err, collection) {
                 var producteurs = [];
-                planifs = items;
-                for(var i=0;i<items.length;i++)
+                switch (req.decoded.type)
                 {
-                    if (!(produitsIds.indexOf(new require('mongodb').ObjectID(items[i].produit)) > -1))
-                    {
-                        produitsIds.push(new require('mongodb').ObjectID(items[i].produit));
-                    }
-                    if (!(producteursIds.indexOf(new require('mongodb').ObjectID(items[i].producteur)) > -1))
-                    {
-                        producteursIds.push(new require('mongodb').ObjectID(items[i].producteur));
-                    }
+                    case  1:   //VOIT TOUT CE QUI EST PUBLIC
+                        producteurs = [];
+                        break;
+                    case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
+                        for(var i1=0;i1<items.length;i1++)
+                        {
+                            producteurs.push(new require('mongodb').ObjectID(items[i1]._id));
+                        }
+                        break;
+                    case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
+                        for(var i1=0;i1<items.length;i1++)
+                        {
+                            for(var i=0;i<items[i1].producteurs.length;i++)
+                            {
+                                producteurs.push(new require('mongodb').ObjectID(items[i1].producteurs[i]));
+                            }
+                        }
+                        break;
+                    case 4:  //FILTRE SUR SES DONNEES
+                        producteurs.push(new require('mongodb').ObjectID(req.decoded._id));
                 }
-                //GET PRODUITS
-                db.collection('products', function (err, collection) {
-                    collection.find({_id: {$in:produitsIds}}).toArray(function (err, items) {
-                        produits = items;
-                        //GET PRODUCTEURS
-                        db.collection('users', function (err, collection) {
-                            collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
-                                producteurs = items;
-                                for(var i=0;i<planifs.length;i++)
-                                {
-                                    for(var ip1=0;ip1<produits.length;ip1++)
-                                    {
-                                        if (produits[ip1]._id.toString() == planifs[i].produit.toString())
+                collection.count({ producteur:{$in:producteurs} }, function (err, count) {
+                    ret.count = count;
+                    collection.find({ producteur:{$in:producteurs} }).skip(skip).limit(limit).toArray(function (err, items) {
+                        var produitsIds = [];
+                        var producteursIds = [];
+                        var planifs = [];
+                        var produits = [];
+                        var producteurs = [];
+                        planifs = items;
+                        for(var i=0;i<items.length;i++)
+                        {
+                            if (!(produitsIds.indexOf(new require('mongodb').ObjectID(items[i].produit)) > -1))
+                            {
+                                produitsIds.push(new require('mongodb').ObjectID(items[i].produit));
+                            }
+                            if (!(producteursIds.indexOf(new require('mongodb').ObjectID(items[i].producteur)) > -1))
+                            {
+                                producteursIds.push(new require('mongodb').ObjectID(items[i].producteur));
+                            }
+                        }
+                        //GET PRODUITS
+                        db.collection('products', function (err, collection) {
+                            collection.find({_id: {$in:produitsIds}}).toArray(function (err, items) {
+                                produits = items;
+                                //GET PRODUCTEURS
+                                db.collection('users', function (err, collection) {
+                                    collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
+                                        producteurs = items;
+                                        for(var i=0;i<planifs.length;i++)
                                         {
-                                            planifs[i].produitLib = produits[ip1].lib;
-                                            break;
+                                            for(var ip1=0;ip1<produits.length;ip1++)
+                                            {
+                                                if (produits[ip1]._id.toString() == planifs[i].produit.toString())
+                                                {
+                                                    planifs[i].produitLib = produits[ip1].lib;
+                                                    break;
+                                                }
+                                            }
+                                            for(var ip2=0;ip2<producteurs.length;ip2++)
+                                            {
+                                                if (producteurs[ip2]._id.toString() == planifs[i].producteur.toString())
+                                                {
+                                                    planifs[i].producteurLib = producteurs[ip2].name + " " + producteurs[ip2].surn;
+                                                    break;
+                                                }
+                                            }
                                         }
-                                    }
-                                    for(var ip2=0;ip2<producteurs.length;ip2++)
-                                    {
-                                        if (producteurs[ip2]._id.toString() == planifs[i].producteur.toString())
-                                        {
-                                            planifs[i].producteurLib = producteurs[ip2].name + " " + producteurs[ip2].surn;
-                                            break;
-                                        }
-                                    }
-                                }
-                                ret.items = planifs;
-                                res.send(ret);
+                                        ret.items = planifs;
+                                        res.send(ret);
+                                    });
+                                });        
                             });
-                        });        
+                        });
+                        //ASSIGN
+                        //SEND
                     });
                 });
-                //ASSIGN
-                //SEND
             });
-        });
+        });  
     });
+    
 };
