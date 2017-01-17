@@ -73,20 +73,12 @@ exports.prevsByDay = function (req, res) {
                         group["$group"]["_id"]["month"] = { $month: "$dateRec" };
                         break;
                 }
-                group["$group"]["_id"]["produit"] = { $dayOfMonth: "$produit" };
+                group["$group"]["_id"]["produit"] = "$produit";
                 group["$group"]["count"] = { $sum: "$qte" };
                 console.log(group);
                 collection.aggregate(
                     query,
-                    { $group : {
-                        _id: {
-                            year: { $year: "$dateRec" },
-                            month: { $month: "$dateRec" },
-                            day: { $dayOfMonth: "$dateRec" },
-                            produit: "$produit"
-                        },
-                        count: { $sum: "$qte" }
-                    }},
+                    group,
                     { $sort : {  
                         "_id.year": 1, 
                         "_id.month": 1, 
