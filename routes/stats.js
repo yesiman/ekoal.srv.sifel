@@ -63,17 +63,6 @@ exports.prevsByDay = function (req, res) {
                 group["$group"]["_id"] = {};
                 switch (req.body.dateFormat)
                 {
-                    case "d":
-                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
-                        group["$group"]["_id"]["month"] = { $month: "$dateRec" };
-                        group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateRec" };
-                        sort["$sort"] = {  
-                            "_id.year": 1, 
-                            "_id.month": 1, 
-                            "_id.day": 1,
-                            "_id.produit" : 1 
-                        };
-                        break;
                     case "w":
                         group["$group"]["_id"]["year"] = { $year: "$dateRec" };
                         group["$group"]["_id"]["week"] = { $week: "$dateRec" };
@@ -92,6 +81,18 @@ exports.prevsByDay = function (req, res) {
                             "_id.produit" : 1 
                         };
                         break;
+                    case "d":
+                    default:
+                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
+                        group["$group"]["_id"]["month"] = { $month: "$dateRec" };
+                        group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateRec" };
+                        sort["$sort"] = {  
+                            "_id.year": 1, 
+                            "_id.month": 1, 
+                            "_id.day": 1,
+                            "_id.produit" : 1 
+                        };
+                        break;
                 }
                 group["$group"]["_id"]["produit"] = "$produit";
                 group["$group"]["count"] = { $sum: "$qte" };
@@ -100,9 +101,6 @@ exports.prevsByDay = function (req, res) {
                     group,
                     sort,
                     function(err, summary) {
-                        console.log("err",err);
-                        console.log("summary",summary);
-                        
                         res.send({items:summary });
                     }
                 );
