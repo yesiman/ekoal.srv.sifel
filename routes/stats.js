@@ -57,7 +57,9 @@ exports.prevsByDay = function (req, res) {
                 }
                 query["$match"]["dateRec"] = { $gte: new Date(req.body.dateFrom),$lt: new Date(req.body.dateTo)};
                 var group = {};
+                var sort = {};
                 group["$group"] = {};
+                
                 group["$group"]["_id"] = {};
                 switch (req.body.dateFormat)
                 {
@@ -65,6 +67,12 @@ exports.prevsByDay = function (req, res) {
                         group["$group"]["_id"]["year"] = { $year: "$dateRec" };
                         group["$group"]["_id"]["month"] = { $month: "$dateRec" };
                         group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateRec" };
+                        sort["$sort"] = {  
+                            "_id.year": 1, 
+                            "_id.month": 1, 
+                            "_id.day": 1,
+                            "_id.produit" : 1 
+                        };
                         break;
                     case "s":
                         break;
@@ -78,12 +86,7 @@ exports.prevsByDay = function (req, res) {
                 collection.aggregate(
                     query,
                     group,
-                    { $sort : {  
-                        "_id.year": 1, 
-                        "_id.month": 1, 
-                        "_id.day": 1,
-                        "_id.produit" : 1 }
-                    },
+                    sort,
                     function(err, summary) {
                         console.log("err",err);
                         console.log("summary",summary);
