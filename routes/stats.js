@@ -56,17 +56,28 @@ exports.prevsByDay = function (req, res) {
                     query["$match"]["producteur"] = { "$in": producteurs };
                 }
                 query["$match"]["dateRec"] = { $gte: new Date(req.body.dateFrom),$lt: new Date(req.body.dateTo)};
+                var group = {};
+                group["$group"] = {};
+                group["$group"]["_id"] = {};
+                switch (req.body.dateFormat)
+                {
+                    case "d":
+                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
+                        group["$group"]["_id"]["month"] = { $month: "$dateRec" };
+                        group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateRec" };
+                        break;
+                    case "s":
+                        break;
+                    case "m":
+                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
+                        group["$group"]["_id"]["month"] = { $month: "$dateRec" };
+                        break;
+                }
+                group["$group"]["_id"]["produit"] = { $dayOfMonth: "$produit" };
+                group["$group"]["count"] = { $sum: "$qte" };
                 collection.aggregate(
                     query,
-                    { $group : {
-                        _id: {
-                            year: { $year: "$dateRec" },
-                            month: { $month: "$dateRec" },
-                            day: { $dayOfMonth: "$dateRec" },
-                            produit: "$produit"
-                        },
-                        count: { $sum: "$qte" }
-                    }},
+                    group,
                     { $sort : {  
                         "_id.year": 1, 
                         "_id.month": 1, 
