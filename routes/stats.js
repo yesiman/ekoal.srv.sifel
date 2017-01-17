@@ -57,20 +57,14 @@ exports.prevsByDay = function (req, res) {
                 }
                 query["$match"]["dateRec"] = { $gte: new Date(req.body.dateFrom),$lt: new Date(req.body.dateTo)};
                 var group = {};
-                var sort = {};
                 group["$group"] = {};
                 group["$group"]["_id"] = {};
-                sort["$sort"] = {};
                 switch (req.body.dateFormat)
                 {
                     case "d":
                         group["$group"]["_id"]["year"] = { $year: "$dateRec" };
                         group["$group"]["_id"]["month"] = { $month: "$dateRec" };
                         group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateRec" };
-                        sort["$sort"]["_id.year"] = 1;
-                        sort["$sort"]["_id.month"] = 1;
-                        sort["$sort"]["_id.day"] = 1;
-                        sort["$sort"]["_id.produit"] = 1;
                         break;
                     case "s":
                         break;
@@ -81,14 +75,19 @@ exports.prevsByDay = function (req, res) {
                 }
                 group["$group"]["_id"]["produit"] = "$produit";
                 group["$group"]["count"] = { $sum: "$qte" };
-                console.log(group);
-                var sort = {};
-                
                 collection.aggregate(
                     query,
                     group,
-                    sort,
+                    { $sort : {  
+                        "_id.year": 1, 
+                        "_id.month": 1, 
+                        "_id.day": 1,
+                        "_id.produit" : 1 }
+                    },
                     function(err, summary) {
+                        console.log("err",err);
+                        console.log("summary",summary);
+                        
                         res.send({items:summary });
                     }
                 );
