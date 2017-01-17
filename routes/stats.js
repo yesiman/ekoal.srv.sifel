@@ -75,10 +75,22 @@ exports.prevsByDay = function (req, res) {
                         };
                         break;
                     case "s":
+                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
+                        group["$group"]["_id"]["week"] = { $week: "$dateRec" };
+                        sort["$sort"] = {  
+                            "_id.year": 1, 
+                            "_id.week": 1, 
+                            "_id.produit" : 1 
+                        };
                         break;
                     case "m":
                         group["$group"]["_id"]["year"] = { $year: "$dateRec" };
                         group["$group"]["_id"]["month"] = { $month: "$dateRec" };
+                        sort["$sort"] = {  
+                            "_id.year": 1, 
+                            "_id.month": 1, 
+                            "_id.produit" : 1 
+                        };
                         break;
                 }
                 group["$group"]["_id"]["produit"] = "$produit";
