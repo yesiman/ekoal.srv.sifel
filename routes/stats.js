@@ -75,6 +75,7 @@ exports.prevsByDay = function (req, res) {
                 }
                 group["$group"]["_id"]["produit"] = { $dayOfMonth: "$produit" };
                 group["$group"]["count"] = { $sum: "$qte" };
+                console.log(group);
                 collection.aggregate(
                     query,
                     { $group : {
