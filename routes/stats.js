@@ -74,7 +74,7 @@ exports.prevsByDay = function (req, res) {
                             "_id.produit" : 1 
                         };
                         break;
-                    case "s":
+                    case "w":
                         group["$group"]["_id"]["year"] = { $year: "$dateRec" };
                         group["$group"]["_id"]["week"] = { $week: "$dateRec" };
                         sort["$sort"] = {  
