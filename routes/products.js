@@ -54,6 +54,7 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     var custom = req.body.product.custom;
+    console.log(req.body.product.custom);
     delete req.body.product.custom;
     req.body.product.dateModif = new Date();
     db.collection('products', function (err, collection) {
