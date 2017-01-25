@@ -54,7 +54,7 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     var custom = req.body.product.custom;
-    console.log(req.body.product.custom);
+    custom.user = new require('mongodb').ObjectID(req.decoded._id);
     delete req.body.product.custom;
     req.body.product.dateModif = new Date();
     db.collection('products', function (err, collection) {
@@ -66,7 +66,6 @@ exports.add = function (req, res) {
                 }
                 else {
                     custom.produit = new require('mongodb').ObjectID(saved.insertedIds[0]);
-                    custom.user = new require('mongodb').ObjectID(req.decoded._id);
                     db.collection('products_orgas_specs', function (err, collection) {
                         collection.insert( custom , function (err, saved) {
                             if (err || !saved) {
@@ -81,10 +80,14 @@ exports.add = function (req, res) {
             });
         }
         else {
+            custom.produit = new require('mongodb').ObjectID(req.body.product._id);
             delete req.body.product._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.product);
+            collection.update(
+                { produit: new require('mongodb').ObjectID(pid),user:new require('mongodb').ObjectID(req.decoded._id) },
+                custom);
                 res.send(true);
         }      
     });
