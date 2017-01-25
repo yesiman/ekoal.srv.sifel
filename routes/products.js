@@ -49,9 +49,12 @@ exports.delete = function (req, res) {
             res.send(result);
         });
     });
+    //Supprimer données liées autre tables si besoin
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
+    var custom = req.body.product.custom;
+    delete req.body.product.custom;
     req.body.product.dateModif = new Date();
     db.collection('products', function (err, collection) {
         if (pid == "-1")
@@ -61,7 +64,18 @@ exports.add = function (req, res) {
                     res.send(false)
                 }
                 else {
-                    res.send(true);
+                    custom.produit = new require('mongodb').ObjectID(saved.insertedIds[0]);
+                    custom.user = new require('mongodb').ObjectID(req.decoded._id);
+                    db.collection('products_orgas_specs', function (err, collection) {
+                        collection.insert( custom , function (err, saved) {
+                            if (err || !saved) {
+                                res.send(false)
+                            }
+                            else {
+                                res.send(true);
+                            }
+                        });
+                    });
                 }
             });
         }
