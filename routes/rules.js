@@ -28,10 +28,10 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.rule.dateModif = new Date();
-    console.log("req.body.rule.produit",req.body.rule.produit);
+    req.body.rule.user = new require('mongodb').ObjectID(req.decoded._id);
     req.body.rule.produit = new require('mongodb').ObjectID(req.body.rule.produit);
     //var lines = req.body.planif.lines;
-    var linesToRem = req.body.rule.linesToRem;
+    //var linesToRem = req.body.rule.linesToRem;
     db.collection('products_rules', function (err, collection) {
         if (pid == "-1")
         {
