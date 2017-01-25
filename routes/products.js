@@ -98,9 +98,20 @@ exports.add = function (req, res) {
                 req.body.product);
                 if (custom)
                 {
-                    collection.update(
-                        { produit: new require('mongodb').ObjectID(pid),user:new require('mongodb').ObjectID(req.decoded._id) },
-                        custom);
+                    db.collection('products_orgas_specs', function (err, collection) {
+                        if (custom._id)
+                        {
+                            var cid = custom._id;
+                            delete custom._id;
+                            collection.update(
+                                { _id: new require('mongodb').ObjectID(cid) },
+                                custom);
+                        }
+                        else{
+                            collection.insert( custom , function (err, saved) {
+                            });
+                        }
+                    });
                 }
                 res.send(true);
         }      
