@@ -1,6 +1,14 @@
 exports.get = function (req, res) {
+    var res = {};
     db.collection('products', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
+            res = item;
+            db.collection('products_orgas_specs', function (err, collection) {
+                collection.findOne({ user: new require('mongodb').ObjectID(req.decoded._id),produit:new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
+                    res.custom = item;
+                    res.send(item);
+                })
+            });
             res.send(item);
         })
     });
