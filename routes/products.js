@@ -9,7 +9,6 @@ exports.get = function (req, res) {
                     res.send(ret);
                 })
             });
-            res.send(item);
         })
     });
 };
