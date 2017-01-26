@@ -56,8 +56,8 @@ exports.getAllByLib = function (req, res) {
                             console.log("ii",ii);
                             for (var i = 0;i < items.length;i++)
                             {
-                                console.log(new require('mongodb').ObjectID(items[i].produit),new require('mongodb').ObjectID(ret.items[ii]._id));
-                                if (new require('mongodb').ObjectID(items[i].produit) == new require('mongodb').ObjectID(ret.items[ii]._id))
+                                console.log(items[i].produit.toString(),ret.items[ii]._id.toString());
+                                if (items[i].produit.toString() == ret.items[ii]._id.toString())
                                 {
                                     console.log("FOUND",items[i]);
                                     ret.items[ii].customs = items[i];
