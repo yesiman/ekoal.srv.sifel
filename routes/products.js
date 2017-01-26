@@ -44,10 +44,12 @@ exports.getAllByLib = function (req, res) {
             ret.count = count;
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
+                console.log("items",items);
                 var prods = [];
                 for (var ip = 0;ip < items.length;ip++)
                 {
                     prods.push(new require('mongodb').ObjectID(items[ip]._id));
+                    console.log("items[ip]._id",items[ip]._id);
                 }
                 console.log("jkljljl");
                 console.log("prods",prods);
