@@ -56,6 +56,7 @@ exports.getAllByLib = function (req, res) {
                             //console.log("prods",element);
                             for (var i = 0;i < items.length;i++)
                             {
+                                console.log(items[i].produit +"vs"+ element._id);
                                 if (items[i].produit === element._id)
                                 {
                                     element.customs = items[i];
