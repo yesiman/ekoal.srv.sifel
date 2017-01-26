@@ -55,7 +55,6 @@ exports.getAllByLib = function (req, res) {
                         res.send(ret);
                     });
                 });
-                res.send(ret);
             });
         });
     });
