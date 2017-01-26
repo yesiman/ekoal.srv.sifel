@@ -52,8 +52,13 @@ exports.getAllByLib = function (req, res) {
                 console.log(prods);
                 db.collection('products_orgas_specs', function (err, collection) {
                     collection.find({produit: {$in:prods}, user: new require('mongodb').ObjectID(req.decoded._id)}).skip(skip).limit(limit).toArray(function (err, items) {
-                        ret.objectifs = items;
-                        console.log(items);
+                        items.forEach(value)
+                        {
+                            console.log("value",value);
+                        }
+                        //ret.customs = items;
+                        //console.log(items);
+                        console.log("ret",ret);
                         res.send(ret);
                     });
                 });
