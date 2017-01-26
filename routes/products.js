@@ -49,6 +49,7 @@ exports.getAllByLib = function (req, res) {
                 {
                     prods.push(new require('mongodb').ObjectID(items[ip]._id));
                 }
+                console.log("jkljljl");
                 console.log("prods",prods);
                 db.collection('products_orgas_specs', function (err, collection) {
                     collection.find({produit: {$in:prods}, user: new require('mongodb').ObjectID(req.decoded._id)}).skip(skip).limit(limit).toArray(function (err, items) {
