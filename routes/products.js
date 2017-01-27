@@ -53,13 +53,10 @@ exports.getAllByLib = function (req, res) {
                     collection.find({produit: {$in:prods}, user: new require('mongodb').ObjectID(req.decoded._id)}).skip(skip).limit(limit).toArray(function (err, items) {
                         for (var ii = 0;ii < ret.items.length;ii++)
                         {
-                            console.log("ii",ii);
                             for (var i = 0;i < items.length;i++)
                             {
-                                console.log(items[i].produit.toString(),ret.items[ii]._id.toString());
                                 if (items[i].produit.toString() == ret.items[ii]._id.toString())
                                 {
-                                    console.log("FOUND",items[i]);
                                     ret.items[ii].customs = items[i];
                                 }
                             }
