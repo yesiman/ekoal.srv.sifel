@@ -118,7 +118,7 @@ exports.prevsByDay = function (req, res) {
                         }
                         db.collection('users', function (err, collection) {
                             
-                            collection.find({ producteur: { $in: producteurs }}).toArray(function (err, items) {
+                            collection.find({ producteur: { "$in": producteurs }}).toArray(function (err, items) {
                                 console.log(err);
                                 console.log(items);
                                 
