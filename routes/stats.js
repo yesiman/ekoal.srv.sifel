@@ -104,19 +104,20 @@ exports.prevsByDay = function (req, res) {
                     function(err, summary) {
                         //GET PRODUCTEURS
                         var producteurs = [];
-                        db.collection('users', function (err, collection) {
-                            for (var isum = 0;isum < summary.length;isum++)
+                        for (var isum = 0;isum < summary.length;isum++)
+                        {
+                            var found = false;
+                            for (var i = 0;i < producteurs.length;i++)
                             {
-                                var found = false;
-                                for (var i = 0;i < producteurs.length;i++)
+                                if (producteurs[i].toString() === summary[isum]._id.producteur.toString())
                                 {
-                                    if (producteurs[i].toString() === summary[isum]._id.producteur.toString())
-                                    {
-                                        found = true;
-                                    }
+                                    found = true;
                                 }
-                                if (!found) { producteurs.push(new require('mongodb').ObjectID(summary[isum]._id.producteur.toString())); }
                             }
+                            if (!found) { producteurs.push(new require('mongodb').ObjectID(summary[isum]._id.producteur.toString())); }
+                        }
+                        db.collection('users', function (err, collection) {
+                            
                             collection.find({ producteur: { $in: producteurs }}).toArray(function (err, items) {
                                 console.log(err);
                                 console.log(items);
