@@ -110,7 +110,7 @@ exports.prevsByDay = function (req, res) {
                                 var found = false;
                                 for (var i = 0;i < producteurs.length;i++)
                                 {
-                                    if (new require('mongodb').ObjectID(producteurs[i]) === new require('mongodb').ObjectID(summary[isum]._id.producteur))
+                                    if (producteurs[i].toString() === summary[isum]._id.producteur.toString())
                                     {
                                         found = true;
                                     }
