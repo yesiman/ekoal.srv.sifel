@@ -95,6 +95,7 @@ exports.prevsByDay = function (req, res) {
                         break;
                 }
                 group["$group"]["_id"]["produit"] = "$produit";
+                group["$group"]["_id"]["producteur"] = "$producteur";
                 group["$group"]["count"] = { $sum: "$qte" };
                 collection.aggregate(
                     query,
