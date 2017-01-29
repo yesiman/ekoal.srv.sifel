@@ -117,8 +117,7 @@ exports.prevsByDay = function (req, res) {
                                 }
                                 if (!found) { producteurs.push(new require('mongodb').ObjectID(summary[isum]._id.producteur.toString())); }
                             }
-                            var filters = { producteur: { $in: producteurs } };
-                            collection.find(filters).toArray(function (err, items) {
+                            collection.find({ producteur: { $in: producteurs }}).toArray(function (err, items) {
                                 console.log(err);
                                 console.log(items);
                                 
