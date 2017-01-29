@@ -114,14 +114,11 @@ exports.prevsByDay = function (req, res) {
                                     found = true;
                                 }
                             }
-                            if (!found) { producteurs.push(new require('mongodb').ObjectID(summary[isum]._id.producteur.toString())); }
+                            if (!found) { producteurs.push(new require('mongodb').ObjectID(summary[isum]._id.producteur)); }
                         }
                         db.collection('users', function (err, collection) {
                             
-                            collection.find({ producteur: { "$in": producteurs }}).toArray(function (err, items) {
-                                console.log(err);
-                                console.log(items);
-                                
+                            collection.find({ _id: { $in: producteurs }}).toArray(function (err, items) {
                                 res.send({items:summary,producteurs:items });
                             });
                         });   
