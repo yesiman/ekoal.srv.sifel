@@ -102,7 +102,26 @@ exports.prevsByDay = function (req, res) {
                     group,
                     sort,
                     function(err, summary) {
-                        res.send({items:summary });
+                        //GET PRODUCTEURS
+                        var producteurs = [];
+                        db.collection('users', function (err, collection) {
+                            for (var isum = 0;isum < summary.length;isum++)
+                            {
+                                var found = false;
+                                for (var i = 0;i < producteurs.length;i++)
+                                {
+                                    if (new require('mongodb').ObjectID(producteurs[i]) === new require('mongodb').ObjectID(summary[isum]._id.producteur))
+                                    {
+                                        found = true;
+                                    }
+                                }
+                                if (!found) { producteurs.push(new require('mongodb').ObjectID(summary[isum]._id.producteur)); }
+                            }
+                            var filters = { producteur: { $in: producteurs } };
+                            collection.find(filters).toArray(function (err, items) {
+                                res.send({items:summary,producteurs:items });
+                            });
+                        });   
                     }
                 );
             });  
