@@ -95,7 +95,6 @@ exports.prevsByDay = function (req, res) {
                         break;
                 }
                 group["$group"]["_id"]["produit"] = "$produit";
-                group["$group"]["_id"]["producteur"] = "$producteur";
                 group["$group"]["count"] = { $sum: "$qte" };
                 collection.aggregate(
                     query,
@@ -109,12 +108,12 @@ exports.prevsByDay = function (req, res) {
                             var found = false;
                             for (var i = 0;i < producteurs.length;i++)
                             {
-                                if (producteurs[i].toString() === summary[isum]._id.producteur.toString())
+                                if (producteurs[i].toString() === summary[isum].producteur.toString())
                                 {
                                     found = true;
                                 }
                             }
-                            if (!found) { producteurs.push(new require('mongodb').ObjectID(summary[isum]._id.producteur)); }
+                            if (!found) { producteurs.push(new require('mongodb').ObjectID(summary[isum].producteur)); }
                         }
                         db.collection('users', function (err, collection) {
                             
