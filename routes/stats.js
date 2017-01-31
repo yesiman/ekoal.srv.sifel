@@ -106,6 +106,7 @@ exports.prevsByDay = function (req, res) {
                         for (var isum = 0;isum < summary.length;isum++)
                         {
                             var found = false;
+                            console.log(summary[isum]);
                             for (var i = 0;i < producteurs.length;i++)
                             {
                                 if (producteurs[i].toString() === summary[isum].producteur.toString())
