@@ -105,42 +105,30 @@ exports.add = function (req, res) {
                         //console.warn(err.message);  // returns error if no matching object found
                     }else{
                         //console.dir(object);
-                        console.log(lines);
                         db.collection('planifs_lines', function (err, collection) {
-                            for (var i = 0; i < lines.length; i++) {
-                                lines[i].planif = new require('mongodb').ObjectID(pid);
-                                lines[i].dateRec = new Date(lines[i].dateRec);
-                                lines[i].produit = req.body.planif.produit;
-                                lines[i].producteur = req.body.planif.producteur;
-                                if (lines[i]._id)
-                                {
-                                    console.log("_id EXIST");
-                                    var lid = lines[i]._id;
-                                    delete lines[i]._id;
-                                    collection.update({_id:new require('mongodb').ObjectID(lid)},lines[i], function (err, object) { });
-                                }
-                                else {
-                                    if (lines[i].id)
-                                    {
-                                        console.log("_id NOT EXIST");
-                                        console.log("xxx",lines[i]);
+                            collection.remove({ planif: new require('mongodb').ObjectID(pid) },
+                                function (err, result) {
+                                    for (var i = 0; i < lines.length; i++) {
                                         delete lines[i].id;
+                                        lines[i].planif = new require('mongodb').ObjectID(pid);
+                                        lines[i].dateRec = new Date(lines[i].dateRec);
+                                        lines[i].produit = req.body.planif.produit;
+                                        lines[i].producteur = req.body.planif.producteur;
                                         collection.insert(lines[i], function (err, saved) { });
                                     }
-                                    
-                                }
-                            }
-                            console.log("linesToRem",linesToRem);
-                            if (linesToRem)
-                            {
-                                if(linesToRem.length > 0)
-                                {
-                                    for (var i = 0; i < linesToRem.length; i++) {
-                                        linesToRem[i] = new require('mongodb').ObjectID(linesToRem[i]);
+                                    if (linesToRem)
+                                    {
+                                        if(linesToRem.length > 0)
+                                        {
+                                            for (var i = 0; i < linesToRem.length; i++) {
+                                                linesToRem[i] = new require('mongodb').ObjectID(linesToRem[i]);
+                                            }
+                                            collection.remove({ _id : {$in:linesToRem}});
+                                        }
                                     }
-                                    collection.remove({ _id : {$in:linesToRem}});
                                 }
-                            }
+                            );
+                            
                             
                         });
                     }
