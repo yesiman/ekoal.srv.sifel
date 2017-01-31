@@ -6,27 +6,32 @@ exports.get = function (req, res) {
             db.collection('products', function (err, collection) {
                 collection.findOne({ _id: new require('mongodb').ObjectID(planif.produit) }, function (err, item) {
                     planif.produit = item;
-                    db.collection('users', function (err, collection) {
-                        collection.findOne({ _id: new require('mongodb').ObjectID(planif.producteur), type:4 }, function (err, item) {
-                            planif.producteur = item;
-                            db.collection('planifs_lines', function (err, collection) {
-                                collection.find({planif: new require('mongodb').ObjectID(planif._id)}).toArray(function (err, items) {
-                                    planif.lines = items;
-                                    if (planif.parcelle)
-                                    {
-                                        db.collection('parcelles', function (err, collection) {
-                                            collection.findOne({ _id: new require('mongodb').ObjectID(planif.parcelle)}, function (err, item) {
-                                                planif.parcelle = item;
+                    db.collection('products_orgas_specs', function (err, collection) {
+                        collection.findOne({ produit: new require('mongodb').ObjectID(planif.produit), user: new require('mongodb').ObjectID(req.decoded._id) }, function (err, item) {
+                            planif.produit.customs = item;
+                            db.collection('users', function (err, collection) {
+                                collection.findOne({ _id: new require('mongodb').ObjectID(planif.producteur), type:4 }, function (err, item) {
+                                    planif.producteur = item;
+                                    db.collection('planifs_lines', function (err, collection) {
+                                        collection.find({planif: new require('mongodb').ObjectID(planif._id)}).toArray(function (err, items) {
+                                            planif.lines = items;
+                                            if (planif.parcelle)
+                                            {
+                                                db.collection('parcelles', function (err, collection) {
+                                                    collection.findOne({ _id: new require('mongodb').ObjectID(planif.parcelle)}, function (err, item) {
+                                                        planif.parcelle = item;
+                                                        res.send(planif);
+                                                    });
+                                                }); 
+                                            }
+                                            else {
                                                 res.send(planif);
-                                            });
-                                        }); 
-                                    }
-                                    else {
-                                        res.send(planif);
-                                    }
-                                });
-                            });       
-                        })
+                                            }
+                                        });
+                                    });       
+                                })
+                            });
+                        });
                     });
                 })
             });
