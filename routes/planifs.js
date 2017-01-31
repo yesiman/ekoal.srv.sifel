@@ -52,12 +52,12 @@ exports.add = function (req, res) {
 
     console.log("startDate",startDate);
     console.log("surfacePercent",surfacePercent);
-    console.log("req.body.linesWeeks",req.body.linesWeeks);
+    console.log("req.body.linesWeeks",req.body.planif.linesWeeks);
     
     //PASSAGE TOUTES LIGNES EN A SUPPRIMER
-    for (var i = 0;i < req.body.linesWeeks.length;i++)
+    for (var i = 0;i < req.body.planif.linesWeeks.length;i++)
     { 
-        var valueQte = (req.body.linesWeeks[i].percent/100) * req.body.rendement; //PRODUCT DEFAULT RENDEMENT
+        var valueQte = (req.body.planif.linesWeeks[i].percent/100) * req.body.rendement; //PRODUCT DEFAULT RENDEMENT
         valueQte = valueQte / 7;
         for (var ir = 1;ir <= 7;ir++)
         {
