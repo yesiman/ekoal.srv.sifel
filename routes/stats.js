@@ -102,7 +102,7 @@ exports.prevsByDay = function (req, res) {
                     sort,
                     function(err, summary) {
                         //GET PRODUCTEURS
-                        var producteurs = [];
+                        /*var producteurs = [];
                         for (var isum = 0;isum < summary.length;isum++)
                         {
                             var found = false;
@@ -121,7 +121,8 @@ exports.prevsByDay = function (req, res) {
                             collection.find({ _id: { $in: producteurs }}).toArray(function (err, items) {
                                 res.send({items:summary,producteurs:items });
                             });
-                        });   
+                        });*/   
+                        res.send({items:summary,producteurs:[] });
                     }
                 );
             });  
