@@ -49,6 +49,11 @@ exports.add = function (req, res) {
     //GENERER PLANNING PAR JOUR
     var startDate = new Date(req.body.planif.dateRecStart);
     var surfacePercent = ((100/1)*req.body.planif.surface) / 100;
+
+    console.log("startDate",startDate);
+    console.log("surfacePercent",surfacePercent);
+    console.log("req.body.linesWeeks",req.body.linesWeeks);
+    
     //PASSAGE TOUTES LIGNES EN A SUPPRIMER
     for (var i = 0;i < req.body.linesWeeks.length;i++)
     { 
