@@ -50,12 +50,9 @@ exports.add = function (req, res) {
     var startDate = new Date(req.body.planif.dateRecStart);
     var surfacePercent = ((100/1)*req.body.planif.surface) / 100;
 
-    
-    
     //PASSAGE TOUTES LIGNES EN A SUPPRIMER
     for (var i = 0;i < req.body.planif.linesWeeks.length;i++)
     { 
-        console.log(req.body.planif.linesWeeks[i]);
         var valueQte = (req.body.planif.linesWeeks[i].percent/100) * req.body.planif.rendement; //PRODUCT DEFAULT RENDEMENT
         valueQte = valueQte / 7;
         for (var ir = 1;ir <= 7;ir++)
