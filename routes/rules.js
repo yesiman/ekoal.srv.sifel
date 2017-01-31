@@ -27,6 +27,7 @@ exports.delete = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
+    delete req.body.rule._id;
     req.body.rule.dateModif = new Date();
     req.body.rule.user = new require('mongodb').ObjectID(req.decoded._id);
     req.body.rule.produit = new require('mongodb').ObjectID(req.body.rule.produit);
@@ -45,7 +46,6 @@ exports.add = function (req, res) {
             });
         }
         else {
-            delete req.body.rule._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.rule);
