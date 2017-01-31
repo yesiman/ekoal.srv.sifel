@@ -42,10 +42,31 @@ exports.add = function (req, res) {
     {
         req.body.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
     }
-    var lines = req.body.planif.lines;
+    var lines = [];
     var linesToRem = req.body.planif.linesToRem;
-    delete req.body.planif.lines;
     delete req.body.planif.linesToRem;
+
+    //GENERER PLANNING PAR JOUR
+    var startDate = new Date(req.body.planif.dateRecStart);
+    var surfacePercent = ((100/1)*req.body.planif.surface) / 100;
+    //PASSAGE TOUTES LIGNES EN A SUPPRIMER
+    for (var i = 0;i < req.body.linesWeeks.length;i++)
+    { 
+        var valueQte = (req.body.linesWeeks[i].percent/100) * req.body.rendement; //PRODUCT DEFAULT RENDEMENT
+        valueQte = valueQte / 7;
+        for (var ir = 1;ir <= 7;ir++)
+        {
+            var d = new Date(startDate);
+            var oIt = { 
+                dateRec:d,
+                qte:valueQte*surfacePercent
+            }
+            lines.push(oIt);
+            startDate.setDate(d.getDate() + 1);
+        } 
+    }
+
+
     db.collection('planifs', function (err, collection) {
         if (pid == "-1")
         {

@@ -38,10 +38,10 @@ exports.add = function (req, res) {
         {
             collection.insert( req.body.rule , function (err, saved) {
                 if (err || !saved) {
-                    res.send(false)
+                    res.send({res:false})
                 }
                 else {
-                    res.send(true);
+                    res.send({res:true,nid:saved.insertedIds[0]});
                 }
             });
         }
