@@ -55,6 +55,9 @@ exports.prevsByDay = function (req, res) {
                 else {
                     query["$match"]["producteur"] = { "$in": producteurs };
                 }
+                console.log("new Date(req.body.dateFrom)",new Date(req.body.dateFrom));
+                console.log("new Date(req.body.dateTo)",new Date(req.body.dateTo));
+                
                 query["$match"]["dateRec"] = { $gte: new Date(req.body.dateFrom),$lt: new Date(req.body.dateTo)};
                 var group = {};
                 var sort = {};
