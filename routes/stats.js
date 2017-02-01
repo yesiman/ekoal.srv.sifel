@@ -58,7 +58,16 @@ exports.prevsByDay = function (req, res) {
                 console.log("new Date(req.body.dateFrom)",new Date(req.body.dateFrom));
                 console.log("new Date(req.body.dateTo)",new Date(req.body.dateTo));
                 
-                query["$match"]["dateRec"] = { $gte: new Date(req.body.dateFrom),$lt: new Date(req.body.dateTo)};
+                var beg = new Date(req.body.dateFrom);
+                beg.setHours(0);
+                beg.setMinutes(0);
+                beg.setSeconds(0);
+                var end = new Date(req.body.dateTo);
+                end.setHours(23);
+                end.setMinutes(59);
+                end.setSeconds(59);
+
+                query["$match"]["dateRec"] = { $gte: new Date(beg),$lt: new Date(end)};
                 var group = {};
                 var sort = {};
                 group["$group"] = {};
