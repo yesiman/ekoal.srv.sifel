@@ -71,7 +71,7 @@ exports.add = function (req, res) {
             startDate.setDate(d.getDate() + 1);
         } 
     }
-
+    delete req.body.planif.linesWeeks;
 
     db.collection('planifs', function (err, collection) {
         if (pid == "-1")
@@ -86,9 +86,8 @@ exports.add = function (req, res) {
                         for (var i = 0; i < lines.length; i++) {
                             delete lines[i].id;
                             lines[i].planif = new require('mongodb').ObjectID(pid);
-                            lines[i].dateRec = new Date(lines[i].dateRec);
-                            lines[i].produit = req.body.planif.produit;
-                            lines[i].producteur = req.body.planif.producteur;
+                            lines[i].produit = new require('mongodb').ObjectID(req.body.planif.produit);
+                            lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                             collection.insert(lines[i], function (err, saved) { });
                         }
                     });
@@ -111,9 +110,8 @@ exports.add = function (req, res) {
                                     for (var i = 0; i < lines.length; i++) {
                                         delete lines[i].id;
                                         lines[i].planif = new require('mongodb').ObjectID(pid);
-                                        lines[i].dateRec = new Date(lines[i].dateRec);
-                                        lines[i].produit = req.body.planif.produit;
-                                        lines[i].producteur = req.body.planif.producteur;
+                                        lines[i].produit = new require('mongodb').ObjectID(req.body.planif.produit);
+                                        lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                                         collection.insert(lines[i], function (err, saved) { });
                                     }
                                     if (linesToRem)
