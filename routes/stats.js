@@ -209,7 +209,7 @@ exports.planifByProds = function (req, res) {
                 end.setMinutes(59);
                 end.setSeconds(59);
 
-                query["$match"]["dateRec"] = { $gte: new Date(beg),$lt: new Date(end)};
+                query["$match"]["startDate"] = { $gte: new Date(beg),$lt: new Date(end)};
                 var group = {};
                 var sort = {};
                 group["$group"] = {};
