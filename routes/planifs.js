@@ -47,7 +47,7 @@ exports.add = function (req, res) {
     {
         req.body.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
     }
-    var lines = [];
+    var lines = req.body.planif.linesWeeks;
     var linesToRem = req.body.planif.linesToRem;
     delete req.body.planif.linesToRem;
 
@@ -56,7 +56,7 @@ exports.add = function (req, res) {
     var surfacePercent = ((100/1)*req.body.planif.surface) / 100;
 
     //PASSAGE TOUTES LIGNES EN A SUPPRIMER
-    for (var i = 0;i < req.body.planif.linesWeeks.length;i++)
+    /*for (var i = 0;i < req.body.planif.linesWeeks.length;i++)
     { 
         var valueQte = (req.body.planif.linesWeeks[i].percent/100) * req.body.planif.rendement; //PRODUCT DEFAULT RENDEMENT
         valueQte = valueQte / 7;
@@ -70,9 +70,8 @@ exports.add = function (req, res) {
             lines.push(oIt);
             startDate.setDate(d.getDate() + 1);
         } 
-    }
+    }*/
     delete req.body.planif.linesWeeks;
-
     db.collection('planifs', function (err, collection) {
         if (pid == "-1")
         {
