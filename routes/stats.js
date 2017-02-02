@@ -218,8 +218,8 @@ exports.planifByProds = function (req, res) {
                 switch (req.body.dateFormat)
                 {
                     case "w":
-                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
-                        group["$group"]["_id"]["week"] = { $week: "$dateRec" };
+                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
+                        group["$group"]["_id"]["week"] = "$semaine";
                         sort["$sort"] = {  
                             "_id.year": 1, 
                             "_id.week": 1, 
@@ -227,8 +227,8 @@ exports.planifByProds = function (req, res) {
                         };
                         break;
                     case "m":
-                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
-                        group["$group"]["_id"]["month"] = { $month: "$dateRec" };
+                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
+                        group["$group"]["_id"]["month"] = "$mois";
                         sort["$sort"] = {  
                             "_id.year": 1, 
                             "_id.month": 1, 

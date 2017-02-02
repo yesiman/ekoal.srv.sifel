@@ -87,6 +87,7 @@ exports.add = function (req, res) {
                             lines[i].planif = new require('mongodb').ObjectID(pid);
                             lines[i].produit = new require('mongodb').ObjectID(req.body.planif.produit);
                             lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
+                            lines[i].startAt = new Date(startAt);
                             collection.insert(lines[i], function (err, saved) { });
                         }
                     });
@@ -111,6 +112,7 @@ exports.add = function (req, res) {
                                         lines[i].planif = new require('mongodb').ObjectID(pid);
                                         lines[i].produit = new require('mongodb').ObjectID(req.body.planif.produit);
                                         lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
+                                        lines[i].startAt = new Date(startAt);
                                         collection.insert(lines[i], function (err, saved) { });
                                     }
                                     if (linesToRem)
