@@ -55,8 +55,6 @@ exports.prevsByDay = function (req, res) {
                 else {
                     query["$match"]["producteur"] = { "$in": producteurs };
                 }
-                console.log("new Date(req.body.dateFrom)",new Date(req.body.dateFrom));
-                console.log("new Date(req.body.dateTo)",new Date(req.body.dateTo));
                 
                 var beg = new Date(req.body.dateFrom);
                 beg.setHours(0);
@@ -67,7 +65,7 @@ exports.prevsByDay = function (req, res) {
                 end.setMinutes(59);
                 end.setSeconds(59);
 
-                query["$match"]["dateRec"] = { $gte: new Date(beg),$lt: new Date(end)};
+                query["$match"]["startAt"] = { $gte: new Date(beg),$lt: new Date(end)};
                 var group = {};
                 var sort = {};
                 group["$group"] = {};
@@ -76,8 +74,8 @@ exports.prevsByDay = function (req, res) {
                 switch (req.body.dateFormat)
                 {
                     case "w":
-                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
-                        group["$group"]["_id"]["week"] = { $week: "$dateRec" };
+                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
+                        group["$group"]["_id"]["week"] = "$semaine";
                         sort["$sort"] = {  
                             "_id.year": 1, 
                             "_id.week": 1, 
@@ -85,8 +83,8 @@ exports.prevsByDay = function (req, res) {
                         };
                         break;
                     case "m":
-                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
-                        group["$group"]["_id"]["month"] = { $month: "$dateRec" };
+                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
+                        group["$group"]["_id"]["month"] = "$mois";
                         sort["$sort"] = {  
                             "_id.year": 1, 
                             "_id.month": 1, 
@@ -107,7 +105,7 @@ exports.prevsByDay = function (req, res) {
                         break;
                 }
                 group["$group"]["_id"]["produit"] = "$produit";
-                group["$group"]["count"] = { $sum: "$qte" };
+                group["$group"]["count"] = { $sum: "$qte.val" };
                 collection.aggregate(
                     query,
                     group,
@@ -209,7 +207,7 @@ exports.planifByProds = function (req, res) {
                 end.setMinutes(59);
                 end.setSeconds(59);
 
-                query["$match"]["startDate"] = { $gte: new Date(beg),$lt: new Date(end)};
+                query["$match"]["dateRec"] = { $gte: new Date(beg),$lt: new Date(end)};
                 var group = {};
                 var sort = {};
                 group["$group"] = {};
@@ -218,8 +216,8 @@ exports.planifByProds = function (req, res) {
                 switch (req.body.dateFormat)
                 {
                     case "w":
-                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
-                        group["$group"]["_id"]["week"] = "$semaine";
+                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
+                        group["$group"]["_id"]["week"] = { $week: "$dateRec" };
                         sort["$sort"] = {  
                             "_id.year": 1, 
                             "_id.week": 1, 
@@ -227,8 +225,8 @@ exports.planifByProds = function (req, res) {
                         };
                         break;
                     case "m":
-                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
-                        group["$group"]["_id"]["month"] = "$mois";
+                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
+                        group["$group"]["_id"]["month"] = { $month: "$dateRec" };
                         sort["$sort"] = {  
                             "_id.year": 1, 
                             "_id.month": 1, 
@@ -249,14 +247,12 @@ exports.planifByProds = function (req, res) {
                         break;
                 }
                 group["$group"]["_id"]["produit"] = "$produit";
-                group["$group"]["count"] = { $sum: "$qte.val" };
+                group["$group"]["count"] = { $sum: "$qte" };
                 collection.aggregate(
                     query,
                     group,
                     sort,
                     function(err, summary) {
-                        console.log("err",err);
-                        console.log("summary",summary);
                         //GET PRODUCTEURS
                         /*var producteurs = [];
                         for (var isum = 0;isum < summary.length;isum++)
