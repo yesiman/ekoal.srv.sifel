@@ -249,12 +249,14 @@ exports.planifByProds = function (req, res) {
                         break;
                 }
                 group["$group"]["_id"]["produit"] = "$produit";
-                group["$group"]["count"] = { $sum: "$qte" };
+                group["$group"]["count"] = { $sum: "$qte.val" };
                 collection.aggregate(
                     query,
                     group,
                     sort,
                     function(err, summary) {
+                        console.log("err",err);
+                        console.log("summary",summary);
                         //GET PRODUCTEURS
                         /*var producteurs = [];
                         for (var isum = 0;isum < summary.length;isum++)
