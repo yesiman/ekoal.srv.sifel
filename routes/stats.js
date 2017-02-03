@@ -252,7 +252,27 @@ exports.prevsByProducteur = function (req, res) {
                     group,
                     sort,
                     function(err, summary) { 
-                        res.send({items:summary });
+                        var prodsToGet = [];
+                        for (var i = 0;i < summary.length;i++)
+                        {
+                            var found = false;
+                            for (var ipg = 0;ipg < prodsToGet.length;ipg++)
+                            {
+                                if (prodsToGet[ipg].toString() == summary[i]._id.producteur.toString())
+                                {
+                                    found = true;
+                                }
+                            }
+                            if (!found)
+                            {
+                                prodsToGet.push(new require('mongodb').ObjectID(summary[i]._id.producteur.toString()));
+                            }
+                        }
+                        db.collection('users', function (err, collection) {
+                            collection.find({_id:{$in:prodsToGet} }).toArray(function (err, items) {
+                                res.send({items:summary, producteurs:items });
+                            });
+                        });
                     }
                 );
             });  
@@ -372,28 +392,10 @@ exports.getPlanifs = function (req, res) {
                     group,
                     sort,
                     function(err, summary) {
-                        var prodsToGet = [];
-                        for (var i = 0;i < summary.length;i++)
-                        {
-                            var found = false;
-                            for (var ipg = 0;ipg < prodsToGet.length;ipg++)
-                            {
-                                if (prodsToGet[ipg].toString() == summary[i]._id.producteur.toString())
-                                {
-                                    found = true;
-                                }
-                            }
-                            if (!found)
-                            {
-                                prodsToGet.push(new require('mongodb').ObjectID(summary[i]._id.producteur.toString()));
-                            }
-                        }
-                        db.collection('users', function (err, collection) {
-                            collection.find({_id:{$in:prodsToGet} }).toArray(function (err, items) {
-                                res.send({items:summary, producteurs:items });
-                            });
-                        });
+
+
                         
+                        res.send({items:summary });
                     }
                 );
             });  
