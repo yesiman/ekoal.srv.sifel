@@ -118,6 +118,7 @@ app.delete('/rules/delete/:id', cors(), bodyParser.json(), rules.delete);
 //END RULES
 //STATS
 app.post('/stats/prevsByDay/', cors(), bodyParser.json(), stats.prevsByDay);
+app.post('/stats/prevsByProd/', cors(), bodyParser.json(), stats.prevsByProd);
 
 app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
 

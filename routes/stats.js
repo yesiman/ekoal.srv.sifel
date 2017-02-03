@@ -139,9 +139,7 @@ exports.prevsByDay = function (req, res) {
         });
     });
 };
-
-
-exports.planifByProds = function (req, res) {
+exports.prevsByProd = function (req, res) {
     var usersFilter = {};
     switch (req.decoded.type)
     {
@@ -198,6 +196,7 @@ exports.planifByProds = function (req, res) {
                 else {
                     query["$match"]["producteur"] = { "$in": producteurs };
                 }
+                
                 var beg = new Date(req.body.dateFrom);
                 beg.setHours(0);
                 beg.setMinutes(0);
@@ -207,7 +206,7 @@ exports.planifByProds = function (req, res) {
                 end.setMinutes(59);
                 end.setSeconds(59);
 
-                query["$match"]["dateRec"] = { $gte: new Date(beg),$lt: new Date(end)};
+                query["$match"]["startAt"] = { $gte: new Date(beg),$lt: new Date(end)};
                 var group = {};
                 var sort = {};
                 group["$group"] = {};
@@ -216,21 +215,21 @@ exports.planifByProds = function (req, res) {
                 switch (req.body.dateFormat)
                 {
                     case "w":
-                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
-                        group["$group"]["_id"]["week"] = { $week: "$dateRec" };
+                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
+                        group["$group"]["_id"]["week"] = "$semaine";
                         sort["$sort"] = {  
                             "_id.year": 1, 
                             "_id.week": 1, 
-                            "_id.produit" : 1 
+                            "_id.producteur" : 1 
                         };
                         break;
                     case "m":
-                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
-                        group["$group"]["_id"]["month"] = { $month: "$dateRec" };
+                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
+                        group["$group"]["_id"]["month"] = "$mois";
                         sort["$sort"] = {  
                             "_id.year": 1, 
                             "_id.month": 1, 
-                            "_id.produit" : 1 
+                            "_id.producteur" : 1 
                         };
                         break;
                     case "d":
@@ -242,39 +241,18 @@ exports.planifByProds = function (req, res) {
                             "_id.year": 1, 
                             "_id.month": 1, 
                             "_id.day": 1,
-                            "_id.produit" : 1 
+                            "_id.producteur" : 1 
                         };
                         break;
                 }
-                group["$group"]["_id"]["produit"] = "$produit";
-                group["$group"]["count"] = { $sum: "$qte" };
+                group["$group"]["_id"]["producteur"] = "$producteur";
+                group["$group"]["count"] = { $sum: "$qte.val" };
                 collection.aggregate(
                     query,
                     group,
                     sort,
-                    function(err, summary) {
-                        //GET PRODUCTEURS
-                        /*var producteurs = [];
-                        for (var isum = 0;isum < summary.length;isum++)
-                        {
-                            var found = false;
-                            console.log(summary[isum]);
-                            for (var i = 0;i < producteurs.length;i++)
-                            {
-                                if (producteurs[i].toString() === summary[isum].producteur.toString())
-                                {
-                                    found = true;
-                                }
-                            }
-                            if (!found) { producteurs.push(new require('mongodb').ObjectID(summary[isum].producteur)); }
-                        }
-                        db.collection('users', function (err, collection) {
-                            
-                            collection.find({ _id: { $in: producteurs }}).toArray(function (err, items) {
-                                res.send({items:summary,producteurs:items });
-                            });
-                        });*/   
-                        res.send({items:summary,producteurs:[] });
+                    function(err, summary) { 
+                        res.send({items:summary });
                     }
                 );
             });  
