@@ -279,8 +279,10 @@ exports.prevsByProducteur = function (req, res) {
         });
     });
 };
-exports.getPlanifs = function (req, res) {
+exports.prevsPlanifsLines = function (req, res) {
     var usersFilter = {};
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
     switch (req.decoded.type)
     {
         case  1:   //VOIT TOUT CE QUI EST PUBLIC
@@ -327,16 +329,6 @@ exports.getPlanifs = function (req, res) {
                         producteurs = [new require('mongodb').ObjectID(req.decoded._id)];
                 }
 
-                var query = {};
-                query["$match"] = {};
-                query["$match"]["produit"] = { "$in": obj_ids };
-                if (req.decoded.type == 1){
-                    //filtre produits publiques
-                }
-                else {
-                    query["$match"]["producteur"] = { "$in": producteurs };
-                }
-                
                 var beg = new Date(req.body.dateFrom);
                 beg.setHours(0);
                 beg.setMinutes(0);
@@ -346,58 +338,22 @@ exports.getPlanifs = function (req, res) {
                 end.setMinutes(59);
                 end.setSeconds(59);
 
-                query["$match"]["startAt"] = { $gte: new Date(beg),$lt: new Date(end)};
-                var group = {};
-                var sort = {};
-                group["$group"] = {};
-                
-                group["$group"]["_id"] = {};
-                switch (req.body.dateFormat)
-                {
-                    case "w":
-                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
-                        group["$group"]["_id"]["week"] = "$semaine";
-                        sort["$sort"] = {  
-                            "_id.year": 1, 
-                            "_id.week": 1, 
-                            "_id.producteur" : 1 
-                        };
-                        break;
-                    case "m":
-                        group["$group"]["_id"]["year"] = { $year: "$startAt" };
-                        group["$group"]["_id"]["month"] = "$mois";
-                        sort["$sort"] = {  
-                            "_id.year": 1, 
-                            "_id.month": 1, 
-                            "_id.producteur" : 1 
-                        };
-                        break;
-                    case "d":
-                    default:
-                        group["$group"]["_id"]["year"] = { $year: "$dateRec" };
-                        group["$group"]["_id"]["month"] = { $month: "$dateRec" };
-                        group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateRec" };
-                        sort["$sort"] = {  
-                            "_id.year": 1, 
-                            "_id.month": 1, 
-                            "_id.day": 1,
-                            "_id.producteur" : 1 
-                        };
-                        break;
+                var query = {
+                    produit:{ "$in": obj_ids },
+                    startAt:{ $gte: new Date(beg),$lt: new Date(end)}
+                };
+                if (req.decoded.type == 1){
+                    //filtre produits publiques
                 }
-                group["$group"]["_id"]["producteur"] = "$producteur";
-                group["$group"]["count"] = { $sum: "$qte.val" };
-                collection.aggregate(
-                    query,
-                    group,
-                    sort,
-                    function(err, summary) {
-
-
-                        
-                        res.send({items:summary });
-                    }
-                );
+                else {
+                    query["producteur"] = { "$in": producteurs };
+                }
+                collection.count(finalFilter, function (err, count) {
+                    ret.count = count;
+                    collection.find(query).skip(skip).limit(limit).toArray(function (err, items) {
+                        res.send({count:count,items:items});        
+                    });
+                });
             });  
         });
     });
