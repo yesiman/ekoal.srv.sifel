@@ -349,7 +349,7 @@ exports.prevsPlanifsLines = function (req, res) {
                     query["producteur"] = { "$in": producteurs };
                 }
                 collection.count(query, function (err, count) {
-                    collection.find(query).sort({dateRec:1}).skip(skip).limit(limit).toArray(function (err, items) {
+                    collection.find(query).sort({startAt:1}).skip(skip).limit(limit).toArray(function (err, items) {
                         res.send({count:count,items:items});        
                     });
                 });
