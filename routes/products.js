@@ -159,7 +159,7 @@ exports.getAllFromDouane = function (req, res) {
         if (req.params.parent != "-1")
         {
             filters.parents = {
-                $elemMatch:req.params.parent
+                $elemMatch:{$eq:req.params.parent}
             }
         }
         collection.find(filters).toArray(function (err, items) {
