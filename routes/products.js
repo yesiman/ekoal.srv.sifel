@@ -162,7 +162,7 @@ exports.getAllFromDouane = function (req, res) {
                 $elemMatch:req.params.parent
             }
         }
-        collection.find().toArray(function (err, items) {
+        collection.find(filters).toArray(function (err, items) {
             res.send(filters);
         });
     });
