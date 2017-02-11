@@ -164,6 +164,7 @@ exports.getAllFromDouane = function (req, res) {
             var products = items;
             if (items.length > 0)
             {
+                console.log(products[0]);
                 collection.find({code:{$in:products[0].parents}}).toArray(function (err, items) {
                     res.send({items:products,parents:items});
                 });
