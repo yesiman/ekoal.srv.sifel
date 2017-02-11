@@ -154,8 +154,6 @@ exports.getAllFromDouane = function (req, res) {
         var filters = {
             level:level
         };
-        console.log("req.params.level",level);
-        console.log("req.params.parent",req.params.parent);
         if (req.params.parent != "-1")
         {
             filters.parents = {
@@ -163,7 +161,16 @@ exports.getAllFromDouane = function (req, res) {
             }
         }
         collection.find(filters).toArray(function (err, items) {
-            res.send({items:items});
+            var products = items;
+            if (items.length > 0)
+            {
+                collection.find({code:{$in:products[0].parents}}).toArray(function (err, items) {
+                    res.send({items:products,parents:items});
+                });
+            }
+            else {
+                res.send({items:products,parents:[]});
+            }
         });
     });
 };
