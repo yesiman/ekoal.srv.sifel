@@ -154,7 +154,7 @@ exports.getAllFromDouane = function (req, res) {
         var filters = {
             level:level
         };
-        if (req.params.parent != "-1")
+        if (req.params.parent != -1)
         {
             filters.parents = {
                 $elemMatch:req.params.parent
