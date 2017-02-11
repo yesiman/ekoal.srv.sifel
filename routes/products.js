@@ -163,7 +163,7 @@ exports.getAllFromDouane = function (req, res) {
             }
         }
         collection.find(filters).toArray(function (err, items) {
-            res.send(filters);
+            res.send({items:items});
         });
     });
 };
