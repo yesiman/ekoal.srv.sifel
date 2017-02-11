@@ -151,8 +151,17 @@ exports.add = function (req, res) {
 exports.getAllFromDouane = function (req, res) {
     var level = parseInt(req.params.level);
     db.collection('douanes_products', function (err, collection) {
-        collection.find({level:level}).toArray(function (err, items) {
-            res.send({items:items});
+        var filters = {
+            level:level
+        };
+        if (req.params.parent)
+        {
+            filters.parents = {
+                $elemMatch:req.params.parent
+            }
+        }
+        collection.find().toArray(function (err, items) {
+            res.send(filters);
         });
     });
 };
