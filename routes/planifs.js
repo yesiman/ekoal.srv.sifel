@@ -47,7 +47,7 @@ exports.add = function (req, res) {
     {
         req.body.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
     }
-    var lines = req.body.planif.linesWeeks;
+    var lines = req.body.planif.lines;
     var linesToRem = req.body.planif.linesToRem;
     delete req.body.planif.linesToRem;
 

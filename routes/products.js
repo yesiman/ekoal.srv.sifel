@@ -162,7 +162,7 @@ exports.getAllFromDouane = function (req, res) {
         }
         collection.find(filters).toArray(function (err, items) {
             var products = items;
-            if (items.length > 0)
+            if (products.length > 0)
             {
                 console.log(products[0]);
                 collection.find({code:{$in:products[0].parents}}).toArray(function (err, items) {
