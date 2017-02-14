@@ -80,7 +80,13 @@ exports.getAll = function (req, res) {
         case  1:   //VOIT TOUT     
             break;
         case  2:   //VOIT TECH et Producteurs LIES OP
-            filters = { type: {$gte: 3}, orga:new require('mongodb').ObjectID(req.decoded.orga) };
+            if (req.params.levels)
+            {
+                filters = { type: {$gte: 3, $in:req.params.levels}, orga:new require('mongodb').ObjectID(req.decoded.orga) };
+            }
+            else {
+                filters = { type: {$gte: 3}, orga:new require('mongodb').ObjectID(req.decoded.orga) };
+            }
             break;
         case  3:  //VOIT Producteurs LIES OP
             var obj_ids = [];
@@ -88,11 +94,18 @@ exports.getAll = function (req, res) {
             {
                 obj_ids.push(new require('mongodb').ObjectID(req.decoded.producteurs[i]));
             }
-            filters = { type: {$gte: 4}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:obj_ids} };
+            if (req.params.levels)
+            {
+                filters = { type: {$gte: 4, $in:req.params.levels}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:obj_ids} };
+            }
+            else {
+                filters = { type: {$gte: 4}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:obj_ids} };
+            }
             break;
         default:  //VOIT AUCUNS USER
             filters = { type: {$gte: 9999} };
     }
+    
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
