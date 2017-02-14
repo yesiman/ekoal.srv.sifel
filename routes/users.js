@@ -80,9 +80,9 @@ exports.getAll = function (req, res) {
         case  1:   //VOIT TOUT     
             break;
         case  2:   //VOIT TECH et Producteurs LIES OP
-            if (req.params.levels)
+            if (req.body.levels)
             {
-                filters = { type: {$gte: 3, $in:req.params.levels}, orga:new require('mongodb').ObjectID(req.decoded.orga) };
+                filters = { type: {$gte: 3, $in:req.body.levels}, orga:new require('mongodb').ObjectID(req.decoded.orga) };
             }
             else {
                 filters = { type: {$gte: 3}, orga:new require('mongodb').ObjectID(req.decoded.orga) };
@@ -94,9 +94,9 @@ exports.getAll = function (req, res) {
             {
                 obj_ids.push(new require('mongodb').ObjectID(req.decoded.producteurs[i]));
             }
-            if (req.params.levels)
+            if (req.body.levels)
             {
-                filters = { type: {$gte: 4, $in:req.params.levels}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:obj_ids} };
+                filters = { type: {$gte: 4, $in:req.body.levels}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:obj_ids} };
             }
             else {
                 filters = { type: {$gte: 4}, orga:new require('mongodb').ObjectID(req.decoded.orga), _id: {$in:obj_ids} };
