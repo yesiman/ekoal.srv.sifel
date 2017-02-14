@@ -86,7 +86,7 @@ app.get('/users/clearAll', cors(), bodyParser.json(), users.clearAll);
 app.get('/users/refreshToken', cors(), bodyParser.json(), users.refreshToken);
 app.get('/users/get/:id', cors(), bodyParser.json(), users.get);
 app.get('/users/getParcelles/:id', cors(), bodyParser.json(), users.getParcelles);
-app.get('/users/getAll/:idp/:nbr/:levels', cors(), bodyParser.json(), users.getAll);
+app.post('/users/getAll/:idp/:nbr/:levels', cors(), bodyParser.json(), users.getAll);
 app.get('/users/getAllByType/:idp/:nbr/:idt', cors(), bodyParser.json(), users.getAllByType);
 app.get('/users/getAllByOrga/:idp/:nbr/:ido', cors(), bodyParser.json(), users.getAllByOrga);
 app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
