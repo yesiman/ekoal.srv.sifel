@@ -77,7 +77,8 @@ exports.getAll = function (req, res) {
     var filters = {};
     switch (req.decoded.type)
     {
-        case  1:   //VOIT TOUT     
+        case  1:   //VOIT TOUT  
+            filters = { type: {$in:req.body.levels }};   
             break;
         case  2:   //VOIT TECH et Producteurs LIES OP
             if (req.body.levels)
