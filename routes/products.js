@@ -92,6 +92,7 @@ exports.add = function (req, res) {
     }
     req.body.product.dateModif = new Date();
     req.body.product.parent._id =  new require('mongodb').ObjectID(req.body.product.parent._id);
+    req.body.product.orga =  new require('mongodb').ObjectID(req.decoded.orga);
     db.collection('products', function (err, collection) {
         if (pid == "-1")
         {
