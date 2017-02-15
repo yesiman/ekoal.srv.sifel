@@ -62,8 +62,6 @@ exports.getAllByLib = function (req, res) {
                             }
                         }
                         
-                        //ret.customs = items;
-                        //console.log(items);
                         
                         res.send(ret);
                     });
@@ -85,7 +83,6 @@ exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.product.user = new require('mongodb').ObjectID(req.decoded._id);
     var objectif = req.body.product.objectif;
-    console.log(objectif);
     if (objectif)
     {
         objectif.user = new require('mongodb').ObjectID(req.decoded._id);
@@ -131,7 +128,7 @@ exports.add = function (req, res) {
                 req.body.product);
                 if (objectif)
                 {
-                    db.collection('products_orgas_specs', function (err, collection) {
+                    db.collection('products_objectifs', function (err, collection) {
                         if (objectif._id)
                         {
                             var cid = objectif._id;
@@ -167,7 +164,6 @@ exports.getAllFromDouane = function (req, res) {
             var products = items;
             if (products.length > 0)
             {
-                console.log(products[0]);
                 collection.find({code:{$in:products[0].parents}}).toArray(function (err, items) {
                     res.send({items:products,parents:items});
                 });
