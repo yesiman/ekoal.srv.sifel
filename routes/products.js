@@ -62,7 +62,7 @@ exports.getAllByLib = function (req, res) {
                                 }
                             }
                         }
-                        console.log(ret);
+                        console.log("HHHH",ret);
                         res.send(ret);
                     });
                 });
