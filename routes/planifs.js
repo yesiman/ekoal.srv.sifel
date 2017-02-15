@@ -165,10 +165,15 @@ exports.delete = function (req, res) {
     db.collection('planifs_lines', function (err, collection) {
         collection.remove({ planif: new require('mongodb').ObjectID(req.params.id) },
             function (err, result) {
-                db.collection('planifs', function (err, collection) {
-                    collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
+                db.collection('planifs_lines_alerts', function (err, collection) {
+                    collection.remove({ planif: new require('mongodb').ObjectID(req.params.id) },
                         function (err, result) {
-                            res.send(result);
+                            db.collection('planifs', function (err, collection) {
+                                collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
+                                    function (err, result) {
+                                        res.send(result);
+                                    });
+                            });
                         });
                 });
             });

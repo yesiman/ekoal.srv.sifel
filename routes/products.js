@@ -71,11 +71,21 @@ exports.getAllByLib = function (req, res) {
     });
 };
 exports.delete = function (req, res) {
-    db.collection('products', function (err, collection) {
-    collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
-        function (err, result) {
-            res.send(result);
-        });
+    db.collection('products_rules', function (err, collection) {
+        collection.remove({ produit: new require('mongodb').ObjectID(req.params.id) },
+            function (err, result) {
+                db.collection('products_objectifs', function (err, collection) {
+                    collection.remove({ produit: new require('mongodb').ObjectID(req.params.id) },
+                        function (err, result) {
+                            db.collection('products', function (err, collection) {
+                                collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
+                                    function (err, result) {
+                                        res.send(result);
+                                    });
+                            });
+                        });
+                });
+            });
     });
     //Supprimer données liées autre tables si besoin
 };
