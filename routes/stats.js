@@ -110,12 +110,12 @@ exports.prevsByDay = function (req, res) {
                     case "1":
                         //group["$group"]["count"] = { $sum: "$qte.val" };
                         group["$group"]["count"] = { $sum: 
-                            { $cond: { if: { $eq: [ "$qte.unit", 1] }, then: "$qte.val", else: "$qte.val" * 1000 } }
+                            { $cond: { if: { $eq: [ "$qte.unit", 1] }, then: "$qte.val", else: "$qte.val" } }
                         };
                         break;
                     case "2":
                         group["$group"]["count"] = { $sum: 
-                            { $cond: { if: { $eq: [ "$qte.unit", 2] }, then: "$qte.val", else: "$qte.val" / 1000 } }
+                            { $cond: { if: { $eq: [ "$qte.unit", 2] }, then: "$qte.val", else: "$qte.val" } }
                         };
                         break;
                 }
