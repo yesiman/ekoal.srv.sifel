@@ -105,7 +105,7 @@ exports.prevsByDay = function (req, res) {
                         break;
                 }
                 group["$group"]["_id"]["produit"] = "$produit";
-                switch (req.body.unit)
+                switch (req.body.unit.toString())
                 {
                     case "1":
                         //group["$group"]["count"] = { $sum: "$qte.val" };
