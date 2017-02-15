@@ -129,18 +129,11 @@ exports.add = function (req, res) {
                 if (objectif)
                 {
                     db.collection('products_objectifs', function (err, collection) {
-                        if (objectif._id)
-                        {
-                            var cid = objectif._id;
-                            delete objectif._id;
-                            collection.update(
-                                { _id: new require('mongodb').ObjectID(cid) },
-                                objectif);
-                        }
-                        else{
-                            collection.insert( objectif , function (err, saved) {
-                            });
-                        }
+                        var cid = objectif._id;
+                        delete objectif._id;
+                        collection.update(
+                            { produit: new require('mongodb').ObjectID(pid) },
+                            objectif);
                     });
                 }
                 res.send(true);
