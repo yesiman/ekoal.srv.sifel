@@ -57,7 +57,7 @@ exports.getAllByLib = function (req, res) {
                             {
                                 if (items[i].produit.toString() == ret.items[ii]._id.toString())
                                 {
-                                    ret.items[ii].customs = items[i];
+                                    ret.items[ii].objectif = items[i];
                                 }
                             }
                         }
