@@ -243,4 +243,13 @@ exports.clearAll = function (req, res, next) {
     db.collection('products_orgas_specs', function (err, collection) {
         collection.remove({});
     });
+    db.collection('products', function (err, collection) {
+        collection.remove({});
+    });
+    db.collection('products_customs', function (err, collection) {
+        collection.remove({});
+    });
+    db.collection('rules', function (err, collection) {
+        collection.remove({});
+    });
 }
