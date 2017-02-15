@@ -1,7 +1,7 @@
 exports.get = function (req, res) {
     var ret = {};
     db.collection('products', function (err, collection) {
-        collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
+        collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id),orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
             ret = item;
             db.collection('products_objectifs', function (err, collection) {
                 collection.findOne({ user: new require('mongodb').ObjectID(req.decoded._id),produit:new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
@@ -17,9 +17,9 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
     db.collection('products', function (err, collection) {
-        collection.count({}, function (err, count) {
+        collection.count({orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, count) {
             ret.count = count;
-            collection.find().skip(skip).limit(limit).toArray(function (err, items) {
+            collection.find({orga:new require('mongodb').ObjectID(req.decoded.orga)}).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
                 res.send(ret);
             });
@@ -34,10 +34,10 @@ exports.getAllByLib = function (req, res) {
 
     if (req.decoded.type === 1)
     {
-        filters = { lib: { '$regex': req.params.req, $options: 'i' }, public:true};
+        filters = { orga:new require('mongodb').ObjectID(req.decoded.orga),lib: { '$regex': req.params.req, $options: 'i' }, public:true};
     }
     else {
-        filters = { lib: { '$regex': req.params.req, $options: 'i' }};
+        filters = { orga:new require('mongodb').ObjectID(req.decoded.orga),lib: { '$regex': req.params.req, $options: 'i' }};
     }
     db.collection('products', function (err, collection) {
         collection.count(filters, function (err, count) {
@@ -49,7 +49,7 @@ exports.getAllByLib = function (req, res) {
                 {
                     prods.push(new require('mongodb').ObjectID(items[ip]._id));
                 }
-                db.collection('products_orgas_specs', function (err, collection) {
+                db.collection('products_objectifs', function (err, collection) {
                     collection.find({produit: {$in:prods}, user: new require('mongodb').ObjectID(req.decoded._id)}).skip(skip).limit(limit).toArray(function (err, items) {
                         for (var ii = 0;ii < ret.items.length;ii++)
                         {
