@@ -252,4 +252,7 @@ exports.clearAll = function (req, res, next) {
     db.collection('products_rules', function (err, collection) {
         collection.remove({});
     });
+    db.collection('products_objectifs', function (err, collection) {
+        collection.remove({});
+    });
 }
