@@ -8,7 +8,7 @@ exports.get = function (req, res) {
                     planif.produit = item;
                     db.collection('products_objectifs', function (err, collection) {
                         collection.findOne({ produit: new require('mongodb').ObjectID(planif.produit._id), user: new require('mongodb').ObjectID(req.decoded._id) }, function (err, item) {
-                            planif.produit.customs = item;
+                            planif.produit.objectif = item;
                             db.collection('users', function (err, collection) {
                                 collection.findOne({ _id: new require('mongodb').ObjectID(planif.producteur), type:4 }, function (err, item) {
                                     planif.producteur = item;
