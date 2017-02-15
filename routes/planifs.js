@@ -6,7 +6,7 @@ exports.get = function (req, res) {
             db.collection('products', function (err, collection) {
                 collection.findOne({ _id: new require('mongodb').ObjectID(planif.produit) }, function (err, item) {
                     planif.produit = item;
-                    db.collection('products_orgas_specs', function (err, collection) {
+                    db.collection('products_objectifs', function (err, collection) {
                         collection.findOne({ produit: new require('mongodb').ObjectID(planif.produit._id), user: new require('mongodb').ObjectID(req.decoded._id) }, function (err, item) {
                             planif.produit.customs = item;
                             db.collection('users', function (err, collection) {

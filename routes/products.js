@@ -82,7 +82,7 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.product.user = new require('mongodb').ObjectID(req.decoded._id);
-    var objectif = req.body.product.objectif;
+    var objectif = {lines:req.body.product.objectif};
     if (objectif)
     {
         objectif.user = new require('mongodb').ObjectID(req.decoded._id);
