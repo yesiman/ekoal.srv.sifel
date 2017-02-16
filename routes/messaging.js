@@ -48,7 +48,8 @@ exports.testSmsF = function (req, res) {
         // parsed response body as js object 
         console.log(data);
         // raw response 
-        console.log(response);
+        //console.log(response);
+        res.send(true);
     });
 
 
