@@ -41,7 +41,7 @@ exports.testSmsF = function (req, res) {
     // set content-type header and data as json in args parameter 
     var args = {
         data: json,
-        headers: { "Content-Type": "application/json" }
+        headers: { "Accept": "application/json","Content-Type": "application/json" }
     };
     
     client.post("https://api.smsfactor.com/send", args, function (data, response) {
