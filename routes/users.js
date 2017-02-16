@@ -197,7 +197,7 @@ exports.add = function (req, res) {
                     db.collection('parcelles', function (err, collection) {
                         for (var i = 0; i < parcelles.length; i++) {
                             parcelles[i].producteur = new require('mongodb').ObjectID(uid);
-                            delete parcelles[i].new;
+                            delete parcelles[i].id;
                             collection.insert(parcelles[i], function (err, saved) { });
                         }
                     });
@@ -213,8 +213,8 @@ exports.add = function (req, res) {
                     db.collection('parcelles', function (err, collection) {
                         for (var i = 0; i < parcelles.length; i++) {
                             parcelles[i].producteur = new require('mongodb').ObjectID(uid);
-                            if (parcelles[i].new) {
-                                delete parcelles[i].new;
+                            if (parcelles[i].id) {
+                                delete parcelles[i].id;
                                 parcelles[i].producteur = new require('mongodb').ObjectID(uid);
                                 collection.insert(parcelles[i], function (err, saved) { });
                             }
