@@ -56,6 +56,8 @@ app.post('/users/login', cors(), bodyParser.json(), users.login);
 //MAILING
 app.post('/mailing/sendMailRecover/', cors(), bodyParser.json(), mailing.sendMailRecover);
 //END MAILING
+app.post('/messaging/smsReceive/', cors(), bodyParser.json(), messaging.smsReceive);
+
 //TOKEN VALIDATION
 app.use(function(req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];

@@ -12,3 +12,49 @@ exports.testTwilio = function (req, res) {
         console.log(message.sid);
     });
 }
+
+
+exports.testSmsF = function (req, res) {
+    var options = {
+        host: 'https://api.smsfactor.com',
+        port: 80,
+        path: '/send',
+        method: 'POST'
+    };
+    var json = {
+        sms: {
+            authentication: {
+                username:"fab.grenouillet@gmail.com",
+                password:"bibichoco"
+            },
+        "message": {
+            "text": "Message via API",
+            "senderid": "YESI"
+        },
+        "recipients": {
+            "gsm": [
+                {
+                    "gsmsmsid": "100",
+                    "value": "262693336223"
+                }
+            ]
+        }
+        }
+    };
+
+    http.request(options, function(res) {
+    console.log('STATUS: ' + res.statusCode);
+    console.log('HEADERS: ' + JSON.stringify(res.headers));
+    res.setEncoding('utf8');
+    res.on('data', function (chunk) {
+        console.log('BODY: ' + chunk);
+    });
+    }).end();
+}
+
+
+exports.smsReceive = function(req, res)
+{
+    console.log(req.body);
+    res.send(true);
+}
