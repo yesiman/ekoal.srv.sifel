@@ -26,7 +26,7 @@ exports.testSmsF = function (req, res) {
             },
             "message": {
                 "text": "Message via API",
-                "senderid": "YESI"
+                "senderid": "Sifel"
             },
             "recipients": {
                 "gsm": [
