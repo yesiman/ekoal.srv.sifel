@@ -1,6 +1,5 @@
 var twilio = require('twilio');
-var https = require('https');
-
+var Client = require('node-rest-client').Client;
 
 exports.testTwilio = function (req, res) {
     var accountSid = 'AC32c5e4d582dd5c0b87b245f01d436ab1'; // Your Account SID from www.twilio.com/console
@@ -18,12 +17,7 @@ exports.testTwilio = function (req, res) {
 
 
 exports.testSmsF = function (req, res) {
-    var options = {
-        host: 'https://api.smsfactor.com',
-        port: 80,
-        path: '/send',
-        method: 'POST'
-    };
+    var client = new Client();
     var json = {
         sms: {
             authentication: {
@@ -44,24 +38,27 @@ exports.testSmsF = function (req, res) {
         }
         }
     };
+    // set content-type header and data as json in args parameter 
+    var args = {
+        data: json,
+        headers: { "Content-Type": "application/json" }
+    };
+    
+    client.post("https://api.smsfactor.com/send", args, function (data, response) {
+        // parsed response body as js object 
+        console.log(data);
+        // raw response 
+        console.log(response);
+    });
 
-    https.request(options, function(res) {
-    console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
-    res.setEncoding('utf8');
-    res.on('data', function (chunk) {
-        console.log('BODY: ' + chunk);
-    });
-    res.on('end', function (chunk) {
-        res.send(true);
-    });
-    }).end();
+
     
 }
 
 
 exports.smsReceive = function(req, res)
 {
+    console.log("RECEIVE");
     console.log(req.body);
     res.send(true);
 }
