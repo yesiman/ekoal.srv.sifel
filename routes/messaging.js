@@ -19,23 +19,23 @@ exports.testTwilio = function (req, res) {
 exports.testSmsF = function (req, res) {
     var client = new Client();
     var json = {
-        sms: {
-            authentication: {
-                username:"fab.grenouillet@gmail.com",
-                password:"bibichoco"
+        "sms": {
+            "authentication": {
+                "username":"fab.grenouillet@gmail.com",
+                "password":"bibichoco"
             },
-        "message": {
-            "text": "Message via API",
-            "senderid": "YESI"
-        },
-        "recipients": {
-            "gsm": [
-                {
-                    "gsmsmsid": "100",
-                    "value": "262693336223"
-                }
-            ]
-        }
+            "message": {
+                "text": "Message via API",
+                "senderid": "YESI"
+            },
+            "recipients": {
+                "gsm": [
+                    {
+                        "gsmsmsid": "100",
+                        "value": "262693336223"
+                    }
+                ]
+            }
         }
     };
     // set content-type header and data as json in args parameter 
