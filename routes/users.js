@@ -172,7 +172,12 @@ exports.delete = function (req, res) {
     db.collection('users', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
-            res.send(result);
+            db.collection('parcelles', function (err, collection) {
+            collection.remove({ producteur: new require('mongodb').ObjectID(req.params.id) },
+                function (err, result) {
+                    res.send(result);
+                });
+            });
         });
     });
 };
@@ -180,7 +185,9 @@ exports.add = function (req, res) {
     var uid = req.params.id;
     req.body.user.dateModif = new Date();
     var parcelles = req.body.user.parcelles;
+    var parcellesToRem = req.body.user.parcellesToRem;
     delete req.body.user.parcelles;
+    delete req.body.user.parcellesToRem;
     if (req.body.user.orga)
     {
         req.body.user.orga = new require('mongodb').ObjectID(req.body.user.orga);
@@ -226,7 +233,21 @@ exports.add = function (req, res) {
                                 parcelles[i]);
                             }
                         }
-                        res.send(true);
+                        if (parcellesToRem.length > 0)
+                        {
+                            for (var ip = 0;ip < parcellesToRem.length;ip++)
+                            {
+                                parcellesToRem[ip] = new require('mongodb').ObjectID(parcellesToRem[ip]);
+                            }
+                            collection.remove({ _id: {$in:parcellesToRem} },
+                                function (err, result) {
+                                    res.send(true);
+                                });
+                        }
+                        else {
+                            res.send(true);
+                        }
+                        
                     });
                  });
                 //UPDATE PARECLLES / INSERT IF "NEW"

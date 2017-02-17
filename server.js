@@ -57,7 +57,7 @@ app.post('/users/login', cors(), bodyParser.json(), users.login);
 app.post('/mailing/sendMailRecover/', cors(), bodyParser.json(), mailing.sendMailRecover);
 //END MAILING
 app.post('/messaging/testSmsF/', cors(), bodyParser.json(), messaging.testSmsF);
-app.post('/messaging/smsReceive/', cors(), messaging.smsReceive);
+app.post('/messaging/smsReceive/', cors(), bodyParser.json(), messaging.smsReceive);
 
 //TOKEN VALIDATION
 app.use(function(req, res, next) {
