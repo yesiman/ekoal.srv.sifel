@@ -25,8 +25,7 @@ exports.testSmsF = function (req, res) {
                 "password":"bibichoco"
             },
             "message": {
-                "text": "Message via API",
-                "senderid": "Sifel"
+                "text": "Message via API"
             },
             "recipients": {
                 "gsm": [
