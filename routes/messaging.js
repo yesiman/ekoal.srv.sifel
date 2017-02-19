@@ -10,8 +10,6 @@ exports.testTwilio = function (req, res) {
         to: '+262693336223',  // Text this number
         from: '+33644641541' // From a valid Twilio number
     }, function(err, message) {
-        console.log("err",err);
-        console.log(message.sid);
         res.send(true);
     });
 }
