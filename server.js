@@ -17,6 +17,7 @@ var express = require('express'),
     messaging = require('./routes/messaging'),
     bodyParser = require('body-parser'),
     mongoOplog = require('mongo-oplog'),
+    io = require('socket.io').listen(server),
     cors = require('cors');
 //
 var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
@@ -29,9 +30,9 @@ MongoClient.connect(composeMongoCstr, function (err, dbr) {
 });
 //
 oplogMessages.on('update', function (doc) {
-    var data = { message:"cards_ops"};
-    //io.sockets.emit('upd', data);
-    console.log("nouvelle op");
+    var data = { message:"message"};
+    io.sockets.emit('upd', data);
+    console.log("nouvelle upd");
     console.log(doc);
 });
 //client.ping({
