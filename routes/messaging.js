@@ -12,6 +12,7 @@ exports.testTwilio = function (req, res) {
     }, function(err, message) {
         console.log("err",err);
         console.log(message.sid);
+        res.send(true);
     });
 }
 
