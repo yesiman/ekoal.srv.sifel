@@ -16,16 +16,24 @@ var express = require('express'),
     mailing = require('./routes/mailing'),
     messaging = require('./routes/messaging'),
     bodyParser = require('body-parser'),
+    mongoOplog = require('mongo-oplog'),
     cors = require('cors');
-
+//
+var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
+//
 jwt = require('jsonwebtoken');
-
+//
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {
     db = dbr;
 });
-
-
+//
+oplogMessages.on('update', function (doc) {
+    var data = { message:"cards_ops"};
+    //io.sockets.emit('upd', data);
+    console.log("nouvelle op");
+    console.log(doc);
+});
 //client.ping({
 //    // ping usually has a 3000ms timeout
 //    requestTimeout: Infinity,
@@ -57,8 +65,6 @@ app.post('/users/login', cors(), bodyParser.json(), users.login);
 app.post('/mailing/sendMailRecover/', cors(), bodyParser.json(), mailing.sendMailRecover);
 //END MAILING
 app.all('/messaging/smsReceive/', cors(), bodyParser.json(), messaging.smsReceive);
-app.all('/messaging/testSmsF/', cors(), bodyParser.json(), messaging.testSmsF);
-
 //
 //TOKEN VALIDATION
 app.use(function(req, res, next) {
@@ -126,7 +132,6 @@ app.delete('/rules/delete/:id', cors(), bodyParser.json(), rules.delete);
 app.post('/stats/prevsByDay/', cors(), bodyParser.json(), stats.prevsByDay);
 app.post('/stats/prevsByProd/', cors(), bodyParser.json(), stats.prevsByProducteur);
 app.post('/stats/prevsPlanifsLines/:idp/:nbr', cors(), bodyParser.json(), stats.prevsPlanifsLines);
-
+//
 app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
-
 //END.ROUTES

@@ -14,46 +14,6 @@ exports.testTwilio = function (req, res) {
     });
 }
 
-
-exports.testSmsF = function (req, res) {
-    var client = new Client();
-    var json = {
-        "sms": {
-            "authentication": {
-                "username":"fab.grenouillet@gmail.com",
-                "password":"bibichoco"
-            },
-            "message": {
-                "text": "Message via API"
-            },
-            "recipients": {
-                "gsm": [
-                    {
-                        "gsmsmsid": "100",
-                        "value": "262693336223"
-                    }
-                ]
-            }
-        }
-    };
-    var args = {
-        data: json,
-        headers: { "Accept": "application/json","Content-Type": "application/json" }
-    };
-    
-    client.post("https://api.smsfactor.com/send", args, function (data, response) {
-        // parsed response body as js object 
-        console.log(data);
-        // raw response 
-        //console.log(response);
-        res.send(true);
-    });
-
-
-    
-}
-
-
 exports.smsReceive = function(req, res)
 {
     console.log("RECEIVE");
