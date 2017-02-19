@@ -17,12 +17,12 @@ var express = require('express'),
     messaging = require('./routes/messaging'),
     bodyParser = require('body-parser'),
     mongoOplog = require('mongo-oplog'),
-    io = require('socket.io').listen(server),
     cors = require('cors');
 //
 var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
 //
 jwt = require('jsonwebtoken');
+io = require('socket.io').listen(server);
 //
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {
