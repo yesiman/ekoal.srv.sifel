@@ -18,5 +18,5 @@ exports.smsReceive = function(req, res)
 {
     console.log("RECEIVE");
     console.log(req.body);
-    res.send(true);
+    res.send({ok:true});
 }
