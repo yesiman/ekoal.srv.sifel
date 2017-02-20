@@ -17,5 +17,6 @@ exports.testTwilio = function (req, res) {
 exports.smsReceive = function(req, res)
 {
     io.sockets.emit('numessag', req.body);
-    res.send({ok:true});
+    res.type('text/xml');
+    res.send("<response>ok</response>");
 }
