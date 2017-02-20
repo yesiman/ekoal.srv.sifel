@@ -12,12 +12,12 @@ exports.testTwilio = function (req, res) {
     }, function(err, message) {
         res.send(true);
     });
-    
+
 }
 
 exports.smsReceive = function(req, res)
 {
     io.sockets.emit('numessag', req.body);
     res.type('text/xml');
-    res.send("<response>ok</response>");
+    res.send("<Response>ok</Response>");
 }
