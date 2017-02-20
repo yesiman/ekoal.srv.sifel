@@ -19,5 +19,5 @@ exports.smsReceive = function(req, res)
 {
     io.sockets.emit('numessag', req.body);
     res.type('text/xml');
-    res.send("<Response>ok</Response>");
+    res.send("<Response></Response>");
 }
