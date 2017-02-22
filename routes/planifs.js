@@ -43,11 +43,11 @@ exports.add = function (req, res) {
     req.body.planif.dateModif = new Date();
     req.body.planif.produit = new require('mongodb').ObjectID(req.body.planif.produit);
     req.body.planif.producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
-    if(req.body.parcelle)
+    if(req.body.planif.parcelle)
     {
         req.body.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
     }
-    if(req.body.rule)
+    if(req.body.planif.rule)
     {
         req.body.rule = new require('mongodb').ObjectID(req.body.planif.rule);
     }
