@@ -45,11 +45,11 @@ exports.add = function (req, res) {
     req.body.planif.producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
     if(req.body.planif.parcelle)
     {
-        req.body.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
+        req.body.planif.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
     }
     if(req.body.planif.rule)
     {
-        req.body.rule = new require('mongodb').ObjectID(req.body.planif.rule);
+        req.body.planif.rule = new require('mongodb').ObjectID(req.body.planif.rule);
     }
     var lines = req.body.planif.lines;
     var linesToRem = req.body.planif.linesToRem;
