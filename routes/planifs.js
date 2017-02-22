@@ -240,7 +240,12 @@ exports.getAll = function (req, res) {
                             producteurs.push(new require('mongodb').ObjectID(items[i1]._id));
                         }
                         if (producteursUiFilters.length > 0)
-                        {finalFilter = { producteur:{$in:producteursUiFilters} };} else {finalFilter = { producteur:{$in:producteurs} };}
+                        {
+                            finalFilter = { producteur:{$in:producteursUiFilters} };
+                        } 
+                        else {
+                            finalFilter = { producteur:{$in:producteurs} };
+                        }
                         
                         break;
                     case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
@@ -252,15 +257,19 @@ exports.getAll = function (req, res) {
                             }
                         }
                         if (producteursUiFilters.length > 0)
-                        {finalFilter = { producteur:{$in:producteursUiFilters} };} else {finalFilter = { producteur:{$in:producteurs} };}
-                        
+                        {
+                            finalFilter = { producteur:{$in:producteursUiFilters} };
+                        } 
+                        else {
+                            finalFilter = { producteur:{$in:producteurs} };
+                        }
                         break;
                     case 4:  //FILTRE SUR SES DONNEES
                         producteurs.push(new require('mongodb').ObjectID(req.decoded._id));
                         finalFilter = { producteur:{$in:producteurs} };
                 }
                 
-                if (producteursUiFilters.length > 0)
+                if (produitsUiFilters.length > 0)
                 {
                     finalFilter.produit = {$in:produitsUiFilters};
                 }
