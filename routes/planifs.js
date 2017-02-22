@@ -208,12 +208,22 @@ exports.getAll = function (req, res) {
             collect = "users";
     }
     db.collection(collect, function (err, collection) {
-        console.log("req.body.produits",req.body.produits);
+        console.log("req.body.produits",);
         console.log("req.body.producteurs",req.body.producteurs);
         collection.find(usersFilter).toArray(function (err, items) {
             db.collection('planifs', function (err, collection) {
                 var producteurs = [];
                 var produits = [];
+                var producteursUiFilters = [];
+                var produitsUiFilters = [];
+                for(var i=0;i<req.body.produits.length;i++)
+                {
+                    produitsUiFilters.push(new require('mongodb').ObjectID(req.body.produits[i]));
+                }
+                for(var i=0;i<req.body.producteurs.length;i++)
+                {
+                    producteursUiFilters.push(new require('mongodb').ObjectID(req.body.producteurs[i]));
+                }
                 var finalFilter;
                 switch (req.decoded.type)
                 {
@@ -229,7 +239,9 @@ exports.getAll = function (req, res) {
                         {
                             producteurs.push(new require('mongodb').ObjectID(items[i1]._id));
                         }
-                        finalFilter = { producteur:{$in:producteurs} };
+                        if (producteursUiFilters.length > 0)
+                        {finalFilter = { producteur:{$in:producteursUiFilters} };} else {finalFilter = { producteur:{$in:producteurs} };}
+                        
                         break;
                     case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
                         for(var i1=0;i1<items.length;i1++)
@@ -239,13 +251,20 @@ exports.getAll = function (req, res) {
                                 producteurs.push(new require('mongodb').ObjectID(items[i1].producteurs[i]));
                             }
                         }
-                        finalFilter = { producteur:{$in:producteurs} };
+                        if (producteursUiFilters.length > 0)
+                        {finalFilter = { producteur:{$in:producteursUiFilters} };} else {finalFilter = { producteur:{$in:producteurs} };}
+                        
                         break;
                     case 4:  //FILTRE SUR SES DONNEES
                         producteurs.push(new require('mongodb').ObjectID(req.decoded._id));
                         finalFilter = { producteur:{$in:producteurs} };
                 }
                 
+                if (producteursUiFilters.length > 0)
+                {
+                    finalFilter.produit = {$in:produitsUiFilters};
+                }
+
                 collection.count(finalFilter, function (err, count) {
                     ret.count = count;
                     collection.find(finalFilter).skip(skip).limit(limit).toArray(function (err, items) {
