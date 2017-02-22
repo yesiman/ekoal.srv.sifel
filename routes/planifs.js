@@ -274,6 +274,7 @@ exports.getAll = function (req, res) {
                                                 if (produits[ip1]._id.toString() == planifs[i].produit.toString())
                                                 {
                                                     planifs[i].produitLib = produits[ip1].lib;
+                                                    planifs[i].produitRend = produits[ip1].rendement.val + (produits[ip1].rendement.unit == 1?"kilos":"tonnes");
                                                     break;
                                                 }
                                             }
