@@ -121,7 +121,7 @@ app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //PLANIFS
 app.get('/planifs/get/:id', cors(), bodyParser.json(), planifs.get);
 app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
-app.get('/planifs/getAll/:idp/:nbr', cors(), bodyParser.json(), planifs.getAll);
+app.post('/planifs/getAll/:idp/:nbr', cors(), bodyParser.json(), planifs.getAll);
 app.delete('/planifs/delete/:id', cors(), bodyParser.json(), planifs.delete);
 //RULES
 app.get('/rules/get/:id', cors(), bodyParser.json(), rules.get);

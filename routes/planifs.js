@@ -208,6 +208,8 @@ exports.getAll = function (req, res) {
             collect = "users";
     }
     db.collection(collect, function (err, collection) {
+        console.log("req.body.produits",req.body.produits);
+        console.log("req.body.producteurs",req.body.producteurs);
         collection.find(usersFilter).toArray(function (err, items) {
             db.collection('planifs', function (err, collection) {
                 var producteurs = [];
