@@ -47,6 +47,10 @@ exports.add = function (req, res) {
     {
         req.body.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
     }
+    if(req.body.rule)
+    {
+        req.body.rule = new require('mongodb').ObjectID(req.body.planif.rule);
+    }
     var lines = req.body.planif.lines;
     var linesToRem = req.body.planif.linesToRem;
     delete req.body.planif.linesToRem;
