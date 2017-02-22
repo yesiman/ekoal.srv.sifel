@@ -50,6 +50,7 @@ exports.add = function (req, res) {
     var lines = req.body.planif.lines;
     var linesToRem = req.body.planif.linesToRem;
     delete req.body.planif.linesToRem;
+    delete req.body.planif.lines;
 
     //GENERER PLANNING PAR JOUR
     var startDate = new Date(req.body.planif.dateRecStart);
