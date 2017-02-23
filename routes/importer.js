@@ -1,6 +1,7 @@
 
 
 exports.produits = function (req, res) {
+    console.log("req.files[0]",req.files[0]);
     var lines = req.files[0].buffer.toString().split("\n");
     db.collection('products', function (err, collection) {
         for (var i = 0; i < lines.length; i++) {
