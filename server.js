@@ -20,7 +20,9 @@ var express = require('express'),
     importer = require('./routes/importer'),
     bodyParser = require('body-parser'),
     mongoOplog = require('mongo-oplog'),
-    cors = require('cors');
+    cors = require('cors'),
+    multer = require('multer'),
+    upload = multer({ inMemory: true}).single('csvfile');
 //
 var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
 //
@@ -149,4 +151,6 @@ app.post('/stats/prevsByProd/', cors(), bodyParser.json(), stats.prevsByProducte
 app.post('/stats/prevsPlanifsLines/:idp/:nbr', cors(), bodyParser.json(), stats.prevsPlanifsLines);
 //
 app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
+
+app.post('/importer/produits/', cors(), bodyParser.json(), upload, importer.produits);
 //END.ROUTES
