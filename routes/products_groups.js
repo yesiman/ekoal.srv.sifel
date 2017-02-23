@@ -1,5 +1,5 @@
 exports.get = function (req, res) {
-    db.collection('orgas', function (err, collection) {
+    db.collection('products_groups', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
             res.send(item);
         })
@@ -20,7 +20,7 @@ exports.getAll = function (req, res) {
     });
 };
 exports.delete = function (req, res) {
-    db.collection('orgas', function (err, collection) {
+    db.collection('products_groups', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
             res.send(result);
@@ -30,7 +30,7 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.orga.dateModif = new Date();
-    db.collection('orgas', function (err, collection) {
+    db.collection('products_groups', function (err, collection) {
         if (pid == "-1")
         {
             collection.insert( req.body.orga , function (err, saved) {
