@@ -10,6 +10,7 @@ exports.login = function (req, res) {
                 db.collection('users_logs', function (err, collection) {
                     collection.insert({
                         user:item._id,
+                        action: { type:'login' },
                         actionDate: new Date()
                         }, function (err, saved) {
                             res.send({success:true,_id:item._id, name:item.name, surn:item.surn, type:item.type ,orga:item.orga, token:token}); 
