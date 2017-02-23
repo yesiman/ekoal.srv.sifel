@@ -17,6 +17,7 @@ var express = require('express'),
     rules = require('./routes/rules'),
     mailing = require('./routes/mailing'),
     messaging = require('./routes/messaging'),
+    importer = require('./routes/importer'),
     bodyParser = require('body-parser'),
     mongoOplog = require('mongo-oplog'),
     cors = require('cors');

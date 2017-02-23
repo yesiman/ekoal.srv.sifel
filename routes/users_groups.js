@@ -1,5 +1,5 @@
 exports.get = function (req, res) {
-    db.collection('orgas', function (err, collection) {
+    db.collection('users_groups', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
             res.send(item);
         })
@@ -9,10 +9,10 @@ exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
-    db.collection('orgas', function (err, collection) {
-        collection.count({}, function (err, count) {
+    db.collection('users_groups', function (err, collection) {
+        collection.count({orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, count) {
             ret.count = count;
-            collection.find().skip(skip).limit(limit).toArray(function (err, items) {
+            collection.find({orga:new require('mongodb').ObjectID(req.decoded.orga)}).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
                 res.send(ret);
             });
@@ -20,7 +20,7 @@ exports.getAll = function (req, res) {
     });
 };
 exports.delete = function (req, res) {
-    db.collection('orgas', function (err, collection) {
+    db.collection('users_groups', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
             res.send(result);
@@ -29,11 +29,12 @@ exports.delete = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.orga.dateModif = new Date();
-    db.collection('orgas', function (err, collection) {
+    req.body.group.dateModif = new Date();
+    req.body.group.orga =  new require('mongodb').ObjectID(req.decoded.orga);
+    db.collection('users_groups', function (err, collection) {
         if (pid == "-1")
         {
-            collection.insert( req.body.orga , function (err, saved) {
+            collection.insert( req.body.group , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
                 }
@@ -43,10 +44,10 @@ exports.add = function (req, res) {
             });
         }
         else {
-            delete req.body.orga._id;
+            delete req.body.group._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
-                req.body.orga);
+                req.body.group);
                 res.send(true);
         }      
     });
