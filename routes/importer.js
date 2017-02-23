@@ -1,8 +1,9 @@
 
 
 exports.produits = function (req, res) {
-    console.log("req.files",req.files);
-    console.log("req.files.path",req.files[0].buffer.toString());
-    
+    var lines = req.files[0].buffer.toString().split("\n");
+    for (var i = 0; i < lines; i++) {
+        console.log(lines[i]);
+    }
     res.send(true);
 }
