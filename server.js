@@ -22,7 +22,7 @@ var express = require('express'),
     mongoOplog = require('mongo-oplog'),
     cors = require('cors'),
     multer = require('multer'),
-    upload = multer({ inMemory: true}).single('csvfile');
+    upload = multer().single('csvfile');
 //
 var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
 //
