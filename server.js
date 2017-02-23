@@ -8,8 +8,10 @@ var express = require('express'),
     app = express(),
     server = require('http').createServer(app),
     products = require('./routes/products'),
+    productsGroups = require('./routes/products_groups'),
     orgas = require('./routes/orgas'),
     users = require('./routes/users'),
+    usersGroups = require('./routes/users_groups'),
     planifs = require('./routes/planifs'),
     stats = require('./routes/stats'),
     rules = require('./routes/rules'),
@@ -102,17 +104,26 @@ app.get('/users/getAllByType/:idp/:nbr/:idt', cors(), bodyParser.json(), users.g
 app.get('/users/getAllByOrga/:idp/:nbr/:ido', cors(), bodyParser.json(), users.getAllByOrga);
 app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
 app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
+//GROUPS
+app.get('/usersGroups/get/:id', cors(), bodyParser.json(), usersGroups.get);
+app.get('/usersGroups/getAll/:idp/:nbr', cors(), bodyParser.json(), usersGroups.getAll);
+app.delete('/usersGroups/delete/:id', cors(), bodyParser.json(), usersGroups.delete);
+app.post('/usersGroups/add/:id', cors(), bodyParser.json(), usersGroups.add);
+//END GROUPS
 //END USERS
 //PRODS
 app.get('/products/get/:id', cors(), bodyParser.json(), products.get);
-app.get('/products/getGroupsAll/:idp/:nbr', cors(), bodyParser.json(), products.getGroupsAll);
 app.get('/products/getAll/:idp/:nbr', cors(), bodyParser.json(), products.getAll);
 app.get('/products/getAllByLib/:idp/:nbr/:req', cors(), bodyParser.json(), products.getAllByLib);
 app.delete('/products/delete/:id', cors(), bodyParser.json(), products.delete);
-app.delete('/products/deleteGroup/:id', cors(), bodyParser.json(), products.deleteGroup);
 app.post('/products/add/:id', cors(), bodyParser.json(), products.add);
-
 app.get('/products/getAllFromDouane/:level/:parent', cors(), bodyParser.json(), products.getAllFromDouane);
+//GROUPS
+app.get('/productsGroups/get/:id', cors(), bodyParser.json(), productsGroups.get);
+app.get('/productsGroups/getAll/:idp/:nbr', cors(), bodyParser.json(), productsGroups.getAll);
+app.delete('/productsGroups/delete/:id', cors(), bodyParser.json(), productsGroups.delete);
+app.post('/productsGroups/add/:id', cors(), bodyParser.json(), productsGroups.add);
+//END GROUPS
 //END PRODS
 //ORGAS
 app.get('/orgas/get/:id', cors(), bodyParser.json(), orgas.get);
