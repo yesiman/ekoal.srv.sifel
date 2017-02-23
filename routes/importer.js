@@ -10,15 +10,14 @@ exports.produits = function (req, res) {
                 user:new require('mongodb').ObjectID(req.decoded._id),
                 dateModif: new Date(),
                 orga:new require('mongodb').ObjectID(req.decoded.orga),
-                code:line[0],
+                codeProd:line[0],
                 lib:line[1],
                 rendement:{
                     val:0,
                     unit:2
                 }
             };
-            collection.insert(produit , function (err, saved) {
-                
+            collection.insert(produit , function (err, saved) { 
             });
         }
     });
