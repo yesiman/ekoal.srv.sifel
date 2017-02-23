@@ -26,6 +26,20 @@ exports.getAll = function (req, res) {
         });
     });
 };
+exports.getGroupsAll = function (req, res) {
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
+    var ret = new Object();
+    db.collection('products_groups', function (err, collection) {
+        collection.count({orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, count) {
+            ret.count = count;
+            collection.find({orga:new require('mongodb').ObjectID(req.decoded.orga)}).skip(skip).limit(limit).toArray(function (err, items) {
+                ret.items = items;
+                res.send(ret);
+            });
+        });
+    });
+};
 exports.getAllByLib = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
