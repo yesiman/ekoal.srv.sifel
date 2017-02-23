@@ -103,6 +103,15 @@ exports.delete = function (req, res) {
     });
     //Supprimer données liées autre tables si besoin
 };
+exports.deleteGroup = function (req, res) {
+    db.collection('products_groups', function (err, collection) {
+        collection.remove({ produit: new require('mongodb').ObjectID(req.params.id) },
+            function (err, result) {
+                res.send(result);
+            });
+    });
+    //Supprimer données liées autre tables si besoin
+};
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.product.user = new require('mongodb').ObjectID(req.decoded._id);
