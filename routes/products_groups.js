@@ -30,6 +30,7 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.group.dateModif = new Date();
+    req.body.group.orga =  new require('mongodb').ObjectID(req.decoded.orga);
     db.collection('products_groups', function (err, collection) {
         if (pid == "-1")
         {
