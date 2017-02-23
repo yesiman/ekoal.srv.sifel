@@ -1,6 +1,6 @@
 
 
 exports.produits = function (req, res) {
-    console.log("req.body.file",req.body);
+    console.log("req.body.file",req);
     res.send(true);
 }
