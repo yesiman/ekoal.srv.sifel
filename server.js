@@ -153,4 +153,5 @@ app.post('/stats/prevsPlanifsLines/:idp/:nbr', cors(), bodyParser.json(), stats.
 app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
 
 app.post('/importer/produits/', cors(), bodyParser.json(), upload, importer.produits);
+app.post('/importer/producteurs/', cors(), bodyParser.json(), upload, importer.producteurs);
 //END.ROUTES
