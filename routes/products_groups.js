@@ -29,11 +29,11 @@ exports.delete = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.orga.dateModif = new Date();
+    req.body.group.dateModif = new Date();
     db.collection('products_groups', function (err, collection) {
         if (pid == "-1")
         {
-            collection.insert( req.body.orga , function (err, saved) {
+            collection.insert( req.body.group , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
                 }
@@ -43,10 +43,10 @@ exports.add = function (req, res) {
             });
         }
         else {
-            delete req.body.orga._id;
+            delete req.body.group._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
-                req.body.orga);
+                req.body.group);
                 res.send(true);
         }      
     });
