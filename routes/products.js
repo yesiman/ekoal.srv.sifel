@@ -143,16 +143,26 @@ exports.add = function (req, res) {
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.product);
-                if (objectif)
-                {
-                    db.collection('products_objectifs', function (err, collection) {
+                db.collection('products_objectifs', function (err, collection) {
+                    if (objectif._id)
+                    {
                         var cid = objectif._id;
                         delete objectif._id;
                         collection.update(
                             { produit: new require('mongodb').ObjectID(pid) },
                             objectif);
-                    });
-                }
+                    }
+                    else {
+                        collection.insert( objectif , function (err, saved) {
+                            if (err || !saved) {
+                                res.send(false)
+                            }
+                            else {
+                                res.send(true);
+                            }
+                        });
+                    }
+                });
                 res.send(true);
         }      
     });
