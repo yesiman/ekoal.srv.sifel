@@ -151,6 +151,7 @@ exports.add = function (req, res) {
                         collection.update(
                             { produit: new require('mongodb').ObjectID(pid) },
                             objectif);
+                        res.send(true);
                     }
                     else {
                         collection.insert( objectif , function (err, saved) {
@@ -163,7 +164,6 @@ exports.add = function (req, res) {
                         });
                     }
                 });
-                res.send(true);
         }      
     });
 };
