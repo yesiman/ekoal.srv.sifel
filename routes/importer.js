@@ -81,6 +81,7 @@ exports.objectifs = function (req, res) {
                     unit:1
                 };
             }
+            console.log(line[0].toString());
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {
