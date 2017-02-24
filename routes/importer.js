@@ -80,7 +80,7 @@ exports.objectifs = function (req, res) {
                         user:new require('mongodb').ObjectID(req.decoded._id),
                         lines: months
                     };
-                    objectifs.push(produit);   
+                    objectifs.push(objectif);   
                 }
             });
         });         
