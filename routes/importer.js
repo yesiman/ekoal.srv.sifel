@@ -79,6 +79,7 @@ exports.objectifs = function (req, res) {
                 .then(
                 // On affiche un message avec la valeur
                 function(val) {
+                    console.log(line[0]);
                     collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                         if (item)
                         {
