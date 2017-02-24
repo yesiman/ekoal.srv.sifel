@@ -78,7 +78,7 @@ exports.objectifs = function (req, res) {
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {
-                    getObjectifMonthsv2(months,line,item._id,req.decoded._id)
+                    getObjectifMonthsv2(months,line,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
                     .then(
                     // On affiche un message avec la valeur
                     function(val) {
@@ -116,8 +116,8 @@ function getObjectifMonthsv2(months,line,prd,usr){
             };
         }
         var objectif = {
-            produit:new require('mongodb').ObjectID(prd),
-            user:new require('mongodb').ObjectID(usr),
+            produit:prd,
+            user:usr,
             lines: months
         };
         fulfill(objectif);
