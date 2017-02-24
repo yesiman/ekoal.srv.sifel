@@ -74,14 +74,20 @@ exports.objectifs = function (req, res) {
         for (var i = 0; i < lines.length; i++) {
             var lineStr = lines[i];
             var line = lineStr.split(";");
-            var objLines = getObjectifMonths(line);
+            var months = getObjectifMonths();
+            for (var imonth = 0; imonth < lines.length; imonth++) {
+                months[imonth].rendement = {
+                    val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
+                    unit:1
+                };
+            }
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {
                     var objectif = {
                         produit:new require('mongodb').ObjectID(item._id),
                         user:new require('mongodb').ObjectID(req.decoded._id),
-                        lines: objLines
+                        lines: months
                     };
                     
                     db.collection('products_objectifs', function (err, collection) {
@@ -100,8 +106,7 @@ exports.objectifs = function (req, res) {
     
     
 }
-function getObjectifMonths(line) {
-    console.log("line",line);
+function getObjectifMonths() {
     var months = [
         {id:1,lib:"Janvier",weeks:[]},
         {id:2,lib:"Février",weeks:[]},
@@ -120,15 +125,6 @@ function getObjectifMonths(line) {
     for (var d = new Date(new Date().getFullYear(),0,1);d <= new Date(new Date().getFullYear(),11,31);d.setDate(d.getDate() + 3))
     {
         var w = d.getWeek();
-        if (!(months[d.getMonth()].rendement))
-        {
-            
-            console.log("gmonth",d.getMonth() + 1);
-            months[d.getMonth()].rendement = {
-                val:(line[d.getMonth() + 1].toString().trim() != ""?parseInt(line[d.getMonth() + 1]):0),
-                unit:1
-            };
-        }
         var found = false;
         for (var iw = 0;iw < weeksUsed.length;iw++)
         {
