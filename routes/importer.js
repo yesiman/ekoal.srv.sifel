@@ -82,12 +82,13 @@ exports.objectifs = function (req, res) {
                         user:new require('mongodb').ObjectID(req.decoded._id),
                         lines: months
                     };
-                    //console.log(objectif);
                     objectifsLines.push(objectif);   
-                    console.log(objectifsLines);
                 }
             });
         });      
+    }
+    for (var i = 0; i < objectifsLines.length; i++) {
+        console.log(objectifsLines[i]);
     }
     if (errors.length == 0)
     {
