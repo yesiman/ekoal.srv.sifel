@@ -80,7 +80,7 @@ exports.objectifs = function (req, res) {
             .then(
             // On affiche un message avec la valeur
             function(val) {
-                
+
                 console.log("VALLL",val);
             }).catch(
             // Promesse rejetée
@@ -134,7 +134,7 @@ exports.objectifs = function (req, res) {
 
 function getObjectifMonthsv2(months,line){
   return new Promise(function (fulfill, reject){
-    fulfill(res);
+    fulfill({res:"yesi"});
   });
 }
 
