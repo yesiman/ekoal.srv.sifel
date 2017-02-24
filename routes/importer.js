@@ -80,6 +80,7 @@ exports.objectifs = function (req, res) {
             .then(
             // On affiche un message avec la valeur
             function(val) {
+                
                 console.log("VALLL",val);
             }).catch(
             // Promesse rejetée
