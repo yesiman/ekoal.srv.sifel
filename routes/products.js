@@ -145,7 +145,7 @@ exports.add = function (req, res) {
                 req.body.product);
                 db.collection('products_objectifs', function (err, collection) {
                     console.log(objectif);
-                    if (objectif._id)
+                    if (objectif.produit)
                     {
                         var cid = objectif._id;
                         delete objectif._id;
@@ -155,6 +155,7 @@ exports.add = function (req, res) {
                         res.send(true);
                     }
                     else {
+                        objectif.produit = new require('mongodb').ObjectID(pid);
                         collection.insert( objectif , function (err, saved) {
                             if (err || !saved) {
                                 res.send(false)
