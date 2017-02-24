@@ -81,40 +81,33 @@ exports.objectifs = function (req, res) {
                 .then(
                 // On affiche un message avec la valeur
                 function(val) {
-
+                    collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
+                        if (item)
+                        {
+                            var objectif = {
+                                produit:new require('mongodb').ObjectID(item._id),
+                                user:new require('mongodb').ObjectID(req.decoded._id),
+                                lines: val
+                            };
+                            db.collection('products_objectifs', function (err, collection) {
+                                collection.update(
+                                    { produit: new require('mongodb').ObjectID(objectif.produit) },
+                                    objectif, 
+                                    { "upsert": true },
+                                    function(err, results) {
+                                });
+                            });
+                        }
+                    });
                     console.log("VALLL",val);
                 }).catch(
                 // Promesse rejetée
                 function() { 
                     console.log("promesse rompue");
                 });
-            
-
-            
-                collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
-                    if (item)
-                    {
-                        var objectif = {
-                            produit:new require('mongodb').ObjectID(item._id),
-                            user:new require('mongodb').ObjectID(req.decoded._id),
-                            lines: months
-                        };
-                        db.collection('products_objectifs', function (err, collection) {
-                            collection.update(
-                                { produit: new require('mongodb').ObjectID(objectif.produit) },
-                                objectif, 
-                                { "upsert": true },
-                                function(err, results) {
-                            });
-                        });
-                    }
-                });
-            
             }
     });  
-    res.send({success:true});
-    
-    
+    res.send({success:true});   
 }
 
 function getObjectifMonthsv2(months,line){
@@ -129,7 +122,7 @@ function getObjectifMonthsv2(months,line){
                 "1":{val:8}
             };
         }
-        console.log(months);
+        
         fulfill(months);
   });
 }
