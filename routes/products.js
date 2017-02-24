@@ -103,12 +103,8 @@ exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.product.user = new require('mongodb').ObjectID(req.decoded._id);
     var objectif = {lines:req.body.product.objectif};
-    console.log("objectif",objectif);
-    if (objectif)
-    {
-        objectif.user = new require('mongodb').ObjectID(req.decoded._id);
-        delete req.body.product.objectif;    
-    }
+    objectif.user = new require('mongodb').ObjectID(req.decoded._id);
+    delete req.body.product.objectif;    
     req.body.product.dateModif = new Date();
     req.body.product.parent._id =  new require('mongodb').ObjectID(req.body.product.parent._id);
     req.body.product.orga =  new require('mongodb').ObjectID(req.decoded.orga);

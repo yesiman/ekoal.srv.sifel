@@ -81,6 +81,7 @@ exports.getParcelles = function (req, res) {
 exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
+    var txtFilter = req.body.txtFilter;
     var ret = new Object();
     var filters = {};
     switch (req.decoded.type)
