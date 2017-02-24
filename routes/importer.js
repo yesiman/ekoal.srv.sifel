@@ -82,16 +82,19 @@ exports.objectifs = function (req, res) {
                         user:new require('mongodb').ObjectID(req.decoded._id),
                         lines: months
                     };
-                    console.log(objectif);
+                    //console.log(objectif);
                     objectifs.push(objectif);   
                 }
             });
-        });         
+        });   
+        console.log(objectifs);      
     }
+    console.log(objectifs);
     if (errors.length == 0)
     {
         //console.log(objectifs);
         db.collection('products_objectifs', function (err, collection) {
+            
             for (var i = 0; i < objectifs.length; i++) {
                 console.log("objectifs[i]",objectifs[i]);
                 collection.update(
