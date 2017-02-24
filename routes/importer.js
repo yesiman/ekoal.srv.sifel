@@ -90,9 +90,10 @@ exports.objectifs = function (req, res) {
     }
     if (errors.length == 0)
     {
-        console.log(objectifs);
+        //console.log(objectifs);
         db.collection('products_objectifs', function (err, collection) {
             for (var i = 0; i < objectifs.length; i++) {
+                console.log("objectifs[i]",objectifs[i]);
                 collection.update(
                     { produit: new require('mongodb').ObjectID(objectifs[i].produit) },
                     objectifs[i], 
