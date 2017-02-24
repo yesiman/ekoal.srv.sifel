@@ -72,16 +72,14 @@ exports.objectifs = function (req, res) {
     var objectifsLines = [];
     db.collection('products', function (err, collection) {
         for (var i = 0; i < lines.length; i++) {
-            var line = lines[i].split(";");
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {
                     var objectif = {
                         produit:new require('mongodb').ObjectID(item._id),
                         user:new require('mongodb').ObjectID(req.decoded._id),
-                        lines: getObjectifMonths(line)
+                        lines: getObjectifMonths(line[i])
                     };
-                    console.log("line",line);
                     db.collection('products_objectifs', function (err, collection) {
                         collection.update(
                             { produit: new require('mongodb').ObjectID(objectif.produit) },
