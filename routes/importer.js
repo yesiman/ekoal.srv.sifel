@@ -80,12 +80,11 @@ exports.objectifs = function (req, res) {
                     val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
                     unit:1
                 };
-                
+                console.log(months[imonth].rendement);
             }
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {
-                    console.log(months);
                     var objectif = {
                         produit:new require('mongodb').ObjectID(item._id),
                         user:new require('mongodb').ObjectID(req.decoded._id),
