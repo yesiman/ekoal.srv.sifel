@@ -144,16 +144,18 @@ exports.add = function (req, res) {
                 req.body.product);
                 db.collection('products_objectifs', function (err, collection) {
                     console.log(objectif);
-                    if (objectif.produit)
-                    {
+                    
                         objectif.produit = new require('mongodb').ObjectID(pid);
                         var cid = objectif._id;
                         delete objectif._id;
                         collection.update(
                             { produit: new require('mongodb').ObjectID(pid) },
-                            objectif);
-                        res.send(true);
-                    }
+                            objectif, function(err, results) {
+                                console.log("results",results);
+                                res.send(true);
+                            });
+                        
+                    /*}
                     else {
                         objectif.produit = new require('mongodb').ObjectID(pid);
                         collection.insert( objectif , function (err, saved) {
@@ -164,7 +166,7 @@ exports.add = function (req, res) {
                                 res.send(true);
                             }
                         });
-                    }
+                    }*/
                 });
         }      
     });
