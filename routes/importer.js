@@ -68,7 +68,6 @@ exports.producteurs = function (req, res) {
 }
 exports.objectifs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
-    var months = getObjectifMonths();
     var errors = [];
     var objectifsLines = [];
     db.collection('products', function (err, collection) {
@@ -80,7 +79,7 @@ exports.objectifs = function (req, res) {
                     var objectif = {
                         produit:new require('mongodb').ObjectID(item._id),
                         user:new require('mongodb').ObjectID(req.decoded._id),
-                        lines: months
+                        lines: getObjectifMonths(line)
                     };
                     db.collection('products_objectifs', function (err, collection) {
                         collection.update(
@@ -94,13 +93,11 @@ exports.objectifs = function (req, res) {
             });
         }
     });      
-    
-            res.send({success:true});
+    res.send({success:true});
     
     
 }
-
-var getObjectifMonths = function() {
+var getObjectifMonths = function(line) {
     var months = [
         {id:1,lib:"Janvier",weeks:[]},
         {id:2,lib:"Février",weeks:[]},
@@ -119,6 +116,13 @@ var getObjectifMonths = function() {
     for (var d = new Date(new Date().getFullYear(),0,1);d <= new Date(new Date().getFullYear(),11,31);d.setDate(d.getDate() + 3))
     {
         var w = d.getWeek();
+        if (!(months[d.getMonth()].rendement))
+        {
+            months[d.getMonth()].rendement = {
+                val:(line[d.getMonth() + 1].toString().trim() != ""?parseInt(line[d.getMonth() + 1]):0),
+                unit:1
+            };
+        }
         var found = false;
         for (var iw = 0;iw < weeksUsed.length;iw++)
         {
@@ -131,6 +135,7 @@ var getObjectifMonths = function() {
         {
             weeksUsed.push(d.getMonth() + "-" + w);
             months[d.getMonth()].weeks.push(w);
+
         }
     }
     return months;
