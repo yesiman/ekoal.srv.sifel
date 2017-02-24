@@ -75,8 +75,6 @@ exports.objectifs = function (req, res) {
             var lineStr = lines[i];
             var line = lineStr.split(";");
             var months = getObjectifMonths();
-
-
             getObjectifMonthsv2(months,line)
                 .then(
                 // On affiche un message avec la valeur
@@ -90,6 +88,7 @@ exports.objectifs = function (req, res) {
                                 lines: val
                             };
                             db.collection('products_objectifs', function (err, collection) {
+                                console.log(objectif);
                                 collection.update(
                                     { produit: new require('mongodb').ObjectID(objectif.produit) },
                                     objectif, 
@@ -99,7 +98,6 @@ exports.objectifs = function (req, res) {
                             });
                         }
                     });
-                    console.log("VALLL",val);
                 }).catch(
                 // Promesse rejetée
                 function() { 
