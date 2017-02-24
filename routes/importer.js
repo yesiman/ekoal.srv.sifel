@@ -119,7 +119,7 @@ var getObjectifMonths = function(line) {
         if (!(months[d.getMonth()].rendement))
         {
             months[d.getMonth()].rendement = {
-                val:(line[d.getMonth() + 1].toString().trim() != ""?parseInt(line[d.getMonth() + 1]):0),
+                val:(line[parseInt(d.getMonth()) + 1].toString().trim() != ""?parseInt(line[d.getMonth() + 1]):0),
                 unit:1
             };
         }
