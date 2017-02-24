@@ -79,7 +79,7 @@ exports.objectifs = function (req, res) {
                     var objectif = {
                         produit:new require('mongodb').ObjectID(item._id),
                         user:new require('mongodb').ObjectID(req.decoded._id),
-                        lines: getObjectifMonths(line)
+                        lines: getObjectifMonths(lines[i])
                     };
                     console.log("line",line);
                     db.collection('products_objectifs', function (err, collection) {
