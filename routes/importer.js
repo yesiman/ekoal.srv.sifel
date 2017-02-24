@@ -85,7 +85,7 @@ exports.objectifs = function (req, res) {
                         db.collection('products_objectifs', function (err, collection) {
                             console.log(val);
                             collection.update(
-                                { produit: new require('mongodb').ObjectID(objectif.produit) },
+                                { produit: new require('mongodb').ObjectID(val.produit) },
                                 val, 
                                 { "upsert": true },
                                 function(err, results) {
