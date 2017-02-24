@@ -82,6 +82,7 @@ exports.objectifs = function (req, res) {
                         user:new require('mongodb').ObjectID(req.decoded._id),
                         lines: months
                     };
+                    console.log(objectif);
                     objectifs.push(objectif);   
                 }
             });
