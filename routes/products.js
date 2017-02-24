@@ -144,6 +144,7 @@ exports.add = function (req, res) {
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.product);
                 db.collection('products_objectifs', function (err, collection) {
+                    console.log(objectif);
                     if (objectif._id)
                     {
                         var cid = objectif._id;
