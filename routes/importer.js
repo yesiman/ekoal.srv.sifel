@@ -75,7 +75,7 @@ exports.objectifs = function (req, res) {
             var lineStr = lines[i];
             var line = lineStr.split(";");
             var months = getObjectifMonths();
-            for (var imonth = 0; imonth < lines.length; imonth++) {
+            for (var imonth = 0; imonth < months.length; imonth++) {
                 months[imonth].rendement = {
                     val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
                     unit:1
