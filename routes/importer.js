@@ -82,30 +82,21 @@ exports.objectifs = function (req, res) {
                         user:new require('mongodb').ObjectID(req.decoded._id),
                         lines: months
                     };
-                    objectifsLines.push(objectif);   
+                    db.collection('products_objectifs', function (err, collection) {
+                        collection.update(
+                            { produit: new require('mongodb').ObjectID(objectif.produit) },
+                            objectif, 
+                            { "upsert": true },
+                            function(err, results) {
+                        });
+                    });
                 }
             });
         }
     });      
-    if (errors.length == 0)
-    {
-        db.collection('products_objectifs', function (err, collection) {
-            
-            for (var i = 0; i < objectifsLines.length; i++) {
-                console.log("objectifsLines[i]",objectifsLines[i]);
-                collection.update(
-                    { produit: new require('mongodb').ObjectID(objectifsLines[i].produit) },
-                    objectifsLines[i], 
-                    { "upsert": true },
-                    function(err, results) {
-                    });
-            }
+    
             res.send({success:true});
-        });
-    }
-    else {
-        res.send({success:false,errors:errors});
-    }
+    
     
 }
 
