@@ -74,6 +74,7 @@ exports.objectifs = function (req, res) {
         var lineStr = lines[i];
         var line = lineStr.split(";");
         var months = getObjectifMonths();
+        getObjectifMonthsv2(months,line);
         for (var imonth = 0; imonth < months.length; imonth++) {
             months[imonth].rendement = {
                 val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
@@ -82,8 +83,8 @@ exports.objectifs = function (req, res) {
             months[imonth].rendements = {
                 "1":{val:8}
             };
-            console.log(months[imonth].rendement);
         }
+
         db.collection('products', function (err, collection) {
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
@@ -109,6 +110,13 @@ exports.objectifs = function (req, res) {
     
     
 }
+
+function getObjectifMonthsv2(months,line){
+  return new Promise(function (fulfill, reject){
+    fulfill(res);
+  });
+}
+
 function getObjectifMonths() {
     var months = [
         {id:1,lib:"Janvier",weeks:[]},
