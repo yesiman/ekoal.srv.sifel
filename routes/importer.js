@@ -71,9 +71,9 @@ exports.objectifs = function (req, res) {
     var months = getObjectifMonths();
     var errors = [];
     var objectifsLines = [];
-    for (var i = 0; i < lines.length; i++) {
-        var line = lines[i].split(";");
-        db.collection('products', function (err, collection) {
+    db.collection('products', function (err, collection) {
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i].split(";");
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {
@@ -85,17 +85,10 @@ exports.objectifs = function (req, res) {
                     objectifsLines.push(objectif);   
                 }
             });
-        });      
-        console.log(objectifsLines);
-    }
-    console.log("bef");
-    for (var i = 0; i < objectifsLines.length; i++) {
-        console.log(objectifsLines[i]);
-    }
-    console.log("act");
+        }
+    });      
     if (errors.length == 0)
     {
-        
         db.collection('products_objectifs', function (err, collection) {
             
             for (var i = 0; i < objectifsLines.length; i++) {
