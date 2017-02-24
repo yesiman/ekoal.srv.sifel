@@ -70,7 +70,7 @@ exports.objectifs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var months = getObjectifMonths();
     var errors = [];
-    var objectifs = [];
+    var objectifsLines = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
         db.collection('products', function (err, collection) {
@@ -83,23 +83,21 @@ exports.objectifs = function (req, res) {
                         lines: months
                     };
                     //console.log(objectif);
-                    objectifs.push(objectif);   
+                    objectifsLines.push(objectif);   
                 }
             });
-        });   
-        console.log(objectifs);      
+        });      
     }
-    console.log(objectifs);
     if (errors.length == 0)
     {
         //console.log(objectifs);
         db.collection('products_objectifs', function (err, collection) {
             
-            for (var i = 0; i < objectifs.length; i++) {
-                console.log("objectifs[i]",objectifs[i]);
+            for (var i = 0; i < objectifsLines.length; i++) {
+                console.log("objectifsLines[i]",objectifsLines[i]);
                 collection.update(
-                    { produit: new require('mongodb').ObjectID(objectifs[i].produit) },
-                    objectifs[i], 
+                    { produit: new require('mongodb').ObjectID(objectifsLines[i].produit) },
+                    objectifsLines[i], 
                     { "upsert": true },
                     function(err, results) {
                     });
