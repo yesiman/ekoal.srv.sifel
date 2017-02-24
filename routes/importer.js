@@ -84,13 +84,14 @@ exports.objectifs = function (req, res) {
                     };
                     //console.log(objectif);
                     objectifsLines.push(objectif);   
+                    console.log(objectifsLines);
                 }
             });
         });      
     }
     if (errors.length == 0)
     {
-        console.log(objectifsLines);
+        
         db.collection('products_objectifs', function (err, collection) {
             
             for (var i = 0; i < objectifsLines.length; i++) {
