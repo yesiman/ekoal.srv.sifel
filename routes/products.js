@@ -49,6 +49,7 @@ exports.getAllByLib = function (req, res) {
                 {
                     prods.push(new require('mongodb').ObjectID(items[ip]._id));
                 }
+                //TODO REMOVE FROM HER EANDLOAD WHEN PROD SELECTED
                 db.collection('products_objectifs', function (err, collection) {
                     collection.find({produit: {$in:prods}, user: new require('mongodb').ObjectID(req.decoded._id)}).skip(skip).limit(limit).toArray(function (err, items) {
                         for (var ii = 0;ii < ret.items.length;ii++)
@@ -102,6 +103,7 @@ exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.product.user = new require('mongodb').ObjectID(req.decoded._id);
     var objectif = {lines:req.body.product.objectif};
+    console.log("objectif",objectif);
     if (objectif)
     {
         objectif.user = new require('mongodb').ObjectID(req.decoded._id);
