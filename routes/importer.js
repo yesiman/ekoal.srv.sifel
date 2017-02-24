@@ -2,6 +2,7 @@
 exports.produits = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var prods = [];
+    var errors = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
         var produit = {
@@ -68,6 +69,7 @@ exports.producteurs = function (req, res) {
 exports.objectifs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var months = getObjectifMonths();
+    var errors = [];
     var objectifs = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
