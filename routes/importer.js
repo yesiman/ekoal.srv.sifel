@@ -73,6 +73,7 @@ exports.objectifs = function (req, res) {
     db.collection('products', function (err, collection) {
         for (var i = 0; i < lines.length; i++) {
             var line = lines[i].split(";");
+            console.log( lines[i]);
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {
