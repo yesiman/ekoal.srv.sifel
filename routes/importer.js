@@ -75,41 +75,35 @@ exports.objectifs = function (req, res) {
             var lineStr = lines[i];
             var line = lineStr.split(";");
             var months = getObjectifMonths();
-            getObjectifMonthsv2(months,line)
-                .then(
-                // On affiche un message avec la valeur
-                function(val) {
-                    console.log(line[0]);
-                    collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
-                        if (item)
-                        {
-                            var objectif = {
-                                produit:new require('mongodb').ObjectID(item._id),
-                                user:new require('mongodb').ObjectID(req.decoded._id),
-                                lines: val
-                            };
-                            db.collection('products_objectifs', function (err, collection) {
-                                console.log(objectif);
-                                collection.update(
-                                    { produit: new require('mongodb').ObjectID(objectif.produit) },
-                                    objectif, 
-                                    { "upsert": true },
-                                    function(err, results) {
-                                });
+            collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
+                if (item)
+                {
+                    getObjectifMonthsv2(months,line,item._id,req.decoded._id)
+                    .then(
+                    // On affiche un message avec la valeur
+                    function(val) {
+                        db.collection('products_objectifs', function (err, collection) {
+                            console.log(val);
+                            collection.update(
+                                { produit: new require('mongodb').ObjectID(objectif.produit) },
+                                val, 
+                                { "upsert": true },
+                                function(err, results) {
                             });
-                        }
+                        });
+                    }).catch(
+                    // Promesse rejetée
+                    function() { 
+                        console.log("promesse rompue");
                     });
-                }).catch(
-                // Promesse rejetée
-                function() { 
-                    console.log("promesse rompue");
-                });
-            }
+                }
+            });
+        }
     });  
     res.send({success:true});   
 }
 
-function getObjectifMonthsv2(months,line){
+function getObjectifMonthsv2(months,line,prd,usr){
   return new Promise(function (fulfill, reject){
         var months = getObjectifMonths();
         for (var imonth = 0; imonth < months.length; imonth++) {
@@ -121,8 +115,12 @@ function getObjectifMonthsv2(months,line){
                 "1":{val:8}
             };
         }
-        
-        fulfill(months);
+        var objectif = {
+            produit:new require('mongodb').ObjectID(prd),
+            user:new require('mongodb').ObjectID(usr),
+            lines: months
+        };
+        fulfill(objectif);
   });
 }
 
