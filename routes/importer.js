@@ -86,6 +86,7 @@ exports.objectifs = function (req, res) {
                 }
             });
         });      
+        console.log(objectifsLines);
     }
     console.log("bef");
     for (var i = 0; i < objectifsLines.length; i++) {
