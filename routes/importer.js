@@ -81,6 +81,7 @@ exports.objectifs = function (req, res) {
                         user:new require('mongodb').ObjectID(req.decoded._id),
                         lines: getObjectifMonths(line)
                     };
+                    console.log("line",line);
                     db.collection('products_objectifs', function (err, collection) {
                         collection.update(
                             { produit: new require('mongodb').ObjectID(objectif.produit) },
@@ -98,6 +99,7 @@ exports.objectifs = function (req, res) {
     
 }
 var getObjectifMonths = function(line) {
+    console.log("line",line);
     var months = [
         {id:1,lib:"Janvier",weeks:[]},
         {id:2,lib:"Février",weeks:[]},
@@ -118,7 +120,7 @@ var getObjectifMonths = function(line) {
         var w = d.getWeek();
         if (!(months[d.getMonth()].rendement))
         {
-            console.log("line",line);
+            
             console.log("gmonth",d.getMonth() + 1);
             months[d.getMonth()].rendement = {
                 val:(line[d.getMonth() + 1].toString().trim() != ""?parseInt(line[d.getMonth() + 1]):0),
