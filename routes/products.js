@@ -138,7 +138,6 @@ exports.add = function (req, res) {
             });
         }
         else {
-            objectif.produit = new require('mongodb').ObjectID(req.body.product._id);
             delete req.body.product._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
@@ -147,6 +146,7 @@ exports.add = function (req, res) {
                     console.log(objectif);
                     if (objectif.produit)
                     {
+                        objectif.produit = new require('mongodb').ObjectID(pid);
                         var cid = objectif._id;
                         delete objectif._id;
                         collection.update(
