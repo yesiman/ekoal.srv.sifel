@@ -118,8 +118,10 @@ var getObjectifMonths = function(line) {
         var w = d.getWeek();
         if (!(months[d.getMonth()].rendement))
         {
+            console.log("line",line);
+            console.log("gmonth",d.getMonth() + 1);
             months[d.getMonth()].rendement = {
-                val:(line[parseInt(d.getMonth()) + 1].toString().trim() != ""?parseInt(line[d.getMonth() + 1]):0),
+                val:(line[d.getMonth() + 1].toString().trim() != ""?parseInt(line[d.getMonth() + 1]):0),
                 unit:1
             };
         }
