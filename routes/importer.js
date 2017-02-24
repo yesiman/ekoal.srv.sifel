@@ -90,7 +90,7 @@ exports.objectifs = function (req, res) {
     }
     if (errors.length == 0)
     {
-        //console.log(objectifs);
+        console.log(objectifsLines);
         db.collection('products_objectifs', function (err, collection) {
             
             for (var i = 0; i < objectifsLines.length; i++) {
