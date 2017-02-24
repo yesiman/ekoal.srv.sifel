@@ -150,8 +150,9 @@ exports.add = function (req, res) {
                         delete objectif._id;
                         collection.update(
                             { produit: new require('mongodb').ObjectID(pid) },
-                            objectif, function(err, results) {
-                                console.log("results",results);
+                            objectif, 
+                            { "upsert": true },
+                            function(err, results) {
                                 res.send(true);
                             });
                         
