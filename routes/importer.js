@@ -74,7 +74,27 @@ exports.objectifs = function (req, res) {
         var lineStr = lines[i];
         var line = lineStr.split(";");
         var months = getObjectifMonths();
-        getObjectifMonthsv2(months,line);
+
+
+        getObjectifMonthsv2(months,line)
+            .then(
+            // On affiche un message avec la valeur
+            function(val) {
+                console.log("VALLL",val);
+            }).catch(
+            // Promesse rejetée
+            function() { 
+                console.log("promesse rompue");
+            });
+
+       /* getObjectifMonthsv2(months,line)
+        .then(result1 => {
+            console.log(result1);
+            return asyncFunction2(x, y);
+        })
+        .then(result2 => {
+            console.log(result2);
+        });*/
         for (var imonth = 0; imonth < months.length; imonth++) {
             months[imonth].rendement = {
                 val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
