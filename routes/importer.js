@@ -176,7 +176,8 @@ function getObjectifMonthsv2(line,prd,usr,callback){
             months[imonth].rendements = {};
             for (var iw = 0;iw < months[imonth].weeks;iw++)
             {
-                months[imonth].rendements[iw] = {val:8,unit:1};
+                months[imonth].rendements[iw] = {val:amountPerW,unit:1};
+                console.log("yeah",{val:amountPerW,unit:1});
             }
             
         }
