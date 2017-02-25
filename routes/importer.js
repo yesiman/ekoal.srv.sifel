@@ -175,7 +175,7 @@ function getObjectifMonthsv2(line,prd,usr,callback){
             var amountPerW = amount / months[imonth].weeks.length;
             months[imonth].rendements = {};
             console.log("yeah",months[imonth].weeks);
-            for (var iw = 0;iw < months[imonth].weeks;iw++)
+            for (var iw = 0;iw < months[imonth].weeks.length;iw++)
             {
                 months[imonth].rendements[iw] = {val:amountPerW,unit:1};
                 
