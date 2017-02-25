@@ -167,7 +167,7 @@ function getObjectifMonthsv2(line,prd,usr,callback){
         months = results;
         for (var imonth = 0; imonth < months.length; imonth++) {
             months[imonth].rendement = {
-                val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
+                val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1].replace(" ","")):0),
                 unit:1
             };
             months[imonth].rendements = {
