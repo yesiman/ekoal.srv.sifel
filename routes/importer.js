@@ -73,7 +73,7 @@ exports.objectifs = function (req, res) {
     
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
-        getProdId(line,req.decoded.orga,function(result)
+        getProdId(line,req.decoded._id,req.decoded.orga,function(result)
         {
             console.log(result);
             //getObjectifMonthsv2(line,result,req.decoded._id,function(results)
@@ -143,13 +143,16 @@ exports.objectifs = function (req, res) {
     //}
     res.send({success:true});   
 }
-function getProdId(line, orga, callback) {
+function getProdId(line, user, orga, callback) {
     db.collection('products', function (err, collection) {
         collection.findOne({ codeProd:{$eq:line[0]},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
             if (item)
             {   
-                console.log(line);
-                callback(item._id);
+                getObjectifMonthsv2(line,item._id,user,function(result){
+                    console.log(result);
+                    callback(result);
+                });
+                
             }
             else {
                 callback("");
