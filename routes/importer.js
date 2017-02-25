@@ -146,6 +146,7 @@ exports.objectifs = function (req, res) {
     res.send({success:true});   
 }
 function getProdId(line, user, orga, callback) {
+    if (codeProd.trim() == "") {callback("");}
     db.collection('products', function (err, collection) {
         collection.findOne({ codeProd:{$eq:line[0]},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
             if (item)
@@ -166,13 +167,18 @@ function getObjectifMonthsv2(line,prd,usr,callback){
     getObjectifMonths(function(results) {
         months = results;
         for (var imonth = 0; imonth < months.length; imonth++) {
+            var amount = (line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1].replace(" ","")):0);
             months[imonth].rendement = {
-                val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1].replace(" ","")):0),
+                val:amount,
                 unit:1
             };
-            months[imonth].rendements = {
-                "1":{val:8}
-            };
+            var amountPerW = amount / months[imonth].weeks.length;
+            months[imonth].rendements = {};
+            for (var iw = 0;iw < months[imonth].weeks;iw++)
+            {
+                months[imonth].rendements[iw] = {val:8,unit:1};
+            }
+            
         }
         var objectif = {
             produit:new require('mongodb').ObjectID(prd),
