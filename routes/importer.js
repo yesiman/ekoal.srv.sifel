@@ -155,6 +155,7 @@ function getProdId(codeProd, orga) {
 }
 function getObjectifMonthsv2(line,prd,usr,callback){
     getObjectifMonths(function(results) {
+        months = results;
         for (var imonth = 0; imonth < months.length; imonth++) {
             months[imonth].rendement = {
                 val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
