@@ -70,49 +70,18 @@ exports.objectifs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var errors = [];
     var objectifsLines = [];
-    db.collection('products', function (err, collection) {
-        for (var i = 0; i < lines.length; i++) {
-            var lineStr = lines[i];
-            var line = lineStr.split(";");
-            var pid = getProdId(line[0].toString(),req.decoded.orga);
-            console.log(pid);
-            /*getProdId(line[0].toString(),req.decoded.orga)
-                .then(
-                function(val) {
-                    console.log("getProdId",lineStr);   
-                    getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
-                        .then(
-                        // On affiche un message avec la valeur
-                        function(val) {
-                            db.collection('products_objectifs', function (err, collection) {
-                                collection.update(
-                                    { produit: new require('mongodb').ObjectID(val.produit) },
-                                    val, 
-                                    { "upsert": true },
-                                    function(err, results) {
-                                });
-                            });
-                        }).catch(
-                        // Promesse rejetée
-                        function() { 
-                            console.log("promesse rompue");
-                        });     
-                }).catch(
-                // Promesse rejetée
-                function() { 
-                    console.log("getProdId.promesse rompue");
-                });
-
-*/
-            //console.log("pId",pId);
-            /*collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
-                if (item)
-                {       
-                    getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
+    for (var i = 0; i < lines.length; i++) {
+        var lineStr = lines[i];
+        var line = lineStr.split(";");
+        getProdId(line[0].toString(),req.decoded.orga)
+            .then(
+            function(val) {
+                console.log("getProdId",val);   
+                /*getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
                     .then(
+                    // On affiche un message avec la valeur
                     function(val) {
                         db.collection('products_objectifs', function (err, collection) {
-                            console.log(val);
                             collection.update(
                                 { produit: new require('mongodb').ObjectID(val.produit) },
                                 val, 
@@ -121,13 +90,41 @@ exports.objectifs = function (req, res) {
                             });
                         });
                     }).catch(
+                    // Promesse rejetée
                     function() { 
                         console.log("promesse rompue");
+                    });  */   
+            }).catch(
+            // Promesse rejetée
+            function() { 
+                console.log("getProdId.promesse rompue");
+            });
+
+
+        //console.log("pId",pId);
+        /*collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
+            if (item)
+            {       
+                getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
+                .then(
+                function(val) {
+                    db.collection('products_objectifs', function (err, collection) {
+                        console.log(val);
+                        collection.update(
+                            { produit: new require('mongodb').ObjectID(val.produit) },
+                            val, 
+                            { "upsert": true },
+                            function(err, results) {
+                        });
                     });
-                }
-            });*/
-        }
-    });  
+                }).catch(
+                function() { 
+                    console.log("promesse rompue");
+                });
+            }
+        });*/
+    //}
+    }
     res.send({success:true});   
 }
 function getProdId(codeProd, orga) {
