@@ -108,7 +108,7 @@ function getObjectifMonthsv2(months,line,prd,usr){
         var months = getObjectifMonths();
         console.log("ok1");
         for (var imonth = 0; imonth < months.length; imonth++) {
-            console.log("ok1/1");
+            console.log("ok1/1",line);
             months[imonth].rendement = {
                 val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
                 unit:1
