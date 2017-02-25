@@ -75,12 +75,14 @@ exports.objectifs = function (req, res) {
         var line = lines[i].split(";");
         getProdId(line,req.decoded._id,req.decoded.orga,function(result)
         {
-            console.log(result);
-            //getObjectifMonthsv2(line,result,req.decoded._id,function(results)
-            //{
-            //    console.log(lines[i]);
-            //    console.log(i,results);
-            //});
+            db.collection('products_objectifs', function (err, collection) {
+                collection.update(
+                    { produit: new require('mongodb').ObjectID(result.produit) },
+                    result, 
+                    { "upsert": true },
+                    function(err, results) {
+                });
+            });
         });
         
     }
