@@ -74,11 +74,10 @@ exports.objectifs = function (req, res) {
         for (var i = 0; i < lines.length; i++) {
             var lineStr = lines[i];
             var line = lineStr.split(";");
-            var months = getObjectifMonths();
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {
-                    getObjectifMonthsv2(months,line,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
+                    getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
                     .then(
                     // On affiche un message avec la valeur
                     function(val) {
@@ -103,12 +102,13 @@ exports.objectifs = function (req, res) {
     res.send({success:true});   
 }
 
-function getObjectifMonthsv2(months,line,prd,usr){
+function getObjectifMonthsv2(lineStr,prd,usr){
   return new Promise(function (fulfill, reject){
         var months = getObjectifMonths();
-        console.log("ok1");
+        console.log("ok1",lineStr);
+        var line = lineStr.split(";");
         for (var imonth = 0; imonth < months.length; imonth++) {
-            console.log("ok1/1",line);
+            console.log("ok1/1");
             months[imonth].rendement = {
                 val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
                 unit:1
