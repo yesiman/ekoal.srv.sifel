@@ -70,13 +70,14 @@ exports.objectifs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var errors = [];
     var objectifsLines = [];
-    getObjectifMonths(function(results)
-    {
-        for (var i = 0; i < lines.length; i++) {
+    
+    for (var i = 0; i < lines.length; i++) {
+        getObjectifMonthsv2(function(results)
+        {
             console.log(lines[i]);
-            console.log(i,months);
-        }
-    })
+            console.log(i,results);
+        });
+    }
     
     
     /*for (var i = 0; i < lines.length; i++) {
@@ -151,32 +152,25 @@ function getProdId(codeProd, orga) {
         });
     });
 }
-function getObjectifMonthsv2(lineStr,prd,usr){
-  return new Promise(function (fulfill, reject){
-        var months = getObjectifMonths();
-        console.log("ok1",lineStr);
+function getObjectifMonthsv2(lineStr,prd,usr,callback){
+    getObjectifMonths(function(results) {
         var line = lineStr.split(";");
         for (var imonth = 0; imonth < months.length; imonth++) {
-            console.log("ok1/1");
             months[imonth].rendement = {
                 val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
                 unit:1
             };
-            console.log("ok1/2");
             months[imonth].rendements = {
                 "1":{val:8}
             };
-            console.log("ok1/3");
         }
-        console.log("ok2");
         var objectif = {
             produit:prd,
             user:usr,
             lines: months
         };
-        console.log("ok3");
-        fulfill(objectif);
-  });
+        callback(objectif);
+    });
 }
 
 function getObjectifMonths(callback) {
