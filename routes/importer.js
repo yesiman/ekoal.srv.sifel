@@ -75,7 +75,7 @@ exports.objectifs = function (req, res) {
             var lineStr = lines[i];
             var line = lineStr.split(";");
             var pId = getProdId(line[0].toString(),req.decoded.orga);
-            console.log(pId);
+            console.log("pId",pId);
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {       
@@ -105,9 +105,8 @@ exports.objectifs = function (req, res) {
     res.send({success:true});   
 }
 function getProdId(codeProd, orga) {
-    console.log(codeProd,orga);
     db.collection('products', function (err, collection) {
-        collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
+        collection.findOne({ codeProd:{$eq:codeProd},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
             if (item)
             {   
                 return item._id;
