@@ -106,6 +106,7 @@ exports.objectifs = function (req, res) {
 function getObjectifMonthsv2(months,line,prd,usr){
   return new Promise(function (fulfill, reject){
         var months = getObjectifMonths();
+        console.log("ok1");
         for (var imonth = 0; imonth < months.length; imonth++) {
             months[imonth].rendement = {
                 val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
@@ -115,11 +116,13 @@ function getObjectifMonthsv2(months,line,prd,usr){
                 "1":{val:8}
             };
         }
+        console.log("ok2");
         var objectif = {
             produit:prd,
             user:usr,
             lines: months
         };
+        console.log("ok3");
         fulfill(objectif);
   });
 }
