@@ -74,11 +74,10 @@ exports.objectifs = function (req, res) {
         for (var i = 0; i < lines.length; i++) {
             var lineStr = lines[i];
             var line = lineStr.split(";");
-            
             getProdId(line[0].toString(),req.decoded.orga)
                 .then(
                 function(val) {
-                    console.log("getProdId",val);        
+                    console.log("getProdId",lineStr);        
                 }).catch(
                 // Promesse rejetée
                 function() { 
