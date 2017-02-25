@@ -74,12 +74,23 @@ exports.objectifs = function (req, res) {
         for (var i = 0; i < lines.length; i++) {
             var lineStr = lines[i];
             var line = lineStr.split(";");
-            var pId = getProdId(line[0].toString(),req.decoded.orga);
-            console.log("pId",pId);
+            
+            getProdId(line[0].toString(),req.decoded.orga)
+                .then(
+                function(val) {
+                    console.log("getProdId",val);        
+                }).catch(
+                // Promesse rejetée
+                function() { 
+                    console.log("getProdId.promesse rompue");
+                });
+
+
+            //console.log("pId",pId);
             collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {       
-                    console.log(line[0].toString());
+                    //console.log(line[0].toString());
                     getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
                     .then(
                     // On affiche un message avec la valeur
