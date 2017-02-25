@@ -77,6 +77,7 @@ exports.objectifs = function (req, res) {
     }
     for (var s in lines) {
         var line = s.split(";");
+        console.log(s);
         getProdId(line[0].toString(),req.decoded.orga)
             .then(
             function(val) {
