@@ -146,7 +146,7 @@ exports.objectifs = function (req, res) {
     res.send({success:true});   
 }
 function getProdId(line, user, orga, callback) {
-    if (codeProd.trim() == "") {callback("");}
+    if (line[0].toString().trim() == "") {callback("");}
     db.collection('products', function (err, collection) {
         collection.findOne({ codeProd:{$eq:line[0]},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
             if (item)
