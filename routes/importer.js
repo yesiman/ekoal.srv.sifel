@@ -75,6 +75,7 @@ exports.objectifs = function (req, res) {
         var line = lines[i].split(";");
         getProdId(line[0],req.decoded.orga,function(result)
         {
+            console.log(line);
             getObjectifMonthsv2(line,result,req.decoded._id,function(results)
             {
                 console.log(lines[i]);
