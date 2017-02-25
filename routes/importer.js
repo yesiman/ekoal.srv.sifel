@@ -148,10 +148,11 @@ function getProdId(line, orga, callback) {
         collection.findOne({ codeProd:{$eq:line[0]},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
             if (item)
             {   
+                console.log(line);
                 callback(item._id);
             }
             else {
-                callback(codeProd);
+                callback("");
             }
         });
     });
