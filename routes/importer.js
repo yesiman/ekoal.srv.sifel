@@ -105,6 +105,7 @@ exports.objectifs = function (req, res) {
     res.send({success:true});   
 }
 function getProdId(codeProd, orga) {
+    console.log(codeProd,orga);
     db.collection('products', function (err, collection) {
         collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
             if (item)
