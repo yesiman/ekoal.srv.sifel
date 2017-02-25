@@ -70,10 +70,14 @@ exports.objectifs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var errors = [];
     var objectifsLines = [];
-    var months = getObjectifMonths();
-    for (var i = 0; i < lines.length; i++) {
-        console.log(i,months);
-    }
+    getObjectifMonths(function(results)
+    {
+        for (var i = 0; i < lines.length; i++) {
+            console.log(lines[i]);
+            console.log(i,months);
+        }
+    })
+    
     
     /*for (var i = 0; i < lines.length; i++) {
         var lineStr = lines[i];
@@ -175,7 +179,7 @@ function getObjectifMonthsv2(lineStr,prd,usr){
   });
 }
 
-function getObjectifMonths() {
+function getObjectifMonths(callback) {
     var months = [
         {id:1,lib:"Janvier",weeks:[]},
         {id:2,lib:"Février",weeks:[]},
