@@ -67,21 +67,16 @@ exports.producteurs = function (req, res) {
     
 }
 exports.objectifs = function (req, res) {
-    var linesBrut = req.files[0].buffer.toString().split("\n");
+    var lines = req.files[0].buffer.toString().split("\n");
     var errors = [];
     var objectifsLines = [];
-    var lines = [];
-    for (var i = 0; i < linesBrut.length; i++) {
-        var lineStr = linesBrut[i];
-        lines.push(lineStr);
-    }
-    for (var s in lines) {
-        var line = s.split(";");
-        console.log(s);
-        getProdId(line[0].toString(),req.decoded.orga)
+    for (var i = 0; i < lines.length; i++) {
+        var lineStr = lines[i];
+        var line = lineStr.split(";");
+        getProdId(line[0].toString(),req.decoded.orga,lineStr)
             .then(
             function(val) {
-                console.log("getProdId",s);   
+                console.log("getProdId",lineStr);   
                 /*getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
                     .then(
                     // On affiche un message avec la valeur
