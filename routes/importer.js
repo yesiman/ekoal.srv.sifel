@@ -76,7 +76,7 @@ exports.objectifs = function (req, res) {
         getProdId(line[0].toString(),req.decoded.orga)
             .then(
             function(val) {
-                console.log("getProdId",val);   
+                console.log("getProdId",lines);   
                 /*getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
                     .then(
                     // On affiche un message avec la valeur
