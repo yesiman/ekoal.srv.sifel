@@ -128,15 +128,17 @@ exports.objectifs = function (req, res) {
     res.send({success:true});   
 }
 function getProdId(codeProd, orga) {
-    db.collection('products', function (err, collection) {
-        collection.findOne({ codeProd:{$eq:codeProd},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
-            if (item)
-            {   
-                callback(item._id);
-            }
-            else {
-                callback(codeProd);
-            }
+    return new Promise(function (fulfill, reject){
+        db.collection('products', function (err, collection) {
+            collection.findOne({ codeProd:{$eq:codeProd},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
+                if (item)
+                {   
+                    fulfill(item._id);
+                }
+                else {
+                    reject(codeProd);
+                }
+            });
         });
     });
 }
