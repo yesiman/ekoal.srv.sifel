@@ -108,13 +108,16 @@ function getObjectifMonthsv2(months,line,prd,usr){
         var months = getObjectifMonths();
         console.log("ok1");
         for (var imonth = 0; imonth < months.length; imonth++) {
+            console.log("ok1/1");
             months[imonth].rendement = {
                 val:(line[imonth+1].toString().trim()!=""?parseInt(line[imonth+1]):0),
                 unit:1
             };
+            console.log("ok1/2");
             months[imonth].rendements = {
                 "1":{val:8}
             };
+            console.log("ok1/3");
         }
         console.log("ok2");
         var objectif = {
