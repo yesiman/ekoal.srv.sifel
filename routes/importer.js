@@ -70,14 +70,19 @@ exports.objectifs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var errors = [];
     var objectifsLines = [];
+    var months = getObjectifMonths();
     for (var i = 0; i < lines.length; i++) {
+        console.log(i,months);
+    }
+    
+    /*for (var i = 0; i < lines.length; i++) {
         var lineStr = lines[i];
         var line = lineStr.split(";");
         getProdId(line[0].toString(),req.decoded.orga,lineStr)
             .then(
             function(val) {
                 console.log("getProdId",i);   
-                /*getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
+                getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
                     .then(
                     // On affiche un message avec la valeur
                     function(val) {
@@ -93,7 +98,7 @@ exports.objectifs = function (req, res) {
                     // Promesse rejetée
                     function() { 
                         console.log("promesse rompue");
-                    });  */   
+                    });    
             }).catch(
             // Promesse rejetée
             function() { 
@@ -123,8 +128,8 @@ exports.objectifs = function (req, res) {
                 });
             }
         });*/
+    //}*/ 
     //}
-    }
     res.send({success:true});   
 }
 function getProdId(codeProd, orga) {
@@ -204,7 +209,7 @@ function getObjectifMonths() {
 
         }
     }
-    return months;
+    callback(months);
 }
 Date.prototype.getWeek = function() { 
 
