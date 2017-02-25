@@ -75,12 +75,12 @@ exports.objectifs = function (req, res) {
         var lineStr = linesBrut[i];
         lines.push(lineStr);
     }
-    for (var i = 0; i < lines.length; i++) {
-        var line = lines[i].split(";");
+    for (var s in lines) {
+        var line = s.split(";");
         getProdId(line[0].toString(),req.decoded.orga)
             .then(
             function(val) {
-                console.log("getProdId",line);   
+                console.log("getProdId",s);   
                 /*getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
                     .then(
                     // On affiche un message avec la valeur
