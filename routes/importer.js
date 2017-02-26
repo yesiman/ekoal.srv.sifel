@@ -96,6 +96,7 @@ exports.parcelles = function (req, res) {
             collection.findOne({ codeAdh:{$eq:line[0]},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                 if (item)
                 {
+                    console.log("line",line);
                     var parcelle = {
                         producteur:new require('mongodb').ObjectID(item._id),
                         lib:line[2].toString(),
