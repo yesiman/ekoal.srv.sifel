@@ -96,7 +96,10 @@ exports.parcelles = function (req, res) {
         {
             if (result != "")
             {
-                
+                 db.collection('parcelles', function (err, collection) {
+                    collection.insert(result , function (err, saved) { 
+                    });
+                });
             }
         });
     }
@@ -105,6 +108,7 @@ exports.parcelles = function (req, res) {
 function getProdId(line, user, orga, callback) {
     if (line[0].toString().trim() == "") {callback("");}
     db.collection('products', function (err, collection) {
+        console.log(line[0]);
         collection.findOne({ codeProd:{$eq:line[0]},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
             if (item)
             {   
@@ -133,11 +137,8 @@ function getUserId(line, orga, callback) {
                     code:line[1].toString(),
                     surface:parseFloat(line[3].toString())
                 };
-                db.collection('parcelles', function (err, collection) {
-                    collection.insert(parcelle , function (err, saved) { 
-                    });
-                });
-                callback(item._id);
+               
+                callback(parcelle);
             }
             else {
                 callback("");
