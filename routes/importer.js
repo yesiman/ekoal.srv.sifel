@@ -92,7 +92,7 @@ exports.parcelles = function (req, res) {
     var objectifsLines = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
-        getUserId(line[0],req.decoded.orga,function(result)
+        getUserId(line,req.decoded.orga,function(result)
         {
             if (result != "")
             {
