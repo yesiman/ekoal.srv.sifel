@@ -155,4 +155,5 @@ app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwil
 app.post('/importer/produits/', cors(), bodyParser.json(), upload, importer.produits);
 app.post('/importer/producteurs/', cors(), bodyParser.json(), upload, importer.producteurs);
 app.post('/importer/objectifs/', cors(), bodyParser.json(), upload, importer.objectifs);
+app.post('/importer/parcelles/', cors(), bodyParser.json(), upload, importer.parcelles);
 //END.ROUTES

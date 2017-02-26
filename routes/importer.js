@@ -70,7 +70,6 @@ exports.objectifs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var errors = [];
     var objectifsLines = [];
-    
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
         getProdId(line,req.decoded._id,req.decoded.orga,function(result)
@@ -84,65 +83,34 @@ exports.objectifs = function (req, res) {
                 });
             });
         });
-        
     }
-    
-    
-    /*for (var i = 0; i < lines.length; i++) {
-        var lineStr = lines[i];
-        var line = lineStr.split(";");
-        getProdId(line[0].toString(),req.decoded.orga,lineStr)
-            .then(
-            function(val) {
-                console.log("getProdId",i);   
-                getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
-                    .then(
-                    // On affiche un message avec la valeur
-                    function(val) {
-                        db.collection('products_objectifs', function (err, collection) {
-                            collection.update(
-                                { produit: new require('mongodb').ObjectID(val.produit) },
-                                val, 
-                                { "upsert": true },
-                                function(err, results) {
-                            });
-                        });
-                    }).catch(
-                    // Promesse rejetée
-                    function() { 
-                        console.log("promesse rompue");
-                    });    
-            }).catch(
-            // Promesse rejetée
-            function() { 
-                console.log("getProdId.promesse rompue");
-            });
-
-
-        //console.log("pId",pId);
-        /*collection.findOne({ codeProd:{$eq:line[0].toString()},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
-            if (item)
-            {       
-                getObjectifMonthsv2(lineStr,new require('mongodb').ObjectID(item._id),new require('mongodb').ObjectID(req.decoded._id))
-                .then(
-                function(val) {
-                    db.collection('products_objectifs', function (err, collection) {
-                        console.log(val);
-                        collection.update(
-                            { produit: new require('mongodb').ObjectID(val.produit) },
-                            val, 
-                            { "upsert": true },
-                            function(err, results) {
+    res.send({success:true});   
+}
+exports.parcelles = function (req, res) {
+    var lines = req.files[0].buffer.toString().split("\n");
+    var errors = [];
+    var objectifsLines = [];
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].split(";");
+        db.collection('users', function (err, collection) {
+            collection.findOne({ codeAdh:{$eq:line[0]},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
+                if (item)
+                {
+                    var parcelle = {
+                        producteur:new require('mongodb').ObjectID(item._id),
+                        lib:line[2].toString(),
+                        cadastre:line[4].toString(),
+                        code:line[1].toString(),
+                        surface:parseFloat(line[3].toString())
+                    };
+                    db.collection('parcelles', function (err, collection) {
+                        collection.insert(parcelle , function (err, saved) { 
                         });
                     });
-                }).catch(
-                function() { 
-                    console.log("promesse rompue");
-                });
-            }
-        });*/
-    //}*/ 
-    //}
+                }
+            });
+        });
+    }
     res.send({success:true});   
 }
 function getProdId(line, user, orga, callback) {
