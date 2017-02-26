@@ -92,24 +92,12 @@ exports.parcelles = function (req, res) {
     var objectifsLines = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
-        db.collection('users', function (err, collection) {
-            collection.findOne({ codeAdh:{$eq:line[0]},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
-                if (item)
-                {
-                    console.log("line",line);
-                    var parcelle = {
-                        producteur:new require('mongodb').ObjectID(item._id),
-                        lib:line[2].toString(),
-                        cadastre:line[4].toString(),
-                        code:line[1].toString(),
-                        surface:parseFloat(line[3].toString())
-                    };
-                    db.collection('parcelles', function (err, collection) {
-                        collection.insert(parcelle , function (err, saved) { 
-                        });
-                    });
-                }
-            });
+        getUserId(line[0],req.decoded.orga,function(result)
+        {
+            if (result != "")
+            {
+                
+            }
         });
     }
     res.send({success:true});   
@@ -125,6 +113,31 @@ function getProdId(line, user, orga, callback) {
                     callback(result);
                 });
                 
+            }
+            else {
+                callback("");
+            }
+        });
+    });
+}
+function getUserId(line, orga, callback) {
+    if (line[0].toString().trim() == "") {callback("");}
+    db.collection('users', function (err, collection) {
+        collection.findOne({ codeProd:{$eq:line[0].toString().trim()},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
+            if (item)
+            {   
+                var parcelle = {
+                    producteur:new require('mongodb').ObjectID(item._id),
+                    lib:line[2].toString(),
+                    cadastre:line[4].toString(),
+                    code:line[1].toString(),
+                    surface:parseFloat(line[3].toString())
+                };
+                db.collection('parcelles', function (err, collection) {
+                    collection.insert(parcelle , function (err, saved) { 
+                    });
+                });
+                callback(item._id);
             }
             else {
                 callback("");
