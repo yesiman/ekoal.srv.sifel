@@ -128,7 +128,7 @@ function getUserId(line, orga, callback) {
     console.log(line);
     if (line[0].toString().trim() == "") {callback("");}
     db.collection('users', function (err, collection) {
-        collection.findOne({ codeProd:{$eq:line[0].toString().trim()},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
+        collection.findOne({ codeAdh:{$eq:line[0].toString().trim()},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
             if (item)
             {   
                 var parcelle = {
