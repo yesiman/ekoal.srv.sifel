@@ -105,8 +105,6 @@ exports.parcelles = function (req, res) {
                         { "upsert": true },
                         function(err, results) {
                     });
-                    collection.insert(result , function (err, saved) { 
-                    });
                 });
             }
         });
