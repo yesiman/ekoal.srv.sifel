@@ -22,7 +22,11 @@ exports.produits = function (req, res) {
     {
         db.collection('products', function (err, collection) {
             for (var i = 0; i < prods.length; i++) {
-                collection.insert(prods[i] , function (err, saved) { 
+                collection.update(
+                    { orga: produit.orga, codeProd:produit.codeProd},
+                    produit, 
+                    { "upsert": true },
+                    function(err, results) {
                 });
             }
             res.send({success:true});
@@ -45,6 +49,7 @@ exports.producteurs = function (req, res) {
             codeAdh:line[2],
             name:line[4],
             surn:line[5],
+            email:line[6],
             pass:line[7],
             mobPhone:line[8],
             certif:line[9]
@@ -55,7 +60,11 @@ exports.producteurs = function (req, res) {
     {
         db.collection('users', function (err, collection) {
             for (var i = 0; i < users.length; i++) {
-                collection.insert(users[i] , function (err, saved) { 
+                collection.update(
+                    { orga: user.orga, codeAdh:user.codeAdh},
+                    user, 
+                    { "upsert": true },
+                    function(err, results) {
                 });
             }
             res.send({success:true});
