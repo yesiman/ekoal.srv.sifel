@@ -55,7 +55,7 @@ exports.producteurs = function (req, res) {
                 email:line[6],
                 pass:line[7],
                 mobPhone:line[8],
-                certif:line[9].toString().replace("\r","")
+                certif:line[9].replace(/(\r\n|\n|\r)/gm,"")
             };
             users.push(user);
         }
