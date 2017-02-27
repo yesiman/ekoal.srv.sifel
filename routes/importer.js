@@ -44,6 +44,7 @@ exports.producteurs = function (req, res) {
         var line = lines[i].split(";");
         if (line[9])
         {
+            console.log(line[9]);
             var user = {
                 type:4,
                 dateModif: new Date(),
