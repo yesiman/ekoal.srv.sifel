@@ -115,7 +115,14 @@ exports.getAll = function (req, res) {
         default:  //VOIT AUCUNS USER
             filters = { type: {$gte: 9999} };
     }
-    
+    if (txtFilter && txtFilter != "")
+    {
+        filters["$or"] = [
+            {name: { '$regex': txtFilter, $options: 'i' }},
+            {surn: { '$regex': txtFilter, $options: 'i' }},
+            {codeAdh: { '$regex': txtFilter, $options: 'i' }}
+        ];
+    }
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
