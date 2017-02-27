@@ -142,7 +142,7 @@ function getUserId(line, orga, callback) {
                     lib:line[2].toString(),
                     cadastre:line[4].toString(),
                     code:line[1].toString(),
-                    surface:line[3]
+                    surface:parseFloat(line[3].toString().trim().replace(",","."))
                 };
                
                 callback(parcelle);
