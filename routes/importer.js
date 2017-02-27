@@ -96,10 +96,10 @@ exports.parcelles = function (req, res) {
         {
             if (result != "")
             {
-                 db.collection('parcelles', function (err, collection) {
-                     collection.update(
-                        { code: new require('mongodb').ObjectID(result.code),
-                           producteur: new require('mongodb').ObjectID(result.producteur)
+                db.collection('parcelles', function (err, collection) {
+                    collection.update(
+                        { code: result.code,
+                        producteur: result.producteur
                         },
                         result, 
                         { "upsert": true },
