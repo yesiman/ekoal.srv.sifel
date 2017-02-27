@@ -97,6 +97,12 @@ exports.parcelles = function (req, res) {
             if (result != "")
             {
                  db.collection('parcelles', function (err, collection) {
+                     collection.update(
+                        { code: new require('mongodb').ObjectID(result.code) },
+                        result, 
+                        { "upsert": true },
+                        function(err, results) {
+                    });
                     collection.insert(result , function (err, saved) { 
                     });
                 });
@@ -136,7 +142,7 @@ function getUserId(line, orga, callback) {
                     lib:line[2].toString(),
                     cadastre:line[4].toString(),
                     code:line[1].toString(),
-                    surface:parseFloat(line[3].toString())
+                    surface:parseFloat(line[3].toString().replace(",","."))
                 };
                
                 callback(parcelle);
