@@ -98,7 +98,9 @@ exports.parcelles = function (req, res) {
             {
                  db.collection('parcelles', function (err, collection) {
                      collection.update(
-                        { code: new require('mongodb').ObjectID(result.code) },
+                        { code: new require('mongodb').ObjectID(result.code),
+                           producteur: new require('mongodb').ObjectID(result.producteur)
+                        },
                         result, 
                         { "upsert": true },
                         function(err, results) {
