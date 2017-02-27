@@ -44,7 +44,7 @@ exports.producteurs = function (req, res) {
         var line = lines[i].split(";");
         if (line[9])
         {
-            console.log(line[9]);
+            
             var user = {
                 type:4,
                 dateModif: new Date(),
@@ -57,6 +57,7 @@ exports.producteurs = function (req, res) {
                 mobPhone:line[8],
                 certif:line[9].replace(/(\r\n|\n|\r)/gm,"")
             };
+            console.log(line[9]);
             users.push(user);
         }
     }
@@ -65,7 +66,7 @@ exports.producteurs = function (req, res) {
         db.collection('users', function (err, collection) {
             for (var i = 0; i < users.length; i++) {
                 collection.update(
-                    { orga: user.orga, codeAdh:user.codeAdh},
+                    { orga: user[i].orga, codeAdh:user[i].codeAdh},
                     user, 
                     { "upsert": true },
                     function(err, results) {
