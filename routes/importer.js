@@ -66,8 +66,8 @@ exports.producteurs = function (req, res) {
         db.collection('users', function (err, collection) {
             for (var i = 0; i < users.length; i++) {
                 collection.update(
-                    { orga: user[i].orga, codeAdh:user[i].codeAdh},
-                    user, 
+                    { orga: users[i].orga, codeAdh:users[i].codeAdh},
+                    users[i], 
                     { "upsert": true },
                     function(err, results) {
                 });
