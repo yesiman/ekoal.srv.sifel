@@ -42,19 +42,22 @@ exports.producteurs = function (req, res) {
     var errors = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
-        var user = {
-            type:4,
-            dateModif: new Date(),
-            orga:new require('mongodb').ObjectID(req.decoded.orga),
-            codeAdh:line[2],
-            name:line[4],
-            surn:line[5],
-            email:line[6],
-            pass:line[7],
-            mobPhone:line[8],
-            certif:line[9].toString().replace("\r","")
-        };
-        users.push(user);    
+        if (line[9])
+        {
+            var user = {
+                type:4,
+                dateModif: new Date(),
+                orga:new require('mongodb').ObjectID(req.decoded.orga),
+                codeAdh:line[2],
+                name:line[4],
+                surn:line[5],
+                email:line[6],
+                pass:line[7],
+                mobPhone:line[8],
+                certif:line[9].toString().replace("\r","")
+            };
+            users.push(user);
+        }
     }
     if (errors.length == 0)
     {
