@@ -157,6 +157,14 @@ exports.getAllByType = function (req, res) {
         default:  //VOIT AUCUNS USER
             filters = { type: {$gte: 9999} };
     }
+    if (req.params.req && (req.params.req != ""))
+    {
+        filters["$or"] = [
+            {name: { '$regex': req.params.req, $options: 'i' }},
+            {surn: { '$regex': req.params.req, $options: 'i' }},
+            {codeAdh: { '$regex': req.params.req, $options: 'i' }}
+        ];
+    }
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;

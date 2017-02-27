@@ -23,8 +23,8 @@ exports.produits = function (req, res) {
         db.collection('products', function (err, collection) {
             for (var i = 0; i < prods.length; i++) {
                 collection.update(
-                    { orga: produit.orga, codeProd:produit.codeProd},
-                    produit, 
+                    { orga: prods[i].orga, codeProd:prods[i].codeProd},
+                    prods[i], 
                     { "upsert": true },
                     function(err, results) {
                 });
