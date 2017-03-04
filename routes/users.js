@@ -37,7 +37,7 @@ exports.get = function (req, res) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
             if (item)
             {
-                if (item.type == 4)// IF PRODUCTEUR
+                if ((item.type == 4) && (req.params.withParc))// IF PRODUCTEUR
                 {
                     //GET PARCELLES
                     db.collection('parcelles', function (err, collection) {
