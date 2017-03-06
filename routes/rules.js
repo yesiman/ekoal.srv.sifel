@@ -12,7 +12,6 @@ exports.getAllByProduit = function (req, res) {
     db.collection('products_rules', function (err, collection) {
         collection.count({produit:new require('mongodb').ObjectID(req.params.id)}, function (err, count) {
             collection.find({produit:new require('mongodb').ObjectID(req.params.id)}).skip(skip).limit(limit).toArray(function (err, items) {
-                ret.items = items;
                 res.send({items:items,count:count});
             });
         });
