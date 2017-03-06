@@ -183,9 +183,9 @@ exports.getAllByOrga = function (req, res) {
     if (req.body.req && req.body.req != "")
     {
         filters["$or"] = [
-            {name: { '$regex': req.params.req, $options: 'i' }},
-            {surn: { '$regex': req.params.req, $options: 'i' }},
-            {codeAdh: { '$regex': req.params.req, $options: 'i' }}
+            {name: { '$regex': req.body.req, $options: 'i' }},
+            {surn: { '$regex': req.body.req, $options: 'i' }},
+            {codeAdh: { '$regex': req.body.req, $options: 'i' }}
         ];
     }
     //TYPE 4 et 
