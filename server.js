@@ -142,7 +142,7 @@ app.delete('/planifs/delete/:id', cors(), bodyParser.json(), planifs.delete);
 //RULES
 app.get('/rules/get/:id', cors(), bodyParser.json(), rules.get);
 app.post('/rules/add/:id', cors(), bodyParser.json(), rules.add);
-app.get('/rules/getAllByProduit/:id', cors(), bodyParser.json(), rules.getAllByProduit);
+app.get('/rules/getAllByProduit/:idp/:nbr/:id', cors(), bodyParser.json(), rules.getAllByProduit);
 app.delete('/rules/delete/:id', cors(), bodyParser.json(), rules.delete);
 //END RULES
 //STATS

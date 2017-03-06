@@ -6,14 +6,15 @@ exports.get = function (req, res) {
     });
 };
 exports.getAllByProduit = function (req, res) {
-    var ret = new Object();
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
     //TODO ADD WORKFLOW RULES
     db.collection('products_rules', function (err, collection) {
-        collection.find({produit:new require('mongodb').ObjectID(req.params.id)}).toArray(function (err, items) {
-            console.log(req.params.id);
-            console.log(items);
-            ret.items = items;
-            res.send(ret);
+        collection.count({produit:new require('mongodb').ObjectID(req.params.id)}, function (err, count) {
+            collection.find({produit:new require('mongodb').ObjectID(req.params.id)}).skip(skip).limit(limit).toArray(function (err, items) {
+                ret.items = items;
+                res.send({items:items,count:count});
+            });
         });
     });
 };
