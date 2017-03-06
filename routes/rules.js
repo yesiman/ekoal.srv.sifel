@@ -10,8 +10,8 @@ exports.getAllByProduit = function (req, res) {
     var limit = parseInt(req.params.nbr);
     //TODO ADD WORKFLOW RULES
     db.collection('products_rules', function (err, collection) {
-        collection.count({produit:new require('mongodb').ObjectID(req.params.id)}, function (err, count) {
-            collection.find({produit:new require('mongodb').ObjectID(req.params.id)}).skip(skip).limit(limit).toArray(function (err, items) {
+        collection.count({produit:new require('mongodb').ObjectID(req.params.id),lib: { '$regex': req.params.req, $options: 'i' }}, function (err, count) {
+            collection.find({produit:new require('mongodb').ObjectID(req.params.id),lib: { '$regex': req.params.req, $options: 'i' }}).skip(skip).limit(limit).toArray(function (err, items) {
                 res.send({items:items,count:count});
             });
         });
