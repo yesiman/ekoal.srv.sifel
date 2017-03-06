@@ -77,8 +77,7 @@ exports.getParcelles = function (req, res) {
                     db.collection('parcelles', function (err, collection) {
                         collection.count(filters, function (err, count) {
                             collection.find(filters).toArray(function (err, items) {
-                                var ret = {items:items};
-                                res.send({items:item,count:count});
+                                res.send({items:items,count:count});
                             });
                         });
                     });
