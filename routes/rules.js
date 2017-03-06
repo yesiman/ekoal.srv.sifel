@@ -8,10 +8,17 @@ exports.get = function (req, res) {
 exports.getAllByProduit = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
+    var filters = {
+        produit:new require('mongodb').ObjectID(req.params.id)
+    }
     //TODO ADD WORKFLOW RULES
+    if (req.body.req && req.body.req != "")
+    {
+        filters.lib = { '$regex': req.body.req, $options: 'i' };
+    }
     db.collection('products_rules', function (err, collection) {
-        collection.count({produit:new require('mongodb').ObjectID(req.params.id),lib: { '$regex': req.params.req, $options: 'i' }}, function (err, count) {
-            collection.find({produit:new require('mongodb').ObjectID(req.params.id),lib: { '$regex': req.params.req, $options: 'i' }}).skip(skip).limit(limit).toArray(function (err, items) {
+        collection.count(filters, function (err, count) {
+            collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
                 res.send({items:items,count:count});
             });
         });
