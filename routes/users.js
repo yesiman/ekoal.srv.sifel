@@ -179,15 +179,22 @@ exports.getAllByOrga = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var orga = req.params.ido;
-    var ret = new Object();
-    //TYPE 4 et 
     var filters = { type: { $eq: 4 }, orga: new require('mongodb').ObjectID(orga) };
+    if (req.body.req && req.body.req != "")
+    {
+        filters["$or"] = [
+            {name: { '$regex': req.params.req, $options: 'i' }},
+            {surn: { '$regex': req.params.req, $options: 'i' }},
+            {codeAdh: { '$regex': req.params.req, $options: 'i' }}
+        ];
+    }
+    //TYPE 4 et 
+    
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
-                ret.items = items;
-                res.send(ret);
+                res.send({items:items,count:count});
             });
         });
     });
