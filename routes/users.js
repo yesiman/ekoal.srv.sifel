@@ -192,7 +192,6 @@ exports.getAllByOrga = function (req, res) {
     
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
-            ret.count = count;
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
                 res.send({items:items,count:count});
             });
