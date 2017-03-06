@@ -56,17 +56,30 @@ exports.get = function (req, res) {
     });
 };
 exports.getParcelles = function (req, res) {
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
+    
     db.collection('users', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
             if (item)
             {
                 if (item.type == 4)// IF PRODUCTEUR
                 {
+                    var filters = {
+                        producteur:new require('mongodb').ObjectID(req.params.id)
+                    }
+                    //TODO ADD WORKFLOW RULES
+                    if (req.body.req && req.body.req != "")
+                    {
+                        filters.lib = { '$regex': req.body.req, $options: 'i' };
+                    }
                     //GET PARCELLES
                     db.collection('parcelles', function (err, collection) {
-                        collection.find({producteur:new require('mongodb').ObjectID(req.params.id)}).toArray(function (err, items) {
-                            var ret = {items:items};
-                            res.send(ret);
+                        collection.count(filters, function (err, count) {
+                            collection.find(filters).toArray(function (err, items) {
+                                var ret = {items:items};
+                                res.send({items:item,count:count});
+                            });
                         });
                     });
                 }
