@@ -355,19 +355,33 @@ exports.groupDecale = function (req, res) {
             db.collection('planifs_lines', function (err, collection) {
                 collection.find({planif:{$in:idsOID}}).toArray(function (err, items) {
                     planifsLines = items;
-                    //START DECAL
+                    //START DECAL PLINES
                     for (var i = 0;i < planifsLines.length;i++)
                     {
                         var opl = planifsLines[i];
                         var pid = opl._id;
                         delete opl._id;
-                        console.log("OLD",opl);
                         opl.startAt.setDate(opl.startAt.getDate() + decalIn);
                         opl.semaine = opl.startAt.getWeek();
                         opl.mois = opl.startAt.getMonth()+1;
                         opl.anne = opl.startAt.getFullYear();
-                        console.log("NEW",opl);
+                        collection.update(
+                            { _id: new require('mongodb').ObjectID(pid) },
+                            opl);
                     }
+                    //START DECAL P
+                    db.collection('planifs', function (err, collection) {
+                        for (var i = 0;i < planifs.length;i++)
+                        {
+                            var opl = planifs[i];
+                            var pid = opl._id;
+                            delete opl._id;
+                            opl.datePlant.setDate(opl.datePlant.getDate() + decalIn);
+                            collection.update(
+                                { _id: new require('mongodb').ObjectID(pid) },
+                                opl);
+                        }
+                    });
                     res.send("ok");
                 });
             });
