@@ -376,6 +376,7 @@ exports.groupDecale = function (req, res) {
                             var opl = planifs[i];
                             var pid = opl._id;
                             delete opl._id;
+                            opl.datePlant = new Date(opl.datePlant);
                             opl.datePlant.setDate(opl.datePlant.getDate() + decalIn);
                             collection.update(
                                 { _id: new require('mongodb').ObjectID(pid) },
