@@ -337,7 +337,7 @@ exports.getAll = function (req, res) {
     });
     
 };
-exports.groupDecale = function (req, res) {
+exports.groupDupDec = function (req, res) {
     var ids = req.body.pids;
     var decalIn = req.body.decalIn;
     var idsOID = [];
@@ -365,9 +365,18 @@ exports.groupDecale = function (req, res) {
                         opl.semaine = opl.startAt.getWeek();
                         opl.mois = opl.startAt.getMonth()+1;
                         opl.anne = opl.startAt.getFullYear();
-                        collection.update(
-                            { _id: new require('mongodb').ObjectID(pid) },
-                            opl);
+                        switch (req.body.mode)
+                        {
+                            case "dup":
+                                collection.insert(opl);
+                                break;
+                            case "dec":
+                                collection.update(
+                                    { _id: new require('mongodb').ObjectID(pid) },
+                                    opl);
+                                break;
+                        }
+                        
                     }
                     //START DECAL P
                     db.collection('planifs', function (err, collection) {
@@ -378,9 +387,17 @@ exports.groupDecale = function (req, res) {
                             delete opl._id;
                             opl.datePlant = new Date(opl.datePlant);
                             opl.datePlant.setDate(opl.datePlant.getDate() + decalIn);
-                            collection.update(
-                                { _id: new require('mongodb').ObjectID(pid) },
-                                opl);
+                            switch (req.body.mode)
+                            {
+                                case "dup":
+                                    collection.insert(opl);
+                                    break;
+                                case "dec":
+                                    collection.update(
+                                        { _id: new require('mongodb').ObjectID(pid) },
+                                        opl);
+                                    break;
+                            }
                         }
                     });
                     res.send("ok");
