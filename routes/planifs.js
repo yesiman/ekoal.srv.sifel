@@ -349,10 +349,10 @@ exports.groupDecale = function (req, res) {
     }
     //LOAD PLANIFS
     db.collection('planifs', function (err, collection) {
-        collection.find({_id:{$in:idsOID}}).skip(skip).limit(limit).toArray(function (err, items) {
+        collection.find({_id:{$in:idsOID}}).toArray(function (err, items) {
             planifs = items;
             db.collection('planifs_lines', function (err, collection) {
-                collection.find({planif:{$in:idsOID}}).skip(skip).limit(limit).toArray(function (err, items) {
+                collection.find({planif:{$in:idsOID}}).toArray(function (err, items) {
                     planifsLines = items;
                     //START DECAL
                     for (var i = 0;i < planifsLines.length;i++)
