@@ -347,6 +347,7 @@ exports.groupDecale = function (req, res) {
     {
         idsOID.push(new require('mongodb').ObjectID(ids[i]));
     }
+    console.log(idsOID);
     //LOAD PLANIFS
     db.collection('planifs', function (err, collection) {
         collection.find({_id:{$in:idsOID}}).toArray(function (err, items) {
