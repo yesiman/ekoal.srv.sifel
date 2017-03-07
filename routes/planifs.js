@@ -337,3 +337,42 @@ exports.getAll = function (req, res) {
     });
     
 };
+exports.groupDecale = function (req, res) {
+    var ids = req.body.pids;
+    var decalIn = req.body.decalIn;
+    var idsOID = [];
+    var planifs;
+    var planifsLines;
+    for(var i=0;i<ids.length;i++)
+    {
+        idsOID.push(new require('mongodb').ObjectID(ids[i]));
+    }
+    //LOAD PLANIFS
+    db.collection('planifs', function (err, collection) {
+        collection.find({_id:{$in:idsOID}}).skip(skip).limit(limit).toArray(function (err, items) {
+            planifs = items;
+            db.collection('planifs_lines', function (err, collection) {
+                collection.find({planif:{$in:idsOID}}).skip(skip).limit(limit).toArray(function (err, items) {
+                    planifsLines = items;
+                    //START DECAL
+                    for (var i = 0;i < planifsLines.length;i++)
+                    {
+                        var opl = planifsLines[i];
+                        var pid = opl._id;
+                        delete opl._id;
+                        console.log("OLD",opl);
+                        opl.startAt.setDate(opl.startAt.getDate() + decalIn);
+                        opl.semaine = opl.startAt.getWeek();
+                        opl.mois = opl.startAt.getMonth()+1;
+                        opl.anne = opl.startAt.getFullYear();
+                        console.log("NEW",opl);
+                    }
+                    res.send("ok");
+                });
+            });
+        });
+    });
+    
+};
+exports.groupDuplic = function (req, res) {
+};
