@@ -297,6 +297,15 @@ exports.add = function (req, res) {
     });
 };
 
+exports.deleteParcelle = function (req, res) {
+    db.collection('parcelles', function (err, collection) {
+    collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
+        function (err, result) {
+            res.send(result);
+        });
+    });
+};
+
 exports.addParcelle = function (req, res) {
     var uid = req.params.id;
     var parcelle = req.body.parcelle;
