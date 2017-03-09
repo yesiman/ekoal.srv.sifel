@@ -296,6 +296,21 @@ exports.add = function (req, res) {
         }      
     });
 };
+
+exports.addParcelle = function (req, res) {
+    var uid = req.params.id;
+    var parcelle = req.body.user.parcelle;
+    db.collection('parcelles', function (err, collection) {
+        collection.update(
+            { _id: new require('mongodb').ObjectID( uid) },
+            parcelle, 
+            { "upsert": true },
+            function(err, results) {
+                res.send(true);
+            });
+    });
+};
+
 exports.clearAll = function (req, res, next) {
     db.collection('planifs', function (err, collection) {
         collection.remove({});

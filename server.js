@@ -107,6 +107,7 @@ app.get('/users/getAllByType/:idp/:nbr/:idt/:req', cors(), bodyParser.json(), us
 app.post('/users/getAllByOrga/:idp/:nbr/:ido', cors(), bodyParser.json(), users.getAllByOrga);
 app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
 app.post('/users/add/:id', cors(), bodyParser.json(), users.add);
+app.post('/users/addParcelle/:id', cors(), bodyParser.json(), users.addParcelle);
 //GROUPS
 app.get('/usersGroups/get/:id', cors(), bodyParser.json(), usersGroups.get);
 app.get('/usersGroups/getAll/:idp/:nbr', cors(), bodyParser.json(), usersGroups.getAll);
