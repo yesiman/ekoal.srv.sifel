@@ -286,6 +286,9 @@ exports.getAll = function (req, res) {
                 end.setMinutes(59);
                 end.setSeconds(59);
 
+                console.log(req.body.dateFrom);
+                console.log(req.body.dateTo);
+
                 finalFilter.datePlant = { $gte: new Date(beg),$lt: new Date(end)};
 
                 collection.count(finalFilter, function (err, count) {
