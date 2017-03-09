@@ -56,6 +56,9 @@ exports.add = function (req, res) {
     delete req.body.planif.linesToRem;
     delete req.body.planif.lines;
 
+    req.body.planif.datePlant = new Date(req.body.planif.datePlant);
+    req.body.planif.dateRecStart = new Date(req.body.planif.dateRecStart);
+
     //GENERER PLANNING PAR JOUR
     var startDate = new Date(req.body.planif.dateRecStart);
     var surfacePercent = ((100/1)*req.body.planif.surface) / 100;
@@ -273,6 +276,17 @@ exports.getAll = function (req, res) {
                 {
                     finalFilter.produit = {$in:produitsUiFilters};
                 }
+
+                var beg = new Date(req.body.dateFrom);
+                beg.setHours(0);
+                beg.setMinutes(0);
+                beg.setSeconds(0);
+                var end = new Date(req.body.dateTo);
+                end.setHours(23);
+                end.setMinutes(59);
+                end.setSeconds(59);
+
+                finalFilter.datePlant = { $gte: new Date(beg),$lt: new Date(end)};
 
                 collection.count(finalFilter, function (err, count) {
                     ret.count = count;
