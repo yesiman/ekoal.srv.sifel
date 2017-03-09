@@ -301,13 +301,25 @@ exports.addParcelle = function (req, res) {
     var uid = req.params.id;
     var parcelle = req.body.parcelle;
     db.collection('parcelles', function (err, collection) {
-        collection.update(
-            { _id: new require('mongodb').ObjectID( uid) },
-            parcelle, 
-            { "upsert": true },
-            function(err, results) {
-                res.send(true);
-            });
+        if (uid == "-1")
+        {
+            collection.insert(
+                parcelle, 
+                function(err, results) {
+                    res.send(true);
+                });
+        }
+        else {
+            delete parcelle._id;
+            collection.update(
+                { _id: new require('mongodb').ObjectID( uid) },
+                parcelle, 
+                { "upsert": true },
+                function(err, results) {
+                    res.send(true);
+                });
+        }
+        
     });
 };
 
