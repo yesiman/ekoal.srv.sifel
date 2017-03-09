@@ -299,7 +299,7 @@ exports.add = function (req, res) {
 
 exports.addParcelle = function (req, res) {
     var uid = req.params.id;
-    var parcelle = req.body.user.parcelle;
+    var parcelle = req.body.parcelle;
     db.collection('parcelles', function (err, collection) {
         collection.update(
             { _id: new require('mongodb').ObjectID( uid) },
