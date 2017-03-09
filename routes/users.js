@@ -300,6 +300,7 @@ exports.add = function (req, res) {
 exports.addParcelle = function (req, res) {
     var uid = req.params.id;
     var parcelle = req.body.parcelle;
+    parcelle.producteur = new require('mongodb').ObjectID(parcelle.producteur);
     db.collection('parcelles', function (err, collection) {
         if (uid == "-1")
         {
@@ -312,7 +313,7 @@ exports.addParcelle = function (req, res) {
         else {
             delete parcelle._id;
             collection.update(
-                { _id: new require('mongodb').ObjectID( uid) },
+                { _id: new require('mongodb').ObjectID(uid) },
                 parcelle, 
                 { "upsert": true },
                 function(err, results) {
