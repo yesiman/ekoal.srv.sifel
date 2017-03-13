@@ -429,11 +429,16 @@ exports.groupDec = function (req, res) {
                         //START DECAL PLINES
                         for (var i = 0;i < planifsLines.length;i++)
                         {
+
                             var opl = planifsLines[i];
                             var pid = opl._id;
                             delete opl._id;
+                            console.log("dateBefore",opl.startAt);
                             opl.startAt.setDate(opl.startAt.getDate() + decalIn);
+                            console.log("dateAfter",opl.startAt);
+                            console.log("weekBefore",opl.semaine);
                             opl.semaine = opl.startAt.getWeek();
+                            console.log("weekAfter",opl.semaine);
                             opl.mois = opl.startAt.getMonth()+1;
                             opl.anne = opl.startAt.getFullYear();
                             collection.update(
