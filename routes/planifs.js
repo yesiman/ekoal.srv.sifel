@@ -411,7 +411,100 @@ exports.getAll = function (req, res) {
     });
     
 };
+exports.groupDup = function (req, res) {
+    var decalIn = req.body.decalIn;
+    var idsOID = [];
+    var planifsLines;
 
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        db.collection('planifs', function (err, collection) {
+            collection.find(result).toArray(function (err, items) {
+                for (var i = 0;i < items.length;i++)
+                {
+                    var opl = items[i];
+                    var pid = opl._id;
+                    delete opl._id;
+                    opl.datePlant = new Date(opl.datePlant);
+                    opl.datePlant.setDate(opl.datePlant.getDate() + decalIn);
+                    collection.insert(opl , function (err, saved) {
+                        if (err || !saved) {
+                            //res.send(false)
+                        }
+                        else {
+                            pinserted = saved.insertedIds[0];
+                            db.collection('planifs_lines', function (err, collection) {
+                                collection.find({planif:new require('mongodb').ObjectID(pid)}).toArray(function (err, items) {
+                                    for (var i = 0;i < items.length;i++)
+                                    {
+                                        var opl = items[i];
+                                        var pid = opl._id;
+                                        delete opl._id;
+                                        opl.planif = new require('mongodb').ObjectID(pinserted);
+                                        opl.startAt.setDate(opl.startAt.getDate() + decalIn);
+                                        opl.semaine = opl.startAt.getWeek();
+                                        opl.mois = opl.startAt.getMonth()+1;
+                                        opl.anne = opl.startAt.getFullYear();
+                                        collection.insert(opl); 
+                                    }
+                                });
+                            });
+                        }
+                    });
+
+
+                }
+
+
+
+
+
+                /*db.collection('planifs_lines', function (err, collection) {
+                    collection.find({planif:{$in:planifsIds}}).toArray(function (err, items) {
+                        planifsLines = items;
+                        //START DECAL PLINES
+                        for (var i = 0;i < planifsLines.length;i++)
+                        {
+                            var opl = planifsLines[i];
+                            var pid = opl._id;
+                            delete opl._id;
+                            opl.startAt.setDate(opl.startAt.getDate() + decalIn);
+                            opl.semaine = opl.startAt.getWeek();
+                            opl.mois = opl.startAt.getMonth()+1;
+                            opl.anne = opl.startAt.getFullYear();
+                            collection.update(
+                                { _id: new require('mongodb').ObjectID(pid) },
+                                opl);
+                        }
+                        //START DECAL P
+                        db.collection('planifs', function (err, collection) {
+                            for (var i = 0;i < planifs.length;i++)
+                            {
+                                var opl = planifs[i];
+                                var pid = opl._id;
+                                delete opl._id;
+                                opl.datePlant = new Date(opl.datePlant);
+                                opl.datePlant.setDate(opl.datePlant.getDate() + decalIn);
+                                collection.update(
+                                    { _id: new require('mongodb').ObjectID(pid) },
+                                    opl);
+                            }
+                        });
+                        res.send("ok");
+                    });
+                });*/
+            });
+        });
+    });
+
+    //for(var i=0;i<ids.length;i++)
+    //{
+    //    idsOID.push(new require('mongodb').ObjectID(ids[i]));
+    //}
+    //console.log(idsOID);
+    //LOAD PLANIFS
+    
+};
 exports.groupDec = function (req, res) {
     var decalIn = req.body.decalIn;
     var idsOID = [];
