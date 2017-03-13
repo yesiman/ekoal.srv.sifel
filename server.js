@@ -140,6 +140,7 @@ app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 app.get('/planifs/get/:id', cors(), bodyParser.json(), planifs.get);
 app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
 app.post('/planifs/getAll/:idp/:nbr', cors(), bodyParser.json(), planifs.getAll);
+app.post('/planifs/getFinalFilters', cors(), bodyParser.json(), planifs.getAll);
 app.delete('/planifs/delete/:id', cors(), bodyParser.json(), planifs.delete);
 app.post('/planifs/groupDupDec', cors(), bodyParser.json(), planifs.groupDupDec);
 //RULES

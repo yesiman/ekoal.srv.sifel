@@ -192,6 +192,8 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
 
+    console.log("getFinalFilters",getFinalFilters(req.body,req.decoded));
+
     var collect = "";
     var usersFilter = {};
     switch (req.decoded.type)
@@ -211,8 +213,6 @@ exports.getAll = function (req, res) {
             collect = "users";
     }
     db.collection(collect, function (err, collection) {
-        console.log("req.body.produits",req.body.produits);
-        console.log("req.body.producteurs",req.body.producteurs);
         collection.find(usersFilter).toArray(function (err, items) {
             db.collection('planifs', function (err, collection) {
                 var producteurs = [];
@@ -286,9 +286,6 @@ exports.getAll = function (req, res) {
                 end.setMinutes(59);
                 end.setSeconds(59);
 
-                console.log(req.body.dateFrom);
-                console.log(req.body.dateTo);
-
                 finalFilter.datePlant = { $gte: new Date(beg),$lt: new Date(end)};
 
                 collection.count(finalFilter, function (err, count) {
@@ -354,6 +351,7 @@ exports.getAll = function (req, res) {
     });
     
 };
+
 exports.groupDupDec = function (req, res) {
     var ids = req.body.pids;
     var decalIn = req.body.decalIn;
@@ -424,5 +422,100 @@ exports.groupDupDec = function (req, res) {
     });
     
 };
-exports.groupDuplic = function (req, res) {
-};
+function getFinalFilters(body,decoded) {
+    var collect = "";
+    var usersFilter = {};
+    switch (decoded.type)
+    {
+        case  1:   //VOIT TOUT CE QUI EST PUBLIC
+            producteurs = [];
+            usersFilter = { public: true };
+            collect = "products";
+            break;
+        case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
+            usersFilter = { orga: new require('mongodb').ObjectID(decoded.orga), type: { $eq: 4 } };
+            collect = "users";
+            break;
+        case 3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
+        case 4:
+            usersFilter = { _id: new require('mongodb').ObjectID(decoded._id) };
+            collect = "users";
+    }
+    db.collection(collect, function (err, collection) {
+        collection.find(usersFilter).toArray(function (err, items) {
+            var producteurs = [];
+            var produits = [];
+            var producteursUiFilters = [];
+            var produitsUiFilters = [];
+            for(var i=0;i<body.produits.length;i++)
+            {
+                produitsUiFilters.push(new require('mongodb').ObjectID(body.produits[i]));
+            }
+            for(var i=0;i<body.producteurs.length;i++)
+            {
+                producteursUiFilters.push(new require('mongodb').ObjectID(body.producteurs[i]));
+            }
+            var finalFilter;
+            switch (decoded.type)
+            {
+                case  1:   //VOIT TOUT CE QUI EST PUBLIC
+                    for(var i1=0;i1<items.length;i1++)
+                    {
+                        produits.push(new require('mongodb').ObjectID(items[i1]._id));
+                    }
+                    finalFilter = { produit:{$in:produits} };
+                    break;
+                case  2:   //FILTRE SUR PLANIFS PRODUCTEURS LIES
+                    for(var i1=0;i1<items.length;i1++)
+                    {
+                        producteurs.push(new require('mongodb').ObjectID(items[i1]._id));
+                    }
+                    if (producteursUiFilters.length > 0)
+                    {
+                        finalFilter = { producteur:{$in:producteursUiFilters} };
+                    } 
+                    else {
+                        finalFilter = { producteur:{$in:producteurs} };
+                    }
+                    
+                    break;
+                case  3:  //FILTRE SUR PLANIFS PRODUCTEURS LIES
+                    for(var i1=0;i1<items.length;i1++)
+                    {
+                        for(var i=0;i<items[i1].producteurs.length;i++)
+                        {
+                            producteurs.push(new require('mongodb').ObjectID(items[i1].producteurs[i]));
+                        }
+                    }
+                    if (producteursUiFilters.length > 0)
+                    {
+                        finalFilter = { producteur:{$in:producteursUiFilters} };
+                    } 
+                    else {
+                        finalFilter = { producteur:{$in:producteurs} };
+                    }
+                    break;
+                case 4:  //FILTRE SUR SES DONNEES
+                    producteurs.push(new require('mongodb').ObjectID(decoded._id));
+                    finalFilter = { producteur:{$in:producteurs} };
+            }
+            
+            if (produitsUiFilters.length > 0)
+            {
+                finalFilter.produit = {$in:produitsUiFilters};
+            }
+
+            var beg = new Date(body.dateFrom);
+            beg.setHours(0);
+            beg.setMinutes(0);
+            beg.setSeconds(0);
+            var end = new Date(body.dateTo);
+            end.setHours(23);
+            end.setMinutes(59);
+            end.setSeconds(59);
+
+            finalFilter.datePlant = { $gte: new Date(beg),$lt: new Date(end)};
+            return finalFilter();
+        });
+    });
+}
