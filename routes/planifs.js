@@ -192,7 +192,12 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
 
-    console.log("getFinalFilters",getFinalFilters(req.body,req.decoded));
+    
+
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        console.log("getFinalFilters",result);
+    });
 
     var collect = "";
     var usersFilter = {};
@@ -422,7 +427,7 @@ exports.groupDupDec = function (req, res) {
     });
     
 };
-function getFinalFilters(body,decoded) {
+function getFinalFilters(body,decoded,callback) {
     var collect = "";
     var usersFilter = {};
     switch (decoded.type)
@@ -515,7 +520,7 @@ function getFinalFilters(body,decoded) {
             end.setSeconds(59);
 
             finalFilter.datePlant = { $gte: new Date(beg),$lt: new Date(end)};
-            return finalFilter;
+            callback(finalFilter);
         });
     });
 }
