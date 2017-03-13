@@ -13,7 +13,7 @@ exports.get = function (req, res) {
                                 collection.findOne({ _id: new require('mongodb').ObjectID(planif.producteur), type:4 }, function (err, item) {
                                     planif.producteur = item;
                                     db.collection('planifs_lines', function (err, collection) {
-                                        collection.find({planif: new require('mongodb').ObjectID(planif._id)}).toArray(function (err, items) {
+                                        collection.find({planif: new require('mongodb').ObjectID(planif._id)}).sort({semaine:1}).toArray(function (err, items) {
                                             planif.lines = items;
                                             if (planif.parcelle)
                                             {
