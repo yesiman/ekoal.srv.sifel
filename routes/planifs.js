@@ -192,14 +192,69 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
 
-    
-
     getFinalFilters(req.body,req.decoded,function(result)
     {
-        console.log("getFinalFilters",result);
+        db.collection('planifs', function (err, collection) {
+            collection.count(result, function (err, count) {
+            ret.count = count;
+            collection.find(result).skip(skip).limit(limit).toArray(function (err, items) {
+                var produitsIds = [];
+                var producteursIds = [];
+                var planifs = [];
+                var produits = [];
+                var producteurs = [];
+                planifs = items;
+                for(var i=0;i<items.length;i++)
+                {
+                    if (!(produitsIds.indexOf(new require('mongodb').ObjectID(items[i].produit)) > -1))
+                    {
+                        produitsIds.push(new require('mongodb').ObjectID(items[i].produit));
+                    }
+                    if (!(producteursIds.indexOf(new require('mongodb').ObjectID(items[i].producteur)) > -1))
+                    {
+                        producteursIds.push(new require('mongodb').ObjectID(items[i].producteur));
+                    }
+                }
+                //GET PRODUITS
+                db.collection('products', function (err, collection) {
+                    collection.find({_id: {$in:produitsIds}}).toArray(function (err, items) {
+                        produits = items;
+                        //GET PRODUCTEURS
+                        db.collection('users', function (err, collection) {
+                            collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
+                                producteurs = items;
+                                for(var i=0;i<planifs.length;i++)
+                                {
+                                    for(var ip1=0;ip1<produits.length;ip1++)
+                                    {
+                                        if (produits[ip1]._id.toString() == planifs[i].produit.toString())
+                                        {
+                                            planifs[i].produitLib = produits[ip1].lib;
+                                            planifs[i].produitRend = produits[ip1].rendement;
+                                            break;
+                                        }
+                                    }
+                                    for(var ip2=0;ip2<producteurs.length;ip2++)
+                                    {
+                                        if (producteurs[ip2]._id.toString() == planifs[i].producteur.toString())
+                                        {
+                                            planifs[i].producteurLib = producteurs[ip2].name + " " + producteurs[ip2].surn;
+                                            break;
+                                        }
+                                    }
+                                }
+                                ret.items = planifs;
+                                res.send(ret);
+                            });
+                        });        
+                    });
+                });
+                //ASSIGN
+                //SEND
+            });
+        });
     });
-
-    var collect = "";
+    /*var collect = "";
     var usersFilter = {};
     switch (req.decoded.type)
     {
@@ -352,7 +407,7 @@ exports.getAll = function (req, res) {
                     });
                 });
             });
-        });  
+        });*/  
     });
     
 };
