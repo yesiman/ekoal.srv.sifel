@@ -515,7 +515,7 @@ function getFinalFilters(body,decoded) {
             end.setSeconds(59);
 
             finalFilter.datePlant = { $gte: new Date(beg),$lt: new Date(end)};
-            return finalFilter();
+            return finalFilter;
         });
     });
 }
