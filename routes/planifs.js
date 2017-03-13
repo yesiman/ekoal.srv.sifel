@@ -412,74 +412,61 @@ exports.getAll = function (req, res) {
     
 };
 
-exports.groupDupDec = function (req, res) {
-    var ids = req.body.pids;
+exports.groupDec = function (req, res) {
     var decalIn = req.body.decalIn;
     var idsOID = [];
     var planifs;
     var planifsLines;
-    for(var i=0;i<ids.length;i++)
+
+    getFinalFilters(req.body,req.decoded,function(result)
     {
-        idsOID.push(new require('mongodb').ObjectID(ids[i]));
-    }
-    console.log(idsOID);
-    //LOAD PLANIFS
-    db.collection('planifs', function (err, collection) {
-        collection.find({_id:{$in:idsOID}}).toArray(function (err, items) {
-            planifs = items;
-            db.collection('planifs_lines', function (err, collection) {
-                collection.find({planif:{$in:idsOID}}).toArray(function (err, items) {
-                    planifsLines = items;
-                    //START DECAL PLINES
-                    for (var i = 0;i < planifsLines.length;i++)
-                    {
-                        var opl = planifsLines[i];
-                        var pid = opl._id;
-                        delete opl._id;
-                        opl.startAt.setDate(opl.startAt.getDate() + decalIn);
-                        opl.semaine = opl.startAt.getWeek();
-                        opl.mois = opl.startAt.getMonth()+1;
-                        opl.anne = opl.startAt.getFullYear();
-                        switch (req.body.mode)
+        db.collection('planifs', function (err, collection) {
+            collection.find(result).toArray(function (err, items) {
+                planifs = items;
+                db.collection('planifs_lines', function (err, collection) {
+                    collection.find(result).toArray(function (err, items) {
+                        planifsLines = items;
+                        //START DECAL PLINES
+                        for (var i = 0;i < planifsLines.length;i++)
                         {
-                            case "dup":
-                                collection.insert(opl);
-                                break;
-                            case "dec":
+                            var opl = planifsLines[i];
+                            var pid = opl._id;
+                            delete opl._id;
+                            opl.startAt.setDate(opl.startAt.getDate() + decalIn);
+                            opl.semaine = opl.startAt.getWeek();
+                            opl.mois = opl.startAt.getMonth()+1;
+                            opl.anne = opl.startAt.getFullYear();
+                            collection.update(
+                                { _id: new require('mongodb').ObjectID(pid) },
+                                opl);
+                        }
+                        //START DECAL P
+                        db.collection('planifs', function (err, collection) {
+                            for (var i = 0;i < planifs.length;i++)
+                            {
+                                var opl = planifs[i];
+                                var pid = opl._id;
+                                delete opl._id;
+                                opl.datePlant = new Date(opl.datePlant);
+                                opl.datePlant.setDate(opl.datePlant.getDate() + decalIn);
                                 collection.update(
                                     { _id: new require('mongodb').ObjectID(pid) },
                                     opl);
-                                break;
-                        }
-                        
-                    }
-                    //START DECAL P
-                    db.collection('planifs', function (err, collection) {
-                        for (var i = 0;i < planifs.length;i++)
-                        {
-                            var opl = planifs[i];
-                            var pid = opl._id;
-                            delete opl._id;
-                            opl.datePlant = new Date(opl.datePlant);
-                            opl.datePlant.setDate(opl.datePlant.getDate() + decalIn);
-                            switch (req.body.mode)
-                            {
-                                case "dup":
-                                    collection.insert(opl);
-                                    break;
-                                case "dec":
-                                    collection.update(
-                                        { _id: new require('mongodb').ObjectID(pid) },
-                                        opl);
-                                    break;
                             }
-                        }
+                        });
+                        res.send("ok");
                     });
-                    res.send("ok");
                 });
             });
         });
     });
+
+    //for(var i=0;i<ids.length;i++)
+    //{
+    //    idsOID.push(new require('mongodb').ObjectID(ids[i]));
+    //}
+    //console.log(idsOID);
+    //LOAD PLANIFS
     
 };
 function getFinalFilters(body,decoded,callback) {

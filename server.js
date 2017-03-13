@@ -142,7 +142,7 @@ app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
 app.post('/planifs/getAll/:idp/:nbr', cors(), bodyParser.json(), planifs.getAll);
 app.post('/planifs/getFinalFilters', cors(), bodyParser.json(), planifs.getAll);
 app.delete('/planifs/delete/:id', cors(), bodyParser.json(), planifs.delete);
-app.post('/planifs/groupDupDec', cors(), bodyParser.json(), planifs.groupDupDec);
+app.post('/planifs/groupDec', cors(), bodyParser.json(), planifs.groupDec);
 //RULES
 app.get('/rules/get/:id', cors(), bodyParser.json(), rules.get);
 app.post('/rules/add/:id', cors(), bodyParser.json(), rules.add);
