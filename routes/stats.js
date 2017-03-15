@@ -1,5 +1,5 @@
 exports.prevsByDay = function (req, res) {
-    getStdArrays(req.decoded,,req.body,function(result)
+    getStdArrays(req.decoded,req.body,function(result)
     {   
         var usersFilter = result;
         db.collection('users', function (err, collection) {
@@ -298,15 +298,6 @@ exports.prevsPlanifsLines = function (req, res) {
         var obj_ids = result.produisIds;;
         var producteurs = result.producteurs;
         db.collection('planifs_lines', function (err, collection) {
-            var beg = new Date(req.body.dateFrom);
-            beg.setHours(0);
-            beg.setMinutes(0);
-            beg.setSeconds(0);
-            var end = new Date(req.body.dateTo);
-            end.setHours(23);
-            end.setMinutes(59);
-            end.setSeconds(59);
-
             var query = {
                 produit:{ "$in": obj_ids },
                 startAt:getDatesFilter(body)
