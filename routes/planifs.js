@@ -559,7 +559,7 @@ exports.groupChangeRule = function (req, res) {
                                     collection.update(
                                         { _id: new require('mongodb').ObjectID(pid) },
                                         opl, function (err, collection) {
-                                            console.log("pid",pid);
+                                            console.log("pid",planifs[i]._id);
                                             db.collection('planifs_lines', function (err, collection) { 
                                                 var startDate = new Date(opl.datePlant);
                                                 startDate.setDate(startDate.getDate() + newRule.delai);
