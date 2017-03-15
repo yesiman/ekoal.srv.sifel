@@ -552,45 +552,9 @@ exports.groupChangeRule = function (req, res) {
                             db.collection('planifs', function (err, collection) {
                                 for (var i = 0;i < planifs.length;i++)
                                 {
-                                    var opl = planifs[i];
-                                    var pid = opl._id;
-                                    delete opl._id;
-                                    opl.rule = new require('mongodb').ObjectID(newRule._id);
-                                    collection.update(
-                                        { _id: new require('mongodb').ObjectID(pid) },
-                                        opl, function (err, collection) {
-                                            console.log("pid",planifs[i]._id);
-                                            db.collection('planifs_lines', function (err, collection) { 
-                                                var startDate = new Date(opl.datePlant);
-                                                startDate.setDate(startDate.getDate() + newRule.delai);
-                                                var wStart = startDate.getWeek();
-                                                var surfacePercent = ((100/1)*opl.surface) / 100;
-                                                //PASSAGE TOUTES LIGNES EN A SUPPRIMER
-                                                for (var i = 0;i < newRule.nbWeek;i++)
-                                                { 
-                                                    var valueQte = (newRule.weeks[i].percent/100) * opl.rendement.val; //PRODUCT DEFAULT RENDEMENT
-                                                    var oIt = { 
-                                                        planif:new require('mongodb').ObjectID(pid),
-                                                        semaine:startDate.getWeek(),
-                                                        mois:startDate.getMonth() + 1,
-                                                        anne:startDate.getFullYear(),
-                                                        startAt:new Date(startDate),
-                                                        percent:newRule.weeks[i].percent,
-                                                        produit:opl.produit,
-                                                        producteur:opl.producteur,
-                                                        qte:{
-                                                            val: parseFloat((valueQte*surfacePercent).toFixed(2)),
-                                                            unit:opl.rendement.unit
-                                                        }
-                                                    }
-                                                    collection.insert(oIt);
-                                                    startDate.setDate(startDate.getDate() + 7);
-                                                    
-                                                }
-
-                                        });
+                                    changePlanifRule(planifs[i]._id,planifs[i],newRule,function(result)
+                                    {
                                     });
-                                    
                                 }
                             });        
                         });
@@ -598,8 +562,48 @@ exports.groupChangeRule = function (req, res) {
                     });
                 });
             });
+            res.send("ok");
         });
 };
+
+function changePlanifRule(oplId,opl,newRule,callback) {
+    delete opl._id;
+    opl.rule = new require('mongodb').ObjectID(newRule._id);
+    collection.update(
+        { _id: new require('mongodb').ObjectID(oplId) },
+        opl, function (err, collection) {
+            console.log("oplId",oplId);
+            db.collection('planifs_lines', function (err, collection) { 
+                var startDate = new Date(opl.datePlant);
+                startDate.setDate(startDate.getDate() + newRule.delai);
+                var wStart = startDate.getWeek();
+                var surfacePercent = ((100/1)*opl.surface) / 100;
+                //PASSAGE TOUTES LIGNES EN A SUPPRIMER
+                for (var i = 0;i < newRule.nbWeek;i++)
+                { 
+                    var valueQte = (newRule.weeks[i].percent/100) * opl.rendement.val; //PRODUCT DEFAULT RENDEMENT
+                    var oIt = { 
+                        planif:new require('mongodb').ObjectID(oplId),
+                        semaine:startDate.getWeek(),
+                        mois:startDate.getMonth() + 1,
+                        anne:startDate.getFullYear(),
+                        startAt:new Date(startDate),
+                        percent:newRule.weeks[i].percent,
+                        produit:opl.produit,
+                        producteur:opl.producteur,
+                        qte:{
+                            val: parseFloat((valueQte*surfacePercent).toFixed(2)),
+                            unit:opl.rendement.unit
+                        }
+                    }
+                    collection.insert(oIt);
+                    startDate.setDate(startDate.getDate() + 7);
+                    
+                }
+                callback("ok");
+        });
+    });
+}
 
 function getFinalFilters(body,decoded,callback) {
     var collect = "";
