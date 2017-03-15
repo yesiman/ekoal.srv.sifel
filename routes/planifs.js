@@ -535,7 +535,6 @@ exports.groupChangeRule = function (req, res) {
     var idsOID = [];
     var planifs;
     var planifsLines;
-    console.log("newRule",newRule);
     getFinalFilters(req.body,req.decoded,function(result)
     {
         db.collection('planifs', function (err, collection) {
@@ -549,14 +548,12 @@ exports.groupChangeRule = function (req, res) {
                 db.collection('planifs_lines', function (err, collection) {
                     collection.remove({planif:{$in:planifsIds}},
                         function (err, result) {
-                            db.collection('planifs', function (err, collection) {
-                                for (var i = 0;i < planifs.length;i++)
+                            for (var i = 0;i < planifs.length;i++)
+                            {
+                                changePlanifRule(planifs[i]._id,planifs[i],newRule,function(result)
                                 {
-                                    changePlanifRule(planifs[i]._id,planifs[i],newRule,function(result)
-                                    {
-                                    });
-                                }
-                            });        
+                                });
+                            }        
                         });
                         
                     });
@@ -569,38 +566,40 @@ exports.groupChangeRule = function (req, res) {
 function changePlanifRule(oplId,opl,newRule,callback) {
     delete opl._id;
     opl.rule = new require('mongodb').ObjectID(newRule._id);
-    collection.update(
-        { _id: new require('mongodb').ObjectID(oplId) },
-        opl, function (err, collection) {
-            console.log("oplId",oplId);
-            db.collection('planifs_lines', function (err, collection) { 
-                var startDate = new Date(opl.datePlant);
-                startDate.setDate(startDate.getDate() + newRule.delai);
-                var wStart = startDate.getWeek();
-                var surfacePercent = ((100/1)*opl.surface) / 100;
-                //PASSAGE TOUTES LIGNES EN A SUPPRIMER
-                for (var i = 0;i < newRule.nbWeek;i++)
-                { 
-                    var valueQte = (newRule.weeks[i].percent/100) * opl.rendement.val; //PRODUCT DEFAULT RENDEMENT
-                    var oIt = { 
-                        planif:new require('mongodb').ObjectID(oplId),
-                        semaine:startDate.getWeek(),
-                        mois:startDate.getMonth() + 1,
-                        anne:startDate.getFullYear(),
-                        startAt:new Date(startDate),
-                        percent:newRule.weeks[i].percent,
-                        produit:opl.produit,
-                        producteur:opl.producteur,
-                        qte:{
-                            val: parseFloat((valueQte*surfacePercent).toFixed(2)),
-                            unit:opl.rendement.unit
+    db.collection('planifs', function (err, collection) {
+        collection.update(
+            { _id: new require('mongodb').ObjectID(oplId) },
+            opl, function (err, collection) {
+                console.log("oplId",oplId);
+                db.collection('planifs_lines', function (err, collection) { 
+                    var startDate = new Date(opl.datePlant);
+                    startDate.setDate(startDate.getDate() + newRule.delai);
+                    var wStart = startDate.getWeek();
+                    var surfacePercent = ((100/1)*opl.surface) / 100;
+                    //PASSAGE TOUTES LIGNES EN A SUPPRIMER
+                    for (var i = 0;i < newRule.nbWeek;i++)
+                    { 
+                        var valueQte = (newRule.weeks[i].percent/100) * opl.rendement.val; //PRODUCT DEFAULT RENDEMENT
+                        var oIt = { 
+                            planif:new require('mongodb').ObjectID(oplId),
+                            semaine:startDate.getWeek(),
+                            mois:startDate.getMonth() + 1,
+                            anne:startDate.getFullYear(),
+                            startAt:new Date(startDate),
+                            percent:newRule.weeks[i].percent,
+                            produit:opl.produit,
+                            producteur:opl.producteur,
+                            qte:{
+                                val: parseFloat((valueQte*surfacePercent).toFixed(2)),
+                                unit:opl.rendement.unit
+                            }
                         }
+                        collection.insert(oIt);
+                        startDate.setDate(startDate.getDate() + 7);
+                        
                     }
-                    collection.insert(oIt);
-                    startDate.setDate(startDate.getDate() + 7);
-                    
-                }
-                callback("ok");
+                    callback("ok");
+            });
         });
     });
 }
