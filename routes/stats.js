@@ -286,7 +286,7 @@ exports.prevsPlanifsLinesApplyPercent = function (req, res) {
                         { _id: new require('mongodb').ObjectID(pid) },
                         opl);
                 }
-                res.send({count:count,items:items});        
+                res.send("ok");        
             });
         });  
     });
