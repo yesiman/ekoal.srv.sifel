@@ -569,7 +569,7 @@ exports.groupChangeRule = function (req, res) {
                                                 { 
                                                     var valueQte = (newRule.weeks[i].percent/100) * opl.rendement.val; //PRODUCT DEFAULT RENDEMENT
                                                     var oIt = { 
-                                                        planif:new require('mongodb').ObjectID(opl._id),
+                                                        planif:new require('mongodb').ObjectID(pid),
                                                         semaine:startDate.getWeek(),
                                                         mois:startDate.getMonth() + 1,
                                                         anne:startDate.getFullYear(),
