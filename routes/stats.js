@@ -13,17 +13,8 @@ exports.prevsByDay = function (req, res) {
             else {
                 query["$match"]["producteur"] = { "$in": producteurs };
             }
-            
-            var beg = new Date(req.body.dateFrom);
-            beg.setHours(0);
-            beg.setMinutes(0);
-            beg.setSeconds(0);
-            var end = new Date(req.body.dateTo);
-            end.setHours(23);
-            end.setMinutes(59);
-            end.setSeconds(59);
 
-            query["$match"]["startAt"] = { $gte: new Date(beg),$lt: new Date(end)};
+            query["$match"]["startAt"] = getDatesFilter(req.body);
             var group = {};
             var sort = {};
             group["$group"] = {};
@@ -126,16 +117,7 @@ exports.prevsByProducteur = function (req, res) {
                 query["$match"]["producteur"] = { "$in": producteurs };
             }
             
-            var beg = new Date(req.body.dateFrom);
-            beg.setHours(0);
-            beg.setMinutes(0);
-            beg.setSeconds(0);
-            var end = new Date(req.body.dateTo);
-            end.setHours(23);
-            end.setMinutes(59);
-            end.setSeconds(59);
-
-            query["$match"]["startAt"] = { $gte: new Date(beg),$lt: new Date(end)};
+            query["$match"]["startAt"] = getDatesFilter(req.body);
             var group = {};
             var sort = {};
             group["$group"] = {};
@@ -243,6 +225,68 @@ exports.prevsPlanifsLines = function (req, res) {
                 collection.find(query).sort({startAt:1}).skip(skip).limit(limit).toArray(function (err, items) {
                     res.send({count:count,items:items});        
                 });
+            });
+        });  
+    });
+};
+exports.prevsPlanifsLines = function (req, res) {
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
+    getStdArrays(req.decoded,req.body,function(result)
+    {   
+        var obj_ids = result.produisIds;
+        var producteurs = result.producteurs;
+        db.collection('planifs_lines', function (err, collection) {
+            var query = {
+                produit:{ "$in": obj_ids },
+                startAt:getDatesFilter(req.body)
+            };
+            if (req.decoded.type == 1){
+                //filtre produits publiques
+            }
+            else {
+                query["producteur"] = { "$in": producteurs };
+            }
+            collection.count(query, function (err, count) {
+                collection.find(query).sort({startAt:1}).skip(skip).limit(limit).toArray(function (err, items) {
+                    res.send({count:count,items:items});        
+                });
+            });
+        });  
+    });
+};
+
+exports.prevsPlanifsLinesApplyPercent = function (req, res) {
+    var percent = req.body.percent;    
+    console.log("percent",percent);
+    getStdArrays(req.decoded,req.body,function(result)
+    {   
+        var obj_ids = result.produisIds;
+        var producteurs = result.producteurs;
+        db.collection('planifs_lines', function (err, collection) {
+            var query = {
+                produit:{ "$in": obj_ids },
+                startAt:getDatesFilter(req.body)
+            };
+            if (req.decoded.type == 1){
+                //filtre produits publiques
+            }
+            else {
+                query["producteur"] = { "$in": producteurs };
+            }
+            collection.find(query).toArray(function (err, items) {
+                //START DECAL PLINES
+                for (var i = 0;i < items.length;i++)
+                {
+                    var opl = planifsLines[i];
+                    var pid = opl._id;
+                    delete opl._id;
+                    opl.qte.val = opl.qte.val - ((opl.qte.val*10)/100);
+                    collection.update(
+                        { _id: new require('mongodb').ObjectID(pid) },
+                        opl);
+                }
+                res.send({count:count,items:items});        
             });
         });  
     });

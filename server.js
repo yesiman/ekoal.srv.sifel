@@ -154,6 +154,7 @@ app.delete('/rules/delete/:id', cors(), bodyParser.json(), rules.delete);
 app.post('/stats/prevsByDay/', cors(), bodyParser.json(), stats.prevsByDay);
 app.post('/stats/prevsByProd/', cors(), bodyParser.json(), stats.prevsByProducteur);
 app.post('/stats/prevsPlanifsLines/:idp/:nbr', cors(), bodyParser.json(), stats.prevsPlanifsLines);
+app.post('/stats/prevsPlanifsLinesApplyPercent', cors(), bodyParser.json(), stats.prevsPlanifsLinesApplyPercent);
 //
 app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
 
