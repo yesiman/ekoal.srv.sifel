@@ -278,7 +278,7 @@ exports.prevsPlanifsLinesApplyPercent = function (req, res) {
                 //START DECAL PLINES
                 for (var i = 0;i < items.length;i++)
                 {
-                    var opl = planifsLines[i];
+                    var opl = items[i];
                     var pid = opl._id;
                     delete opl._id;
                     opl.qte.val = opl.qte.val - ((opl.qte.val*10)/100);
