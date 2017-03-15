@@ -529,6 +529,77 @@ exports.groupDec = function (req, res) {
     //LOAD PLANIFS
     
 };
+
+exports.groupChangeRule = function (req, res) {
+    var newRule = req.body.newRule;
+    var idsOID = [];
+    var planifs;
+    var planifsLines;
+    console.log("newRule",newRule);
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        db.collection('planifs', function (err, collection) {
+            collection.find(result).toArray(function (err, items) {
+                planifs = items;
+                planifsIds = [];
+                for (var i = 0;i < planifs.length;i++)
+                {
+                    planifsIds.push(new require('mongodb').ObjectID(planifs[i]._id));
+                }
+                db.collection('planifs_lines', function (err, collection) {
+                    collection.remove({planif:{$in:planifsIds}},
+                        function (err, result) {
+                            db.collection('planifs', function (err, collection) {
+                                for (var i = 0;i < planifs.length;i++)
+                                {
+                                    var opl = planifs[i];
+                                    var pid = opl._id;
+                                    delete opl._id;
+                                    opl.rule = new require('mongodb').ObjectID(newRule._id);
+                                    collection.update(
+                                        { _id: new require('mongodb').ObjectID(pid) },
+                                        opl, function (err, collection) {
+                                            db.collection('planifs_lines', function (err, collection) { 
+                                                var startDate = new Date(opl.datePlant);
+                                                startDate.setDate(startDate.getDate() + newRule.delai);
+                                                var wStart = startDate.getWeek();
+                                                var surfacePercent = ((100/1)*opl.surface) / 100;
+                                                //PASSAGE TOUTES LIGNES EN A SUPPRIMER
+                                                for (var i = 0;i < newRule.nbWeek;i++)
+                                                { 
+                                                    var valueQte = (newRule.weeks[i].percent/100) * opl.rendement.val; //PRODUCT DEFAULT RENDEMENT
+                                                    var oIt = { 
+                                                        planif:new require('mongodb').ObjectID(opl._id),
+                                                        semaine:startDate.getWeek(),
+                                                        mois:startDate.getMonth() + 1,
+                                                        anne:startDate.getFullYear(),
+                                                        startAt:new Date(startDate),
+                                                        percent:newRule.weeks[i].percent,
+                                                        produit:opl.produit,
+                                                        producteur:opl.producteur,
+                                                        qte:{
+                                                            val: parseFloat((valueQte*surfacePercent).toFixed(2)),
+                                                            unit:opl.rendement.unit
+                                                        }
+                                                    }
+                                                    collection.insert(oIt);
+                                                    startDate.setDate(startDate.getDate() + 7);
+                                                    
+                                                }
+
+                                        });
+                                    });
+                                    
+                                }
+                            });        
+                        });
+                        
+                    });
+                });
+            });
+        });
+};
+
 function getFinalFilters(body,decoded,callback) {
     var collect = "";
     var usersFilter = {};
