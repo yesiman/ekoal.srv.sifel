@@ -300,7 +300,7 @@ exports.prevsPlanifsLines = function (req, res) {
         db.collection('planifs_lines', function (err, collection) {
             var query = {
                 produit:{ "$in": obj_ids },
-                startAt:getDatesFilter(body)
+                startAt:getDatesFilter(req.body)
             };
             if (req.decoded.type == 1){
                 //filtre produits publiques
