@@ -144,6 +144,7 @@ app.post('/planifs/getFinalFilters', cors(), bodyParser.json(), planifs.getAll);
 app.delete('/planifs/delete/:id', cors(), bodyParser.json(), planifs.delete);
 app.post('/planifs/groupDec', cors(), bodyParser.json(), planifs.groupDec);
 app.post('/planifs/groupDup', cors(), bodyParser.json(), planifs.groupDup);
+app.post('/planifs/groupChangeRule', cors(), bodyParser.json(), planifs.groupChangeRule);
 //RULES
 app.get('/rules/get/:id', cors(), bodyParser.json(), rules.get);
 app.post('/rules/add/:id', cors(), bodyParser.json(), rules.add);
