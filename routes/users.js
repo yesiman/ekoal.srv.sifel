@@ -342,10 +342,10 @@ exports.clearAll = function (req, res, next) {
                 products.push(new require('mongodb').ObjectID(items[i]._id));
             }
             db.collection('planifs', function (err, collection) {
-                collection.remove({product:{$in:products}});
+                collection.remove({});
             });
             db.collection('planifs_lines', function (err, collection) {
-                collection.remove({product:{$in:products}});
+                collection.remove({});
             });
         });
         //collection.remove({});
