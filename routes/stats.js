@@ -255,7 +255,6 @@ exports.prevsPlanifsLines = function (req, res) {
         });  
     });
 };
-
 exports.prevsPlanifsLinesApplyPercent = function (req, res) {
     var percent = req.body.percent;    
     console.log("percent",percent);
@@ -268,7 +267,7 @@ exports.prevsPlanifsLinesApplyPercent = function (req, res) {
                 produit:{ "$in": obj_ids },
                 startAt:getDatesFilter(req.body)
             };
-            if (req.decoded.type == 1){
+            if (req.decoded.type == 1) {
                 //filtre produits publiques
             }
             else {

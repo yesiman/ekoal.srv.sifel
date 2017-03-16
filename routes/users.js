@@ -334,18 +334,28 @@ exports.addParcelle = function (req, res) {
 };
 
 exports.clearAll = function (req, res, next) {
-    db.collection('planifs', function (err, collection) {
-        collection.remove({});
-    });
-    db.collection('planifs_lines', function (err, collection) {
-        collection.remove({});
-    });
-    db.collection('products_orgas_specs', function (err, collection) {
-        collection.remove({});
-    });
+    var products = [];
     db.collection('products', function (err, collection) {
+        collection.find({orga:new require('mongodb').ObjectID(req.decoded.orga)}).toArray(function (err, items) {
+            for (var i = 0;i < items.length;i++)
+            {
+                products.push(new require('mongodb').ObjectID(items[i]._id));
+            }
+            db.collection('planifs', function (err, collection) {
+                collection.remove({product:{$in:products}});
+            });
+            db.collection('planifs_lines', function (err, collection) {
+                collection.remove({product:{$in:products}});
+            });
+        });
+        //collection.remove({});
+    });
+
+    
+    /*db.collection('products_orgas_specs', function (err, collection) {
         collection.remove({});
     });
+    
     db.collection('parcelles', function (err, collection) {
         collection.remove({});
     });
@@ -357,5 +367,5 @@ exports.clearAll = function (req, res, next) {
     });
     db.collection('products_objectifs', function (err, collection) {
         collection.remove({});
-    });
+    });*/
 }
