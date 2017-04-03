@@ -61,7 +61,7 @@ server.listen(port, function() {
 console.log("Server listening:" + port);
 setInterval(function(){
   console.log('A(not in debug) minute later...');
-}, 6000);      
+}, 60000);      
 
 //MIDDLE
 app.use(bodyParser.urlencoded({ extended: true }));
