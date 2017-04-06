@@ -24,10 +24,10 @@ exports.sendSmsToProducteurs = function(req, res) {
                 getPlanifLine(pla.planif).then(function (data) {
                     smsDatas.pl = data;
                     //GET PRODUCTEUR
-                    getUser(pla.user).then(function (data) {
+                    getUser(smsDatas.pl.user).then(function (data) {
                         smsDatas.u = data;
                         //GET PRODUIT
-                         getProduit(pla.produit).then(function (data) {
+                         getProduit(smsDatas.pl.produit).then(function (data) {
                              smsDatas.p = data;
                             //SEND
                             sendSms(smsDatas).then(function (data) {
