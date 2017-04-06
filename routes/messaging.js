@@ -20,29 +20,39 @@ exports.sendSmsToProducteurs = function(req, res) {
             {
                 var pla = items[i];
                 //GET PLANIF_LINE
-                db.collection('planifs_lines', function (err, collection) {
-                    collection.findOne({ planif: new require('mongodb').ObjectID(pla.planif)}, function (err, item) {
-                        console.log("planif_line",item);
-                        //GET PRODUCTEUR
-                        db.collection('users', function (err, collection) {
-                            collection.findOne({ _id: new require('mongodb').ObjectID(pla.producteur)}, function (err, item) {
-                                console.log("producteur",item);
-                                //GET PRODUIT
-                                db.collection('products', function (err, collection) {
-                                    collection.findOne({ _id: new require('mongodb').ObjectID(pla.produit)}, function (err, item) {
-                                        console.log("produit",item);
-                                        //SEND
-                                        //UPDATE WITH TWILIO ID
-                                    })
-                                });
-                            })
-                        });
-                    })
-                });
+                getPlanifLine(pla.planif).then(function (data) {
+                    console.log("planif",data);
+                    //GET PRODUCTEUR
+                    db.collection('users', function (err, collection) {
+                        collection.findOne({ _id: new require('mongodb').ObjectID(pla.producteur)}, function (err, item) {
+                            console.log("producteur",item);
+                            //GET PRODUIT
+                            db.collection('products', function (err, collection) {
+                                collection.findOne({ _id: new require('mongodb').ObjectID(pla.produit)}, function (err, item) {
+                                    console.log("produit",item);
+                                    //SEND
+                                    //UPDATE WITH TWILIO ID
+                                })
+                            });
+                        })
+                    });
+                })
+                .catch(console.error);
             }
         });
     });
     //res.send("ok");
+}
+
+function getPlanifLine (id) {
+  return new Promise(function (resolve, reject) {
+      db.collection('planifs_lines', function (err, collection) {
+        collection.findOne({ planif: new require('mongodb').ObjectID(id)}, function (err, item) {
+            if (err) return reject(err) // rejects the promise with `err` as the reason
+            resolve(item) 
+        });
+    });
+  })
 }
 
 exports.testTwilio = function (req, res) {
