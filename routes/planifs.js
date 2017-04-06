@@ -90,6 +90,7 @@ exports.add = function (req, res) {
                 else {
                     pid = saved.insertedIds[0];
                     db.collection('planifs_lines', function (err, collection) {
+                        var linesAlert = [];
                         for (var i = 0; i < lines.length; i++) {
                             delete lines[i].id;
                             lines[i].planif = new require('mongodb').ObjectID(pid);
@@ -99,14 +100,19 @@ exports.add = function (req, res) {
                             collection.insert(lines[i], function (err, saved) { });
 
                             var dAlert = new Date(lines[i].startAt);
+                            //DEFINE SEND HOUR
+                            dAlert.setHours(12);
+                            dAlert.setMinutes(0);
+                            dAlert.setSeconds(0);
                             var nuAlert = {
                                 planif:new require('mongodb').ObjectID(pid),
-                                dateAlert: dAlert.setTime( dAlert.getTime() - 1 * 86400000)
+                                dateAlert: new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
                             };
-                            
-                            console.log("datePlanifLine",lines[i].startAt);
-                            console.log("datePlanifAlert",nuAlert);
+                            linesAlert.push(nuAlert);
                         }
+                        db.collection('planifs_lines_alert', function (err, collection) {
+                            collection.insert(linesAlert, function (err, saved) { });
+                        });
                     });
                 }
             });
@@ -144,8 +150,10 @@ exports.add = function (req, res) {
                                         };
                                         linesAlert.push(nuAlert);
                                     }
-                                    db.collection('planifs_lines', function (err, collection) {
-                                        collection.insert(linesAlert, function (err, saved) { });
+                                    db.collection('planifs_lines_alert', function (err, collection) {
+                                        collection.remove({ planif: new require('mongodb').ObjectID(pid) },function (err, result) {
+                                            collection.insert(linesAlert, function (err, saved) { });
+                                        });
                                     });
 
                                 }
