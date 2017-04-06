@@ -32,7 +32,7 @@ exports.sendSmsToProducteurs = function(req, res) {
                                 collection.findOne({ _id: new require('mongodb').ObjectID(smsDatas.pl.produit)}, function (err, item) {
                                     smsDatas.p = item;
                                     //SEND
-                                    sendSmsToProducteurs(smsDatas).then(function (data) {
+                                    sendSms(smsDatas).then(function (data) {
                                         console.log(data);
                                     });
                                     //UPDATE WITH TWILIO ID
@@ -59,7 +59,7 @@ function getPlanifLine (id) {
   })
 }
 
-function sendSms (datas) {
+function sendSms(datas) {
   return new Promise(function (resolve, reject) {
     var accountSid = 'AC32c5e4d582dd5c0b87b245f01d436ab1'; // Your Account SID from www.twilio.com/console
     var authToken = 'bfa27f2dc359c626f20f275ec2a63636';   // Your Auth Token from www.twilio.com/console
