@@ -24,7 +24,7 @@ exports.sendSmsToProducteurs = function(req, res) {
                 getPlanifLine(pla.planif).then(function (data) {
                     smsDatas.pl = data;
                     //GET PRODUCTEUR
-                    getUser(smsDatas.pl.user).then(function (data) {
+                    getUser(smsDatas.pl.producteur).then(function (data) {
                         smsDatas.u = data;
                         //GET PRODUIT
                          getProduit(smsDatas.pl.produit).then(function (data) {
