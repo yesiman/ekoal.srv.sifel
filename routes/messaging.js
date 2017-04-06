@@ -18,6 +18,7 @@ exports.sendSmsToProducteurs = function(req, res) {
         ).toArray(function (err, items) {
             for (var i = 0;i < items.length;i++)
             {
+                //GROUPER TEXTE PAR PRODUCTEUR
                 var smsDatas = {};
                 var pla = items[i];
                 //GET PLANIF_LINE
@@ -29,8 +30,6 @@ exports.sendSmsToProducteurs = function(req, res) {
                         //GET PRODUIT
                          getProduit(smsDatas.pl.produit).then(function (data) {
                              smsDatas.p = data;
-
-                             console.log("smsDatas",smsDatas);
                             //SEND
                             sendSms(smsDatas).then(function (data) {
                                 console.log(data);
@@ -90,8 +89,20 @@ function sendSms(datas) {
     var accountSid = 'AC32c5e4d582dd5c0b87b245f01d436ab1'; // Your Account SID from www.twilio.com/console
     var authToken = 'bfa27f2dc359c626f20f275ec2a63636';   // Your Auth Token from www.twilio.com/console
     var client = new twilio.RestClient(accountSid, authToken);
+
+    var body = "Bonjour, Confirmez vous la livraison de :%0a";
+    body += datas.pl.qte.val;
+    switch (datas.pl.unit)
+    {
+        case 1:
+            body += " Kilos";
+        default:
+            body += " Tonnes";
+    }
+    body += " le " + datas.pl.startAt;
+    body += "%0aMerci de répondre par oui ou non.%0aSIFEL"
     client.messages.create({
-        body: "yesi",
+        body: body,
         to: '+262' + parseInt(datas.u.mobPhone).toString(),  // Text this number
         from: '+33644641541' // From a valid Twilio number
     }, function(err, message) {
