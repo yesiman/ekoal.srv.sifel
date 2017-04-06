@@ -146,7 +146,7 @@ exports.add = function (req, res) {
                                     }
                                     db.collection('planifs_lines', function (err, collection) {
                                         collection.insert(linesAlert, function (err, saved) { });
-                                    }
+                                    });
 
                                 }
                             );
