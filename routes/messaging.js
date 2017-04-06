@@ -100,7 +100,7 @@ function sendSms(datas) {
             body += " Tonnes";
     }
     body += " de " + datas.p.lib + " le " + formatDate(datas.pl.startAt);
-    body += "\nMerci de répondre par oui ou non.\nSIFEL"
+    body += "\nMerci de débuter votre message par oui ou non.\nSIFEL"
     client.messages.create({
         body: body,
         to: '+262' + parseInt(datas.u.mobPhone).toString(),  // Text this number
