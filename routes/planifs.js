@@ -105,7 +105,7 @@ exports.add = function (req, res) {
                             };
                             
                             console.log("datePlanifLine",lines[i].startAt);
-                            console.log("datePlanifAlert",lines[i].dAlert);
+                            console.log("datePlanifAlert",nuAlert);
                         }
                     });
                 }
@@ -140,7 +140,7 @@ exports.add = function (req, res) {
                                         };
                                         
                                         console.log("datePlanifLine",lines[i].startAt);
-                                        console.log("datePlanifAlert",lines[i].dAlert);
+                                        console.log("datePlanifAlert",nuAlert);
                                         
                                     }
                                 }
