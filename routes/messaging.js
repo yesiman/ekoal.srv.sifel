@@ -14,13 +14,14 @@ exports.sendSmsToProducteurs = function(req, res) {
     //dateAlert: { $gte: new Date(beg),$lt: new Date(end)}, 
     db.collection('planifs_lines_alerts', function (err, collection) {
         collection.find(
-            { send:false }
+            { sent:false }
         ).toArray(function (err, items) {
             //FOREACH
             //GET PLANIF_LINE
             //GET PRODUCTEUR
             //GET PRODUIT
             //SEND
+            //UPDATE WITH TWILIO ID
             console.log(items);
         });
     });
