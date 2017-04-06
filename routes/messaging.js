@@ -32,9 +32,9 @@ exports.sendSmsToProducteurs = function(req, res) {
                                 collection.findOne({ _id: new require('mongodb').ObjectID(smsDatas.pl.produit)}, function (err, item) {
                                     smsDatas.p = item;
                                     //SEND
-                                    sendSms(smsDatas).then(function (data) {
-                                        console.log(data);
-                                    });
+                                    //sendSms(smsDatas).then(function (data) {
+                                    //    console.log(data);
+                                    //});
                                     //UPDATE WITH TWILIO ID
                                 })
                             });
