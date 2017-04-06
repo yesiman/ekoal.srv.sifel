@@ -11,7 +11,19 @@ exports.sendSmsToProducteurs = function(req, res) {
     end.setHours(23);
     end.setMinutes(59);
     end.setSeconds(59);
-    console.log("sendSmsToProducteurs");
+    //dateAlert: { $gte: new Date(beg),$lt: new Date(end)}, 
+    db.collection('planifs_lines_alerts', function (err, collection) {
+        collection.find(
+            { send:false }
+        ).toArray(function (err, items) {
+            //FOREACH
+            //GET PLANIF_LINE
+            //GET PRODUCTEUR
+            //GET PRODUIT
+            //SEND
+            console.log(items);
+        });
+    });
     //res.send("ok");
 }
 
