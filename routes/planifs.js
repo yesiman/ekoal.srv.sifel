@@ -110,7 +110,7 @@ exports.add = function (req, res) {
                             };
                             linesAlert.push(nuAlert);
                         }
-                        db.collection('planifs_lines_alert', function (err, collection) {
+                        db.collection('planifs_lines_alerts', function (err, collection) {
                             collection.insert(linesAlert, function (err, saved) { });
                         });
                     });
@@ -150,7 +150,7 @@ exports.add = function (req, res) {
                                         };
                                         linesAlert.push(nuAlert);
                                     }
-                                    db.collection('planifs_lines_alert', function (err, collection) {
+                                    db.collection('planifs_lines_alerts', function (err, collection) {
                                         collection.remove({ planif: new require('mongodb').ObjectID(pid) },function (err, result) {
                                             collection.insert(linesAlert, function (err, saved) { });
                                         });
