@@ -97,6 +97,15 @@ exports.add = function (req, res) {
                             lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                             lines[i].startAt = new Date(lines[i].startAt);
                             collection.insert(lines[i], function (err, saved) { });
+
+                            var dAlert = new Date(lines[i].startAt);
+                            var nuAlert = {
+                                planif:new require('mongodb').ObjectID(pid),
+                                dateAlert: dAlert.setTime( dAlert.getTime() - 1 * 86400000)
+                            };
+                            
+                            console.log("datePlanifLine",lines[i].startAt);
+                            console.log("datePlanifAlert",lines[i].dAlert);
                         }
                     });
                 }
@@ -112,6 +121,7 @@ exports.add = function (req, res) {
                         //console.warn(err.message);  // returns error if no matching object found
                     }else{
                         //console.dir(object);
+                        var lineAlert = [];
                         db.collection('planifs_lines', function (err, collection) {
                             collection.remove({ planif: new require('mongodb').ObjectID(pid) },
                                 function (err, result) {
@@ -122,48 +132,36 @@ exports.add = function (req, res) {
                                         lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                                         lines[i].startAt = new Date(lines[i].startAt);
                                         collection.insert(lines[i], function (err, saved) { });
-                                    }
-                                    if (linesToRem)
-                                    {
-                                        if(linesToRem.length > 0)
-                                        {
-                                            for (var i = 0; i < linesToRem.length; i++) {
-                                                linesToRem[i] = new require('mongodb').ObjectID(linesToRem[i]);
-                                            }
-                                            collection.remove({ _id : {$in:linesToRem}});
-                                        }
+
+                                        var dAlert = new Date(lines[i].startAt);
+                                        var nuAlert = {
+                                            planif:new require('mongodb').ObjectID(pid),
+                                            dateAlert: dAlert.setTime( dAlert.getTime() - 1 * 86400000)
+                                        };
+                                        
+                                        console.log("datePlanifLine",lines[i].startAt);
+                                        console.log("datePlanifAlert",lines[i].dAlert);
+                                        
                                     }
                                 }
                             );
-                            
-                            
+                        });
+                        db.collection('planifs_lines_alerts', function (err, collection) {
+                            collection.remove({ planif: new require('mongodb').ObjectID(pid) },
+                                function (err, result) {
+                                    for (var i = 0; i < lines.length; i++) {
+                                        delete lines[i].id;
+                                        lines[i].planif = new require('mongodb').ObjectID(pid);
+                                        lines[i].produit = new require('mongodb').ObjectID(req.body.planif.produit);
+                                        lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
+                                        lines[i].startAt = new Date(lines[i].startAt);
+                                        collection.insert(lines[i], function (err, saved) { });
+                                    }
+                                }
+                            );
                         });
                     }
                 });
-            /*db.collection('planifs_lines', function (err, collection) {
-                for (var i = 0; i < lines.length; i++) {
-                    lines[i].planif = new require('mongodb').ObjectID(pid);
-                    lines[i].dateRec = new Date(lines[i].dateRec);
-                    lines[i].produit = req.body.planif.produit;
-                    lines[i].producteur = req.body.planif.producteur;
-                    if (lines[i]._id)
-                    {
-                        console.log(lines[i]._id + "/" + pid);
-                        collection.update({_id:new require('mongodb').ObjectID(lines[i]._id)},lines[i], function (err, saved) { });
-                    }
-                    else {
-                        delete lines[i].id;
-                        collection.insert(lines[i], function (err, saved) { });
-                    }
-                }
-                for (var i = 0; i < linesToRem.length; i++) {
-                    linesToRem[i] = new require('mongodb').ObjectID(linesToRem[i]);
-                }
-                if(linesToRem.length > 0)
-                {
-                    collection.remove({ _id : {$in:linesToRem}}, function (err, saved) { });
-                }
-            });*/
         }
     });
     

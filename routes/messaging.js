@@ -3,6 +3,14 @@ var Client = require('node-rest-client').Client;
 
 exports.sendSmsToProducteurs = function(req, res) {
     //READ 
+    var beg = new Date();
+    beg.setHours(0);
+    beg.setMinutes(0);
+    beg.setSeconds(0);
+    var end = new Date();
+    end.setHours(23);
+    end.setMinutes(59);
+    end.setSeconds(59);
     console.log("sendSmsToProducteurs");
     //res.send("ok");
 }
