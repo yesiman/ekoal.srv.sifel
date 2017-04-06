@@ -136,7 +136,7 @@ exports.add = function (req, res) {
                                         var dAlert = new Date(lines[i].startAt);
                                         var nuAlert = {
                                             planif:new require('mongodb').ObjectID(pid),
-                                            dateAlert: dAlert.setTime( dAlert.getTime() - 1 * 86400000)
+                                            dateAlert: new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
                                         };
                                         
                                         console.log("datePlanifLine",lines[i].startAt);
