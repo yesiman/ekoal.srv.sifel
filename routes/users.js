@@ -224,6 +224,10 @@ exports.delete = function (req, res) {
     });
 };
 exports.add = function (req, res) {
+
+    //TODO : CHECK IF LOGIN OR EMAIL EVER USED
+
+
     var uid = req.params.id;
     req.body.user.dateModif = new Date();
     var parcelles = req.body.user.parcelles;

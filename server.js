@@ -60,7 +60,7 @@ server.listen(port, function() {
 });
 console.log("Server listening:" + port);
 setInterval(function(){
-  console.log('A(not in debug) minute later...');
+    messaging.sendSmsToProducteurs();
 }, 60000);      
 
 //MIDDLE
