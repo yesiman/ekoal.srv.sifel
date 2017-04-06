@@ -24,22 +24,26 @@ exports.sendSmsToProducteurs = function(req, res) {
                 getPlanifLine(pla.planif).then(function (data) {
                     smsDatas.pl = data;
                     //GET PRODUCTEUR
-                    db.collection('users', function (err, collection) {
-                        collection.findOne({ _id: new require('mongodb').ObjectID(smsDatas.pl.producteur)}, function (err, item) {
-                            smsDatas.u = item;
-                            //GET PRODUIT
-                            db.collection('products', function (err, collection) {
-                                collection.findOne({ _id: new require('mongodb').ObjectID(smsDatas.pl.produit)}, function (err, item) {
-                                    smsDatas.p = item;
-                                    //SEND
-                                    //sendSms(smsDatas).then(function (data) {
-                                    //    console.log(data);
-                                    //});
-                                    //UPDATE WITH TWILIO ID
-                                })
+                    getUser(pla.user).then(function (data) {
+                        smsDatas.u = item;
+                        //GET PRODUIT
+                         getProduit(pla.produit).then(function (data) {
+                             smsDatas.p = item;
+                            //SEND
+                            sendSms(smsDatas).then(function (data) {
+                                console.log(data);
+                                //UPDATE WITH TWILIO ID
+                                var pid = pla._id;
+                                delete pla._id;
+                                pla.sent = true;
+                                pla.dateSent = new Date();
+                                pla.sid = data.sid;
+                                collection.update(
+                                    { _id: new require('mongodb').ObjectID(pid) },
+                                    pla);
                             });
-                        })
-                    });
+                        });
+                    })
                 })
                 .catch(console.error);
             }
@@ -52,6 +56,26 @@ function getPlanifLine (id) {
   return new Promise(function (resolve, reject) {
       db.collection('planifs_lines', function (err, collection) {
         collection.findOne({ planif: new require('mongodb').ObjectID(id)}, function (err, item) {
+            if (err) return reject(err) // rejects the promise with `err` as the reason
+            resolve(item) 
+        });
+    });
+  })
+}
+function getUser (id) {
+  return new Promise(function (resolve, reject) {
+      db.collection('users', function (err, collection) {
+        collection.findOne({ _id: new require('mongodb').ObjectID(id)}, function (err, item) {
+            if (err) return reject(err) // rejects the promise with `err` as the reason
+            resolve(item) 
+        });
+    });
+  })
+}
+function getProduit (id) {
+  return new Promise(function (resolve, reject) {
+      db.collection('products', function (err, collection) {
+        collection.findOne({ _id: new require('mongodb').ObjectID(id)}, function (err, item) {
             if (err) return reject(err) // rejects the promise with `err` as the reason
             resolve(item) 
         });
@@ -83,6 +107,7 @@ exports.testTwilio = function (req, res) {
 exports.smsReceive = function(req, res)
 {
     io.sockets.emit('numessag', req.body);
+    console.log(req.body);
     res.type('text/xml');
     res.send("<Response></Response>");
 }
