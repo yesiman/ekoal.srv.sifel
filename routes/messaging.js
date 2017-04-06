@@ -18,19 +18,23 @@ exports.sendSmsToProducteurs = function(req, res) {
         ).toArray(function (err, items) {
             for (var i = 0;i < items.length;i++)
             {
+                var smsDatas = {};
                 var pla = items[i];
                 //GET PLANIF_LINE
                 getPlanifLine(pla.planif).then(function (data) {
-                    var pl = data;
+                    smsDatas.pl = data;
                     //GET PRODUCTEUR
                     db.collection('users', function (err, collection) {
-                        collection.findOne({ _id: new require('mongodb').ObjectID(pl.producteur)}, function (err, item) {
-                            console.log("producteur",item);
+                        collection.findOne({ _id: new require('mongodb').ObjectID(smsDatas.pl.producteur)}, function (err, item) {
+                            smsDatas.u = item;
                             //GET PRODUIT
                             db.collection('products', function (err, collection) {
-                                collection.findOne({ _id: new require('mongodb').ObjectID(pl.produit)}, function (err, item) {
-                                    console.log("produit",item);
+                                collection.findOne({ _id: new require('mongodb').ObjectID(smsDatas.pl.produit)}, function (err, item) {
+                                    smsDatas.p = item;
                                     //SEND
+                                    sendSmsToProducteurs(smsDatas).then(function (data) {
+                                        console.log(data);
+                                    });
                                     //UPDATE WITH TWILIO ID
                                 })
                             });
@@ -55,17 +59,24 @@ function getPlanifLine (id) {
   })
 }
 
-exports.testTwilio = function (req, res) {
+function sendSms (datas) {
+  return new Promise(function (resolve, reject) {
     var accountSid = 'AC32c5e4d582dd5c0b87b245f01d436ab1'; // Your Account SID from www.twilio.com/console
     var authToken = 'bfa27f2dc359c626f20f275ec2a63636';   // Your Auth Token from www.twilio.com/console
     var client = new twilio.RestClient(accountSid, authToken);
     client.messages.create({
-        body: req.body.message.text,
-        to: '+262693336223',  // Text this number
+        body: "yesi",
+        to: '+262' + parseInt(datas.u.mobPhone).toString(),  // Text this number
         from: '+33644641541' // From a valid Twilio number
     }, function(err, message) {
-        res.send(true);
+        if (err) return reject(err) // rejects the promise with `err` as the reason
+        resolve(message) 
     });
+  })
+}
+
+exports.testTwilio = function (req, res) {
+    
 
 }
 
