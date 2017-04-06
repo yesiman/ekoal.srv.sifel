@@ -32,9 +32,9 @@ exports.sendSmsToProducteurs = function(req, res) {
                                 collection.findOne({ _id: new require('mongodb').ObjectID(smsDatas.pl.produit)}, function (err, item) {
                                     smsDatas.p = item;
                                     //SEND
-                                    sendSms(smsDatas).then(function (data) {
-                                        console.log(data);
-                                    });
+                                    //sendSms(smsDatas).then(function (data) {
+                                    //    console.log(data);
+                                    //});
                                     //UPDATE WITH TWILIO ID
                                 })
                             });
@@ -69,7 +69,7 @@ function sendSms(datas) {
         to: '+262' + parseInt(datas.u.mobPhone).toString(),  // Text this number
         from: '+33644641541' // From a valid Twilio number
     }, function(err, message) {
-        if (err) return reject(err) // rejects the promise with `err` as the reason
+        //if (err) return reject(err) // rejects the promise with `err` as the reason
         resolve(message) 
     });
   })
