@@ -16,9 +16,9 @@ exports.sendSmsToProducteurs = function(req, res) {
         collection.find(
             { sent:false }
         ).toArray(function (err, items) {
-            for (var i = 0;i < ret.items.length;i++)
+            for (var i = 0;i < items.length;i++)
             {
-                var pla = ret.items[i];
+                var pla = items[i];
                 //GET PLANIF_LINE
                 db.collection('planifs_lines', function (err, collection) {
                     collection.findOne({ planif: new require('mongodb').ObjectID(pla.planif)}, function (err, item) {
