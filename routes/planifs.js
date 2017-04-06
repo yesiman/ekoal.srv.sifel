@@ -107,7 +107,8 @@ exports.add = function (req, res) {
                                 var nuAlert = {
                                     planif_line:new require('mongodb').ObjectID(saved.insertedIds[0]),
                                     planif:new require('mongodb').ObjectID(pid),
-                                    dateAlert: new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
+                                    dateAlert: new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000)),
+                                    sent:false
                                 };
                                 linesAlert.push(nuAlert);
                             });                            
@@ -150,7 +151,8 @@ exports.add = function (req, res) {
                                             var nuAlert = {
                                                 planif_line:new require('mongodb').ObjectID(saved.insertedIds[0]),
                                                 planif:new require('mongodb').ObjectID(pid),
-                                                dateAlert: new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
+                                                dateAlert: new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000)),
+                                                sent:false
                                             };
                                             linesAlert.push(nuAlert);
                                         });      
