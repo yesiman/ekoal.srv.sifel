@@ -21,14 +21,14 @@ exports.sendSmsToProducteurs = function(req, res) {
                 var pla = items[i];
                 //GET PLANIF_LINE
                 getPlanifLine(pla.planif).then(function (data) {
-                    console.log("planif",data);
+                    var pl = data;
                     //GET PRODUCTEUR
                     db.collection('users', function (err, collection) {
-                        collection.findOne({ _id: new require('mongodb').ObjectID(pla.producteur)}, function (err, item) {
+                        collection.findOne({ _id: new require('mongodb').ObjectID(pl.producteur)}, function (err, item) {
                             console.log("producteur",item);
                             //GET PRODUIT
                             db.collection('products', function (err, collection) {
-                                collection.findOne({ _id: new require('mongodb').ObjectID(pla.produit)}, function (err, item) {
+                                collection.findOne({ _id: new require('mongodb').ObjectID(pl.produit)}, function (err, item) {
                                     console.log("produit",item);
                                     //SEND
                                     //UPDATE WITH TWILIO ID
