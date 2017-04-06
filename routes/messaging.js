@@ -25,10 +25,10 @@ exports.sendSmsToProducteurs = function(req, res) {
                     smsDatas.pl = data;
                     //GET PRODUCTEUR
                     getUser(pla.user).then(function (data) {
-                        smsDatas.u = item;
+                        smsDatas.u = data;
                         //GET PRODUIT
                          getProduit(pla.produit).then(function (data) {
-                             smsDatas.p = item;
+                             smsDatas.p = data;
                             //SEND
                             sendSms(smsDatas).then(function (data) {
                                 console.log(data);
