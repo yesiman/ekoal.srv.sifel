@@ -29,6 +29,8 @@ exports.sendSmsToProducteurs = function(req, res) {
                         //GET PRODUIT
                          getProduit(smsDatas.pl.produit).then(function (data) {
                              smsDatas.p = data;
+
+                             console.log("smsDatas",smsDatas);
                             //SEND
                             sendSms(smsDatas).then(function (data) {
                                 console.log(data);
