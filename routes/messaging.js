@@ -16,13 +16,30 @@ exports.sendSmsToProducteurs = function(req, res) {
         collection.find(
             { sent:false }
         ).toArray(function (err, items) {
-            //FOREACH
-            //GET PLANIF_LINE
-            //GET PRODUCTEUR
-            //GET PRODUIT
-            //SEND
-            //UPDATE WITH TWILIO ID
-            console.log(items);
+            for (var i = 0;i < ret.items.length;i++)
+            {
+                var pla = ret.items[i];
+                //GET PLANIF_LINE
+                db.collection('planifs_lines', function (err, collection) {
+                    collection.findOne({ planif: new require('mongodb').ObjectID(pla.planif)}, function (err, item) {
+                        console.log("planif_line",item);
+                        //GET PRODUCTEUR
+                        db.collection('users', function (err, collection) {
+                            collection.findOne({ _id: new require('mongodb').ObjectID(pla.producteur)}, function (err, item) {
+                                console.log("producteur",item);
+                                //GET PRODUIT
+                                db.collection('products', function (err, collection) {
+                                    collection.findOne({ _id: new require('mongodb').ObjectID(pla.produit)}, function (err, item) {
+                                        console.log("produit",item);
+                                        //SEND
+                                        //UPDATE WITH TWILIO ID
+                                    })
+                                });
+                            })
+                        });
+                    })
+                });
+            }
         });
     });
     //res.send("ok");
