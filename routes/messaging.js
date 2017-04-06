@@ -4,7 +4,7 @@ var Client = require('node-rest-client').Client;
 exports.sendSmsToProducteurs = function(req, res) {
     //READ 
     console.log("sendSmsToProducteurs");
-    res.send("ok");
+    //res.send("ok");
 }
 
 exports.testTwilio = function (req, res) {
