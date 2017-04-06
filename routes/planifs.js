@@ -93,11 +93,11 @@ exports.add = function (req, res) {
                         var linesAlert = [];
                         for (var i = 0; i < lines.length; i++) {
                             delete lines[i].id;
+                            delete lines[i]._id;
                             lines[i].planif = new require('mongodb').ObjectID(pid);
                             lines[i].produit = new require('mongodb').ObjectID(req.body.planif.produit);
                             lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                             lines[i].startAt = new Date(lines[i].startAt);
-                            collection.insert(lines[i], function (err, saved) { });
 
                             var dAlert = new Date(lines[i].startAt);
                             //DEFINE SEND HOUR
@@ -110,8 +110,12 @@ exports.add = function (req, res) {
                             };
                             linesAlert.push(nuAlert);
                         }
-                        db.collection('planifs_lines_alerts', function (err, collection) {
-                            collection.insert(linesAlert, function (err, saved) { });
+                        collection.insert(lines[i], function (err, saved) {
+                            db.collection('planifs_lines_alerts', function (err, collection) {
+                                collection.remove({ planif: new require('mongodb').ObjectID(pid) },function (err, result) {
+                                    collection.insert(linesAlert, function (err, saved) { });
+                                });
+                            });
                         });
                     });
                 }
@@ -133,11 +137,12 @@ exports.add = function (req, res) {
                                     var linesAlert = [];
                                     for (var i = 0; i < lines.length; i++) {
                                         delete lines[i].id;
+                                        delete lines[i]._id;
                                         lines[i].planif = new require('mongodb').ObjectID(pid);
                                         lines[i].produit = new require('mongodb').ObjectID(req.body.planif.produit);
                                         lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                                         lines[i].startAt = new Date(lines[i].startAt);
-                                        collection.insert(lines[i], function (err, saved) { });
+                                        
 
                                         var dAlert = new Date(lines[i].startAt);
                                         //DEFINE SEND HOUR
@@ -150,12 +155,13 @@ exports.add = function (req, res) {
                                         };
                                         linesAlert.push(nuAlert);
                                     }
-                                    db.collection('planifs_lines_alerts', function (err, collection) {
-                                        collection.remove({ planif: new require('mongodb').ObjectID(pid) },function (err, result) {
-                                            collection.insert(linesAlert, function (err, saved) { });
+                                    collection.insert(lines[i], function (err, saved) {
+                                         db.collection('planifs_lines_alerts', function (err, collection) {
+                                            collection.remove({ planif: new require('mongodb').ObjectID(pid) },function (err, result) {
+                                                collection.insert(linesAlert, function (err, saved) { });
+                                            });
                                         });
-                                    });
-
+                                     });
                                 }
                             );
                         });
