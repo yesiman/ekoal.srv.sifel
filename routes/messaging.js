@@ -90,7 +90,7 @@ function sendSms(datas) {
     var authToken = 'bfa27f2dc359c626f20f275ec2a63636';   // Your Auth Token from www.twilio.com/console
     var client = new twilio.RestClient(accountSid, authToken);
 
-    var body = "Bonjour, Confirmez vous la livraison de :%0a";
+    var body = "Bonjour, Confirmez vous la livraison de :\n";
     body += datas.pl.qte.val;
     switch (datas.pl.unit)
     {
@@ -99,8 +99,8 @@ function sendSms(datas) {
         default:
             body += " Tonnes";
     }
-    body += " le " + datas.pl.startAt;
-    body += "%0aMerci de répondre par oui ou non.%0aSIFEL"
+    body += " de " + datas.p.lib + " le " + formatDate(datas.pl.startAt);
+    body += "\nMerci de répondre par oui ou non.\nSIFEL"
     client.messages.create({
         body: body,
         to: '+262' + parseInt(datas.u.mobPhone).toString(),  // Text this number
@@ -111,6 +111,22 @@ function sendSms(datas) {
     });
   })
 }
+
+function formatDate(date) {
+  var monthNames = [
+    "Janvier", "Février", "Mars",
+    "Avril", "Mai", "Juin", "Juillet",
+    "Aout", "Septembre", "Octobre",
+    "Novembre", "Décembre"
+  ];
+
+  var day = date.getDate();
+  var monthIndex = date.getMonth();
+  var year = date.getFullYear();
+
+  return day + ' ' + monthNames[monthIndex] + ' ' + year;
+}
+
 
 exports.testTwilio = function (req, res) {
     
