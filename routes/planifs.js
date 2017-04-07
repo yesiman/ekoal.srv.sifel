@@ -151,28 +151,11 @@ exports.add = function (req, res) {
                                                 lines[i].produit = new require('mongodb').ObjectID(req.body.planif.produit);
                                                 lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                                                 lines[i].startAt = new Date(lines[i].startAt);
-                                                
-                                                collection.insert(lines[i], function (err, saved) { 
-                                                    var dAlert = new Date(lines[i].startAt);
-                                                    dAlert = new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
-                                                    //DEFINE SEND HOUR
-                                                    dAlert.setHours(12);
-                                                    dAlert.setMinutes(0);
-                                                    dAlert.setSeconds(0);
-                                                    console.log("lines[i].startAt",lines[i].startAt);
-                                                    console.log("dAlert",dAlert);
-                                                    var nuAlert = {
-                                                        planif_line:new require('mongodb').ObjectID(saved.insertedIds[0]),
-                                                        planif:new require('mongodb').ObjectID(pid),
-                                                        produit:new require('mongodb').ObjectID(req.body.planif.produit),
-                                                        producteur:new require('mongodb').ObjectID(req.body.planif.producteur),
-                                                        dateAlert: dAlert,
-                                                        sent:false
-                                                    };
-                                                    db.collection('planifs_lines_alerts', function (err, collection) {
-                                                        collection.insert(nuAlert, function (err, saved) { });
-                                                    });
-                                                });      
+                                                addPlanifAlertLine(
+                                                    saved.insertedIds[0],
+                                                    lines[i]
+                                                    ).then(function (data) {
+                                                });   
                                             }
                                         }
                                     );
@@ -186,6 +169,38 @@ exports.add = function (req, res) {
     
     res.send(true)
 };
+
+function addPlanifAlertLine(plid,line) {
+  return new Promise(function (resolve, reject) {
+      db.collection('planifs_lines', function (err, collection) {
+          collection.insert(line, function (err, saved) { 
+            var dAlert = new Date(line.startAt);
+            dAlert = new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
+            //DEFINE SEND HOUR
+            dAlert.setHours(12);
+            dAlert.setMinutes(0);
+            dAlert.setSeconds(0);
+            console.log("lines[i].startAt",dateRec);
+            console.log("dAlert",dAlert);
+            var nuAlert = {
+                planif_line:new require('mongodb').ObjectID(plid),
+                planif:new require('mongodb').ObjectID(line.planif),
+                produit:new require('mongodb').ObjectID(line.produit),
+                producteur:new require('mongodb').ObjectID(line.producteur),
+                dateAlert: dAlert,
+                sent:false
+            };
+            db.collection('planifs_lines_alerts', function (err, collection) {
+                collection.insert(nuAlert, function (err, saved) { 
+                    if (err) return reject(err) // rejects the promise with `err` as the reason
+                    resolve(saved) 
+                });
+            });
+        });
+      });
+  })
+}
+
 exports.delete = function (req, res) {
     db.collection('planifs_lines', function (err, collection) {
         collection.remove({ planif: new require('mongodb').ObjectID(req.params.id) },
