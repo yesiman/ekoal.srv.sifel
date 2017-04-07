@@ -152,7 +152,6 @@ exports.add = function (req, res) {
                                                 lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                                                 lines[i].startAt = new Date(lines[i].startAt);
                                                 addPlanifAlertLine(
-                                                    saved.insertedIds[0],
                                                     lines[i]
                                                     ).then(function (data) {
                                                 });   
@@ -170,7 +169,7 @@ exports.add = function (req, res) {
     res.send(true)
 };
 
-function addPlanifAlertLine(plid,line) {
+function addPlanifAlertLine(line) {
   return new Promise(function (resolve, reject) {
       db.collection('planifs_lines', function (err, collection) {
           collection.insert(line, function (err, saved) { 
@@ -183,7 +182,7 @@ function addPlanifAlertLine(plid,line) {
             console.log("lines[i].startAt",dateRec);
             console.log("dAlert",dAlert);
             var nuAlert = {
-                planif_line:new require('mongodb').ObjectID(plid),
+                planif_line:new require('mongodb').ObjectID(saved.insertedIds[0]),
                 planif:new require('mongodb').ObjectID(line.planif),
                 produit:new require('mongodb').ObjectID(line.produit),
                 producteur:new require('mongodb').ObjectID(line.producteur),
