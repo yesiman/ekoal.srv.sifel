@@ -16,46 +16,12 @@ exports.sendSmsToProducteurs = function(req, res) {
         collection.find(
             { sent:false }
         ).toArray(function (err, items) {
-
-
-        // Usage
-        //var count = 0;
-        /*promiseWhile(function () { return count <= items.length; }, function () {
-            var smsDatas = {};
-            var pla = items[count];
-            getPlanifLine(pla.planif).then(function (data) {
-                smsDatas.pl = data;
-                getUser(smsDatas.pl.producteur).then(function (data) {
-                    smsDatas.u = data;
-                    getProduit(smsDatas.pl.produit).then(function (data) {
-                        smsDatas.p = data;
-                        console.log("smsDatas",smsDatas);
-                        count++;
-                        return Q.delay(500); // arbitrary async
-                    });
-                });
-            });
-        }).then(function () {
-            console.log("done");
-        }).done();
-        */
-        /*var count = -1;
-        promiseWhile(count < items.length, function() {
-            var smsDatas = {};
-            getPlanifLine(pla.planif).then(function (data) {
-                smsDatas.pl = data;
-                console.log("smsDatas",smsDatas);
-                count++;
-            });
-        });*/
-
             for (var i = 0;i < items.length;i++)
             {
                 //GROUPER TEXTE PAR PRODUCTEUR
                 console.log(items[i].planif);
                 var count = 0;
                 makeSmsSend(items[i]).then(function (data) {
-                    
                     count++;
                 });
             }
@@ -85,9 +51,11 @@ function makeSmsSend (pla) {
                     pla.sent = true;
                     pla.dateSent = new Date();
                     pla.sid = data.sid;
-                    collection.update(
-                        { _id: new require('mongodb').ObjectID(pid) },
-                        pla);
+                    db.collection('planifs_lines_alerts', function (err, collection) {
+                        collection.update(
+                            { _id: new require('mongodb').ObjectID(pid) },
+                            pla);
+                    });
                 });
                 resolve({ok:"ok"}); 
             });
