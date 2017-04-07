@@ -17,7 +17,18 @@ exports.sendSmsToProducteurs = function(req, res) {
             { sent:false }
         ).toArray(function (err, items) {
 
+
+        // Usage
         var count = -1;
+        promiseWhile(function () { return count < items.length; }, function () {
+            console.log(count);
+            count++;
+            return Q.delay(500); // arbitrary async
+        }).then(function () {
+            console.log("done");
+        }).done();
+        
+        /*var count = -1;
         promiseWhile(count < items.length, function() {
             var smsDatas = {};
             getPlanifLine(pla.planif).then(function (data) {
@@ -27,7 +38,7 @@ exports.sendSmsToProducteurs = function(req, res) {
             });
         });
 
-            /*for (var i = 0;i < items.length;i++)
+            for (var i = 0;i < items.length;i++)
             {
                 //GROUPER TEXTE PAR PRODUCTEUR
                 var smsDatas = {};
@@ -96,15 +107,7 @@ function promiseWhile(condition, body) {
 }
 
 
-// Usage
-var index = 1;
-promiseWhile(function () { return index <= 11; }, function () {
-    console.log(index);
-    index++;
-    return Q.delay(500); // arbitrary async
-}).then(function () {
-    console.log("done");
-}).done();
+
 
 function getPlanifLine (id) {
   return new Promise(function (resolve, reject) {
