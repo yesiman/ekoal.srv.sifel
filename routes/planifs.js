@@ -179,7 +179,7 @@ function addPlanifAlertLine(line) {
             dAlert.setHours(12);
             dAlert.setMinutes(0);
             dAlert.setSeconds(0);
-            console.log("lines[i].startAt",dateRec);
+            console.log("lines[i].startAt",line.startAt);
             console.log("dAlert",dAlert);
             var nuAlert = {
                 planif_line:new require('mongodb').ObjectID(saved.insertedIds[0]),
