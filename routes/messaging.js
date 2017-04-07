@@ -16,7 +16,18 @@ exports.sendSmsToProducteurs = function(req, res) {
         collection.find(
             { sent:false }
         ).toArray(function (err, items) {
-            for (var i = 0;i < items.length;i++)
+
+        var count = -1;
+        promiseWhile(count < items.length, function() {
+            var smsDatas = {};
+            getPlanifLine(pla.planif).then(function (data) {
+                smsDatas.pl = data;
+                console.log("smsDatas",smsDatas);
+                count++;
+            });
+        });
+
+            /*for (var i = 0;i < items.length;i++)
             {
                 //GROUPER TEXTE PAR PRODUCTEUR
                 var smsDatas = {};
@@ -30,6 +41,10 @@ exports.sendSmsToProducteurs = function(req, res) {
                         //GET PRODUIT
                          getProduit(smsDatas.pl.produit).then(function (data) {
                              smsDatas.p = data;
+                            console.log("smsDatas",smsDatas);
+
+                            
+
                             //SEND
                             sendSms(smsDatas).then(function (data) {
                                 console.log(data);
@@ -47,7 +62,7 @@ exports.sendSmsToProducteurs = function(req, res) {
                     })
                 })
                 .catch(console.error);
-            }
+            }*/
         });
     });
     //res.send("ok");
