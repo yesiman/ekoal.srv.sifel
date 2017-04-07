@@ -19,9 +19,10 @@ exports.sendSmsToProducteurs = function(req, res) {
 
 
         // Usage
-        var count = -1;
-        promiseWhile(function () { return count < items.length; }, function () {
+        var count = 0;
+        promiseWhile(function () { return count <= items.length; }, function () {
             var smsDatas = {};
+            var pla = items[count];
             getPlanifLine(pla.planif).then(function (data) {
                 smsDatas.pl = data;
                 getUser(smsDatas.pl.producteur).then(function (data) {
