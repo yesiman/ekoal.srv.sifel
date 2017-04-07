@@ -20,7 +20,7 @@ exports.sendSmsToProducteurs = function(req, res) {
 
         // Usage
         var count = 0;
-        promiseWhile(function () { return count <= items.length; }, function () {
+        /*promiseWhile(function () { return count <= items.length; }, function () {
             var smsDatas = {};
             var pla = items[count];
             getPlanifLine(pla.planif).then(function (data) {
@@ -38,7 +38,7 @@ exports.sendSmsToProducteurs = function(req, res) {
         }).then(function () {
             console.log("done");
         }).done();
-        
+        */
         /*var count = -1;
         promiseWhile(count < items.length, function() {
             var smsDatas = {};
