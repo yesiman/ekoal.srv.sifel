@@ -52,6 +52,7 @@ exports.sendSmsToProducteurs = function(req, res) {
             for (var i = 0;i < items.length;i++)
             {
                 //GROUPER TEXTE PAR PRODUCTEUR
+                console.log(items[i].planif);
                 makeSmsSend(items[i]);
             }
         });
