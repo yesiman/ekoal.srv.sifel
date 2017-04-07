@@ -155,8 +155,20 @@ exports.testTwilio = function (req, res) {
 
 exports.smsReceive = function(req, res)
 {
+    var tel = req.body.replace("+33","").replace("+262","");
+    db.collection('planifs_lines_alerts', function (err, collection) {
+        collection.update(
+        { to: { '$regex': tel, $options: 'i' }, reply: {$exists: false} },
+        {
+            reply:req.body.Body
+        }
+        )
+    });
+
     io.sockets.emit('numessag', req.body);
-    console.log(req.body);
+
+
+
     res.type('text/xml');
     res.send("<Response></Response>");
 }
