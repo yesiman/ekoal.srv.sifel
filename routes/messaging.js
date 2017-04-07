@@ -160,7 +160,7 @@ exports.smsReceive = function(req, res)
         collection.update(
         { to: { '$regex': tel, $options: 'i' }, reply: {$exists: false} },
         {
-            reply:req.body.Body
+            $set: {reply:req.body.Body}
         }
         )
     });
