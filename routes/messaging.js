@@ -158,7 +158,7 @@ exports.smsReceive = function(req, res)
     var tel = req.body.From.replace("+33","").replace("+262","");
     db.collection('planifs_lines_alerts', function (err, collection) {
         collection.update(
-        { to: { '$regex': tel, $options: 'i' }, reply: {$exists: false} },
+        { to: { '$regex': tel, $options: 'i' }, reply: {$exists: false},dateAlert: { $lt: new Date()} },
         {
             $set: {reply:req.body.Body}
         }
