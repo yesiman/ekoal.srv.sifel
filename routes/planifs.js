@@ -112,7 +112,7 @@ exports.add = function (req, res) {
                                     planif:new require('mongodb').ObjectID(pid),
                                     produit:new require('mongodb').ObjectID(req.body.planif.produit),
                                     producteur:new require('mongodb').ObjectID(req.body.planif.producteur),
-                                    dateAlert: new Date(dAlert),
+                                    dateAlert: dAlert,
                                     sent:false
                                 };
                                 db.collection('planifs_lines_alerts', function (err, collection) {
@@ -161,7 +161,7 @@ exports.add = function (req, res) {
                                                         planif:new require('mongodb').ObjectID(pid),
                                                         produit:new require('mongodb').ObjectID(pid),
                                                         producteur:new require('mongodb').ObjectID(req.body.planif.producteur),
-                                                        dateAlert: new Date(dAlert),
+                                                        dateAlert: dAlert,
                                                         sent:false
                                                     };
                                                     db.collection('planifs_lines_alerts', function (err, collection) {
