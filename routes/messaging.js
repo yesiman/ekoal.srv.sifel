@@ -53,7 +53,11 @@ exports.sendSmsToProducteurs = function(req, res) {
             {
                 //GROUPER TEXTE PAR PRODUCTEUR
                 console.log(items[i].planif);
-                makeSmsSend(items[i]);
+                var count = 0;
+                makeSmsSend(items[i]).then(function (data) {
+                    
+                    count++;
+                });
             }
         });
     });
@@ -64,7 +68,7 @@ function makeSmsSend (pla) {
     return new Promise(function (resolve, reject) {
       var smsDatas = {};
     //GET PLANIF_LINE
-    getPlanifLine(pla.planif).then(function (data) {
+    getPlanifLine(pla.planif_line).then(function (data) {
         smsDatas.pl = data;
         //GET PRODUCTEUR
         getUser(smsDatas.pl.producteur).then(function (data) {
@@ -104,7 +108,7 @@ function makeSmsSend (pla) {
 function getPlanifLine (id) {
   return new Promise(function (resolve, reject) {
       db.collection('planifs_lines', function (err, collection) {
-        collection.findOne({ planif: new require('mongodb').ObjectID(id)}, function (err, item) {
+        collection.findOne({ _id: new require('mongodb').ObjectID(id)}, function (err, item) {
             if (err) return reject(err) // rejects the promise with `err` as the reason
             resolve(item) 
         });
