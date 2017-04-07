@@ -76,12 +76,8 @@ function makeSmsSend (pla) {
             //GET PRODUIT
                 getProduit(smsDatas.pl.produit).then(function (data) {
                     smsDatas.p = data;
-                console.log("smsDatas",smsDatas);
-
-                
-
                 //SEND
-                /*sendSms(smsDatas).then(function (data) {
+                sendSms(smsDatas).then(function (data) {
                     console.log(data);
                     //UPDATE WITH TWILIO ID
                     var pid = pla._id;
@@ -92,7 +88,7 @@ function makeSmsSend (pla) {
                     collection.update(
                         { _id: new require('mongodb').ObjectID(pid) },
                         pla);
-                });*/
+                });
                 resolve({ok:"ok"}); 
             });
         })
