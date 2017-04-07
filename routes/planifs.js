@@ -99,17 +99,20 @@ exports.add = function (req, res) {
                             lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                             lines[i].startAt = new Date(lines[i].startAt);
                             var dAlert = new Date(lines[i].startAt);
+                            dAlert = new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
                             //DEFINE SEND HOUR
                             dAlert.setHours(12);
                             dAlert.setMinutes(0);
                             dAlert.setSeconds(0);
+                            console.log("lines[i].startAt",lines[i].startAt);
+                            console.log("dAlert",dAlert);
                             collection.insert(lines[i], function (err, saved) { 
                                 var nuAlert = {
                                     planif_line:new require('mongodb').ObjectID(saved.insertedIds[0]),
                                     planif:new require('mongodb').ObjectID(pid),
                                     produit:new require('mongodb').ObjectID(req.body.planif.produit),
                                     producteur:new require('mongodb').ObjectID(req.body.planif.producteur),
-                                    dateAlert: new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000)),
+                                    dateAlert: new Date(dAlert),
                                     sent:false
                                 };
                                 db.collection('planifs_lines_alerts', function (err, collection) {
@@ -145,17 +148,20 @@ exports.add = function (req, res) {
                                                 lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                                                 lines[i].startAt = new Date(lines[i].startAt);
                                                 var dAlert = new Date(lines[i].startAt);
+                                                dAlert = new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
                                                 //DEFINE SEND HOUR
                                                 dAlert.setHours(12);
                                                 dAlert.setMinutes(0);
                                                 dAlert.setSeconds(0);
+                                                console.log("lines[i].startAt",lines[i].startAt);
+                                                console.log("dAlert",dAlert);
                                                 collection.insert(lines[i], function (err, saved) { 
                                                     var nuAlert = {
                                                         planif_line:new require('mongodb').ObjectID(saved.insertedIds[0]),
                                                         planif:new require('mongodb').ObjectID(pid),
                                                         produit:new require('mongodb').ObjectID(pid),
                                                         producteur:new require('mongodb').ObjectID(req.body.planif.producteur),
-                                                        dateAlert: new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000)),
+                                                        dateAlert: new Date(dAlert),
                                                         sent:false
                                                     };
                                                     db.collection('planifs_lines_alerts', function (err, collection) {
