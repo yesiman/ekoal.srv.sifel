@@ -21,9 +21,19 @@ exports.sendSmsToProducteurs = function(req, res) {
         // Usage
         var count = -1;
         promiseWhile(function () { return count < items.length; }, function () {
-            console.log(count);
-            count++;
-            return Q.delay(500); // arbitrary async
+            var smsDatas = {};
+            getPlanifLine(pla.planif).then(function (data) {
+                smsDatas.pl = data;
+                getUser(smsDatas.pl.producteur).then(function (data) {
+                    smsDatas.u = data;
+                    getProduit(smsDatas.pl.produit).then(function (data) {
+                        smsDatas.p = data;
+                        console.log("smsDatas",smsDatas);
+                        count++;
+                        return Q.delay(500); // arbitrary async
+                    });
+                });
+            });
         }).then(function () {
             console.log("done");
         }).done();
