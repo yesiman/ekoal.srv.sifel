@@ -14,7 +14,10 @@ exports.sendSmsToProducteurs = function(req, res) {
     //dateAlert: { $gte: new Date(beg),$lt: new Date(end)}, 
     db.collection('planifs_lines_alerts', function (err, collection) {
         collection.find(
-            { sent:false }
+            { 
+                dateAlert: { $gte: new Date(beg),$lt: new Date(end)},
+                sent:false 
+            }
         ).toArray(function (err, items) {
             for (var i = 0;i < items.length;i++)
             {
@@ -50,6 +53,7 @@ function makeSmsSend (pla) {
                     delete pla._id;
                     pla.sent = true;
                     pla.dateSent = new Date();
+                    pla.to = smsDatas.u.mobPhone;
                     pla.sid = data.sid;
                     db.collection('planifs_lines_alerts', function (err, collection) {
                         collection.update(
