@@ -47,7 +47,6 @@ function makeSmsSend (pla) {
                     smsDatas.p = data;
                 //SEND
                 sendSms(smsDatas).then(function (data) {
-                    console.log(data);
                     //UPDATE WITH TWILIO ID
                     var pid = pla._id;
                     delete pla._id;
@@ -55,6 +54,7 @@ function makeSmsSend (pla) {
                     pla.dateSent = new Date();
                     pla.to = smsDatas.u.mobPhone;
                     pla.sid = data.sid;
+                    pla.message = data.body;
                     db.collection('planifs_lines_alerts', function (err, collection) {
                         collection.update(
                             { _id: new require('mongodb').ObjectID(pid) },
