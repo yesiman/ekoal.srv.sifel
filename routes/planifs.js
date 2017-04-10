@@ -15,18 +15,23 @@ exports.get = function (req, res) {
                                     db.collection('planifs_lines', function (err, collection) {
                                         collection.find({planif: new require('mongodb').ObjectID(planif._id)}).sort({semaine:1}).toArray(function (err, items) {
                                             planif.lines = items;
-                                            if (planif.parcelle)
-                                            {
-                                                db.collection('parcelles', function (err, collection) {
-                                                    collection.findOne({ _id: new require('mongodb').ObjectID(planif.parcelle)}, function (err, item) {
-                                                        planif.parcelle = item;
+                                            db.collection('planifs_lines_alerts', function (err, collection) {
+                                                collection.find({planif: new require('mongodb').ObjectID(planif._id)}).sort({dateAlert:1}).toArray(function (err, items) {
+                                                    planif.alerts = items;
+                                                    if (planif.parcelle)
+                                                    {
+                                                        db.collection('parcelles', function (err, collection) {
+                                                            collection.findOne({ _id: new require('mongodb').ObjectID(planif.parcelle)}, function (err, item) {
+                                                                planif.parcelle = item;
+                                                                res.send(planif);
+                                                            });
+                                                        }); 
+                                                    }
+                                                    else {
                                                         res.send(planif);
-                                                    });
-                                                }); 
-                                            }
-                                            else {
-                                                res.send(planif);
-                                            }
+                                                    }
+                                                });
+                                            });
                                         });
                                     });       
                                 })
