@@ -213,7 +213,7 @@ exports.getAll = function (req, res) {
         db.collection('planifs', function (err, collection) {
             collection.count(result, function (err, count) {
             ret.count = count;
-            collection.find(result).skip(skip).limit(limit).toArray(function (err, items) {
+            collection.find(result).sort({datePlant:1}).skip(skip).limit(limit).toArray(function (err, items) {
                 var produitsIds = [];
                 var producteursIds = [];
                 var planifs = [];
