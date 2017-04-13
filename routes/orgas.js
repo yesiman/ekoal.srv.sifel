@@ -39,10 +39,12 @@ exports.getAll = function (req, res) {
                             {
                                 for (var ipg = 0;ipg < ret.items.length;ipg++)
                                 {
-                                    console.log(ret.items[ipg]._id.toString());
-                                    console.log(summary[i]._id.orga.toString());
+                                    
                                     if (ret.items[ipg]._id.toString() == summary[i]._id.orga.toString())
                                     {
+                                        console.log(ret.items[ipg]._id.toString());
+                                        console.log(summary[i]._id.orga.toString());
+                                        console.log(summary[i].count);
                                         ret.items[ipg].nbOrgas = summary[i].count;
                                     }
                                 }
