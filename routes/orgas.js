@@ -10,58 +10,45 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
     
-    
-    db.collection('users', function (err, collection) {
-        var query = {};
-        var group = {};
-        var sort = {};
-        query["$match"] = {};
-        query["$match"]["type"] = { "$eq":4 };
-        group["$group"] = {};
-        group["$group"]["_id"] = {};
-        group["$group"]["_id"]["orga"] = "$orga";
-        group["$group"]["count"] = {"$sum":1};
-
-        console.log("query",query);
-        console.log("group",group);
-        console.log("sort",sort);
-
-        collection.aggregate(
-            query,
-            group,
-            function(err, summary) {
-                console.log(err); 
-                console.log(summary); 
-                /*var prodsToGet = [];
-                for (var i = 0;i < summary.length;i++)
-                {
-                    var found = false;
-                    for (var ipg = 0;ipg < prodsToGet.length;ipg++)
-                    {
-                        if (prodsToGet[ipg].toString() == summary[i]._id.producteur.toString())
-                        {
-                            found = true;
-                        }
-                    }
-                    if (!found)
-                    {
-                        prodsToGet.push(new require('mongodb').ObjectID(summary[i]._id.producteur.toString()));
-                    }
-                }
-                db.collection('users', function (err, collection) {
-                    collection.find({_id:{$in:prodsToGet} }).toArray(function (err, items) {
-                        res.send({items:summary, producteurs:items });
-                    });
-                });*/
-            }
-        ); 
-    });
-    
     db.collection('orgas', function (err, collection) {
         collection.count({}, function (err, count) {
             ret.count = count;
             collection.find().skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
+                var orgasIds = [];
+                for (var i = 0;i < items.length;i++)
+                {
+                    orgasIds.push(new require('mongodb').ObjectID(items[i]._id));
+                }
+                db.collection('users', function (err, collection) {
+                    var query = {};
+                    var group = {};
+                    var sort = {};
+                    query["$match"] = {};
+                    query["$match"]["type"] = { "$eq":4 };
+                    query["$match"]["orga"] = { "$in":orgasIds };
+                    group["$group"] = {};
+                    group["$group"]["_id"] = {};
+                    group["$group"]["_id"]["orga"] = "$orga";
+                    group["$group"]["count"] = {"$sum":1};
+                    collection.aggregate(
+                        query,
+                        group,
+                        function(err, summary) {
+                            for (var i = 0;i < summary.length;i++)
+                            {
+                                for (var ipg = 0;ipg < ret.items.length;ipg++)
+                                {
+                                    if (ret.items[ipg]._id.toString() == summary[i]._id.orga.toString())
+                                    {
+                                        ret.items[ipg].nbOrgas = summary[i].count;
+                                    }
+                                }
+                            }
+                        }
+                    ); 
+                });
+                
                 res.send(ret);
             });
         });
