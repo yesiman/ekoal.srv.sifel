@@ -35,12 +35,12 @@ exports.getAll = function (req, res) {
                         query,
                         group,
                         function(err, summary) {
-                            for (var i = 0;i < summary.length;i++)
+                            
+                            for (var ipg = 0;ipg < ret.items.length;ipg++)
                             {
                                 var found = false;
-                                for (var ipg = 0;ipg < ret.items.length;ipg++)
+                                for (var i = 0;i < summary.length;i++)
                                 {
-                                    
                                     if (ret.items[ipg]._id.toString() == summary[i]._id.orga.toString())
                                     {
                                         found = true;
