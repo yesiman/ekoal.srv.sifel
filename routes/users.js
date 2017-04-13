@@ -243,7 +243,7 @@ exports.add = function (req, res) {
         var filters = { $or:[{email: { '$regex': req.body.user.email, $options: 'i' }}, {login: { '$regex': req.body.user.login, $options: 'i' } }]};
         if (uid != "-1")
         {
-            filters._id = new require('mongodb').ObjectID(uid);
+            filters._id = {$not:new require('mongodb').ObjectID(uid)};
         }
         collection.findOne(filters, function (err, item) {
             if (!item)
