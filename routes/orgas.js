@@ -22,8 +22,9 @@ exports.getAll = function (req, res) {
                 {
                     $group:
                     {
-                        _id:{orga:"$orga"},
-                        count:{$sum:1}
+                        _id:{
+                            orga:"$orga"
+                        }
                     }
                 },
                 {},
