@@ -239,10 +239,12 @@ exports.add = function (req, res) {
         req.body.user.orga = new require('mongodb').ObjectID(req.body.user.orga);
     }
     db.collection('users', function (err, collection) {
-        collection.findOne({ $or:[{email: { '$regex': req.body.user.email, $options: 'i' }}, {login: { '$regex': req.body.user.login, $options: 'i' } }]}, function (err, item) {
-            
-            console.log(item);
-            
+        var filters = { $or:[{email: { '$regex': req.body.user.email, $options: 'i' }}, {login: { '$regex': req.body.user.login, $options: 'i' } }]};
+        if (uid != "-1")
+        {
+            filters._id = new require('mongodb').ObjectID(uid);
+        }
+        collection.findOne(filters, function (err, item) {
             if (!item)
             {
                 if (uid == "-1")
