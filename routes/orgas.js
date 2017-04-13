@@ -20,6 +20,7 @@ exports.getAll = function (req, res) {
         group["$group"] = {};
         group["$group"]["_id"] = {};
         group["$group"]["_id"]["orga"] = "$orga";
+        group["$group"]["count"] = {"$sum":1};
         collection.aggregate(
             query,
             group,
