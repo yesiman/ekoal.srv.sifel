@@ -154,7 +154,7 @@ exports.getAllByType = function (req, res) {
     switch (req.decoded.type)
     {
         case  1:   //VOIT TOUT     
-            filters = { $or: [{type: { $eq: 1 }},{type: { $eq: 2 }}] };
+            filters = { type: { $in: [1,2] }};
             break;
         case  2:   //VOIT TECH et Producteurs LIES OP
             filters = { type: { $eq: typ }, orga:new require('mongodb').ObjectID(req.decoded.orga) };
