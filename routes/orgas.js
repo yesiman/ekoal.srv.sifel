@@ -21,6 +21,11 @@ exports.getAll = function (req, res) {
         group["$group"]["_id"] = {};
         group["$group"]["_id"]["orga"] = "$orga";
         group["$group"]["count"] = {"$sum":1};
+
+        console.log("query",query);
+        console.log("group",group);
+        console.log("sort",sort);
+
         collection.aggregate(
             query,
             group,
