@@ -9,6 +9,43 @@ exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
+    
+    
+    db.collection('users', function (err, collection) {
+            collection.aggregate(
+                {type:{$eq:4}},
+                {$group:{
+                    _id:"$orga",
+                    count:{$sum:1}}
+                },
+                {},
+                function(err, summary) {
+                    console.log(summary); 
+                    /*var prodsToGet = [];
+                    for (var i = 0;i < summary.length;i++)
+                    {
+                        var found = false;
+                        for (var ipg = 0;ipg < prodsToGet.length;ipg++)
+                        {
+                            if (prodsToGet[ipg].toString() == summary[i]._id.producteur.toString())
+                            {
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            prodsToGet.push(new require('mongodb').ObjectID(summary[i]._id.producteur.toString()));
+                        }
+                    }
+                    db.collection('users', function (err, collection) {
+                        collection.find({_id:{$in:prodsToGet} }).toArray(function (err, items) {
+                            res.send({items:summary, producteurs:items });
+                        });
+                    });*/
+                }
+            ); 
+    });
+    
     db.collection('orgas', function (err, collection) {
         collection.count({}, function (err, count) {
             ret.count = count;
