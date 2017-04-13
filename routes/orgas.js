@@ -16,14 +16,14 @@ exports.getAll = function (req, res) {
                 {
                     "$match":
                     {
-                        type:{"$eq":4}
+                        "type":{"$eq":4}
                     }
                 },
                 {
                     "$group":
                     {
-                        _id:{
-                            orga:"$orga"
+                        "_id":{
+                            "orga":"$orga"
                         }
                     }
                 },
