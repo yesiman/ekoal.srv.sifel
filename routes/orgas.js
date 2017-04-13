@@ -15,11 +15,12 @@ exports.getAll = function (req, res) {
             collection.aggregate(
                 {type:{$eq:4}},
                 {$group:{
-                    _id:"$orga",
+                    _id:{orga:"$orga"},
                     count:{$sum:1}}
                 },
                 {},
                 function(err, summary) {
+                    console.log(err); 
                     console.log(summary); 
                     /*var prodsToGet = [];
                     for (var i = 0;i < summary.length;i++)
