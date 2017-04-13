@@ -16,7 +16,7 @@ exports.getAll = function (req, res) {
         var group = {};
         var sort = {};
         query["$match"] = {};
-        query["$match"]["type"] = 4;
+        query["$match"]["type"] = { "$eq":4 };
         group["$group"] = {};
         group["$group"]["_id"] = {};
         group["$group"]["_id"]["orga"] = "$orga";
@@ -29,7 +29,6 @@ exports.getAll = function (req, res) {
         collection.aggregate(
             query,
             group,
-            sort,
             function(err, summary) {
                 console.log(err); 
                 console.log(summary); 
