@@ -240,6 +240,7 @@ exports.add = function (req, res) {
     }
     db.collection('users', function (err, collection) {
         collection.findOne({ $or:[{email: { '$regex': req.body.user.email, $options: 'i' }}, {login: { '$regex': req.body.user.login, $options: 'i' } }]}, function (err, item) {
+            console.log(item);
             if (!item)
             {
                 if (uid == "-1")
