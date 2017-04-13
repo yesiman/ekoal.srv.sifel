@@ -13,10 +13,18 @@ exports.getAll = function (req, res) {
     
     db.collection('users', function (err, collection) {
             collection.aggregate(
-                {$match:{type:{$eq:4}}},
-                {$group:{
-                    _id:{orga:"$orga"},
-                    count:{$sum:1}}
+                {
+                    $match:
+                    {
+                        type:{"$eq":4}
+                    }
+                },
+                {
+                    $group:
+                    {
+                        _id:{orga:"$orga"},
+                        count:{$sum:1}
+                    }
                 },
                 {},
                 function(err, summary) {
