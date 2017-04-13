@@ -12,48 +12,44 @@ exports.getAll = function (req, res) {
     
     
     db.collection('users', function (err, collection) {
-            collection.aggregate(
+        var query = {};
+        var group = {};
+        var sort = {};
+        query["$match"] = {};
+        query["$match"]["type"] = { "$eq":4 };
+        group["$group"] = {};
+        group["$group"]["_id"] = {};
+        group["$group"]["_id"]["orga"] = "$orga";
+        collection.aggregate(
+            query,
+            group,
+            sort,
+            function(err, summary) {
+                console.log(err); 
+                console.log(summary); 
+                /*var prodsToGet = [];
+                for (var i = 0;i < summary.length;i++)
                 {
-                    "$match":
+                    var found = false;
+                    for (var ipg = 0;ipg < prodsToGet.length;ipg++)
                     {
-                        "type":{"$eq":4}
-                    }
-                },
-                {
-                    "$group":
-                    {
-                        "_id":{
-                            "orga":"$orga"
-                        }
-                    }
-                },
-                {},
-                function(err, summary) {
-                    console.log(err); 
-                    console.log(summary); 
-                    /*var prodsToGet = [];
-                    for (var i = 0;i < summary.length;i++)
-                    {
-                        var found = false;
-                        for (var ipg = 0;ipg < prodsToGet.length;ipg++)
+                        if (prodsToGet[ipg].toString() == summary[i]._id.producteur.toString())
                         {
-                            if (prodsToGet[ipg].toString() == summary[i]._id.producteur.toString())
-                            {
-                                found = true;
-                            }
-                        }
-                        if (!found)
-                        {
-                            prodsToGet.push(new require('mongodb').ObjectID(summary[i]._id.producteur.toString()));
+                            found = true;
                         }
                     }
-                    db.collection('users', function (err, collection) {
-                        collection.find({_id:{$in:prodsToGet} }).toArray(function (err, items) {
-                            res.send({items:summary, producteurs:items });
-                        });
-                    });*/
+                    if (!found)
+                    {
+                        prodsToGet.push(new require('mongodb').ObjectID(summary[i]._id.producteur.toString()));
+                    }
                 }
-            ); 
+                db.collection('users', function (err, collection) {
+                    collection.find({_id:{$in:prodsToGet} }).toArray(function (err, items) {
+                        res.send({items:summary, producteurs:items });
+                    });
+                });*/
+            }
+        ); 
     });
     
     db.collection('orgas', function (err, collection) {
