@@ -239,8 +239,7 @@ exports.add = function (req, res) {
         req.body.user.orga = new require('mongodb').ObjectID(req.body.user.orga);
     }
     db.collection('users', function (err, collection) {
-
-        collection.findOne({ $or:[{email: req.body.user.email}, {login: req.body.user.login }]}, function (err, item) {
+        collection.findOne({ $or:[{email: { '$regex': req.body.user.email, $options: 'i' }}, {login: { '$regex': req.body.user.login, $options: 'i' } }]}, function (err, item) {
             if (!item)
             {
                 if (uid == "-1")
