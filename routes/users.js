@@ -1,6 +1,6 @@
 exports.login = function (req, res) {
     db.collection('users', function (err, collection) {
-        collection.findOne({ email: req.body.user.login, pass: req.body.user.pass }, function (err, item) {
+        collection.findOne({ login: req.body.user.login, pass: req.body.user.pass }, function (err, item) {
             if (item)
             {
                 var token = jwt.sign(item, process.env.JWT, {
@@ -239,65 +239,74 @@ exports.add = function (req, res) {
         req.body.user.orga = new require('mongodb').ObjectID(req.body.user.orga);
     }
     db.collection('users', function (err, collection) {
-        if (uid == "-1")
-        {
-            collection.insert(req.body.user, function (err, saved) {
-                if (err || !saved) {
-                    res.send(false)
-                }
-                else {
-                    uid = saved.insertedIds[0];
-                    db.collection('parcelles', function (err, collection) {
-                        for (var i = 0; i < parcelles.length; i++) {
-                            parcelles[i].producteur = new require('mongodb').ObjectID(uid);
-                            delete parcelles[i].id;
-                            collection.insert(parcelles[i], function (err, saved) { });
-                        }
-                    });
-                    res.send(true);
-                }
-            });
-        }
-        else {
-            delete req.body.user._id;
-            collection.update(
-                { _id: new require('mongodb').ObjectID(uid) },
-                req.body.user, function (err, saved) {
-                    db.collection('parcelles', function (err, collection) {
-                        for (var i = 0; i < parcelles.length; i++) {
-                            parcelles[i].producteur = new require('mongodb').ObjectID(uid);
-                            if (parcelles[i].id) {
-                                delete parcelles[i].id;
-                                parcelles[i].producteur = new require('mongodb').ObjectID(uid);
-                                collection.insert(parcelles[i], function (err, saved) { });
-                            }
-                            else {
-                                var pid = parcelles[i]._id;
-                                delete parcelles[i]._id;
-                                collection.update(
-                                { _id: new require('mongodb').ObjectID(pid) },
-                                parcelles[i]);
-                            }
-                        }
-                        if (parcellesToRem.length > 0)
-                        {
-                            for (var ip = 0;ip < parcellesToRem.length;ip++)
-                            {
-                                parcellesToRem[ip] = new require('mongodb').ObjectID(parcellesToRem[ip]);
-                            }
-                            collection.remove({ _id: {$in:parcellesToRem} },
-                                function (err, result) {
-                                    res.send(true);
-                                });
+
+        collection.findOne({ $or:[{email: req.body.user.email}, {login: req.body.user.login }]}, function (err, item) {
+            if (!item)
+            {
+                if (uid == "-1")
+                {
+                    collection.insert(req.body.user, function (err, saved) {
+                        if (err || !saved) {
+                            res.send({res:false})
                         }
                         else {
-                            res.send(true);
+                            uid = saved.insertedIds[0];
+                            db.collection('parcelles', function (err, collection) {
+                                for (var i = 0; i < parcelles.length; i++) {
+                                    parcelles[i].producteur = new require('mongodb').ObjectID(uid);
+                                    delete parcelles[i].id;
+                                    collection.insert(parcelles[i], function (err, saved) { });
+                                }
+                            });
+                            res.send({res:true});
                         }
-                        
                     });
-                 });
-                //UPDATE PARECLLES / INSERT IF "NEW"
-        }      
+                }
+                else {
+                    delete req.body.user._id;
+                    collection.update(
+                        { _id: new require('mongodb').ObjectID(uid) },
+                        req.body.user, function (err, saved) {
+                            db.collection('parcelles', function (err, collection) {
+                                for (var i = 0; i < parcelles.length; i++) {
+                                    parcelles[i].producteur = new require('mongodb').ObjectID(uid);
+                                    if (parcelles[i].id) {
+                                        delete parcelles[i].id;
+                                        parcelles[i].producteur = new require('mongodb').ObjectID(uid);
+                                        collection.insert(parcelles[i], function (err, saved) { });
+                                    }
+                                    else {
+                                        var pid = parcelles[i]._id;
+                                        delete parcelles[i]._id;
+                                        collection.update(
+                                        { _id: new require('mongodb').ObjectID(pid) },
+                                        parcelles[i]);
+                                    }
+                                }
+                                if (parcellesToRem.length > 0)
+                                {
+                                    for (var ip = 0;ip < parcellesToRem.length;ip++)
+                                    {
+                                        parcellesToRem[ip] = new require('mongodb').ObjectID(parcellesToRem[ip]);
+                                    }
+                                    collection.remove({ _id: {$in:parcellesToRem} },
+                                        function (err, result) {
+                                            res.send({res:true});
+                                        });
+                                }
+                                else {
+                                    res.send({res:true});
+                                }
+                                
+                            });
+                        });
+                        //UPDATE PARECLLES / INSERT IF "NEW"
+                }      
+            }
+            else {
+                res.send({res:false,message:"login or email used."});
+            }
+        });
     });
 };
 
