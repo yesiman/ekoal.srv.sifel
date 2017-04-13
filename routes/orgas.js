@@ -37,18 +37,22 @@ exports.getAll = function (req, res) {
                         function(err, summary) {
                             for (var i = 0;i < summary.length;i++)
                             {
+                                var found = false;
                                 for (var ipg = 0;ipg < ret.items.length;ipg++)
                                 {
                                     
                                     if (ret.items[ipg]._id.toString() == summary[i]._id.orga.toString())
                                     {
-                                        console.log(ret.items[ipg]._id.toString());
-                                        console.log(summary[i]._id.orga.toString());
-                                        console.log(summary[i].count);
+                                        found = true;
                                         ret.items[ipg].nbOrgas = summary[i].count;
                                     }
                                 }
+                                if (!found)
+                                {
+                                    ret.items[ipg].nbOrgas = 0;
+                                }
                             }
+                            
                             res.send(ret);
                         }
                     ); 
