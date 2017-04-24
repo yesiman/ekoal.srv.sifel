@@ -241,6 +241,12 @@ exports.add = function (req, res) {
     }
     db.collection('users', function (err, collection) {
         var filters = { $or:[{email: { '$regex': req.body.user.email, $options: 'i' }}, {login: { '$regex': req.body.user.login, $options: 'i' } }]};
+        if (req.body.user.email) {
+            filters = { $or:[{email: { '$regex': req.body.user.email, $options: 'i' }}, {login: { '$regex': req.body.user.login, $options: 'i' } }]};
+        }
+        else {
+            filters = { login: { '$regex': req.body.user.login, $options: 'i' } };
+        }
         if (uid != "-1")
         {
             filters._id = {$not:new require('mongodb').ObjectID(uid)};
