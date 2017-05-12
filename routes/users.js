@@ -7,13 +7,11 @@ exports.login = function (req, res) {
                     expiresIn: 14400 
                 });
                 //1440
-                var insertDate =  getReunionLocalDate();
-                console.log("insertDate",insertDate);
                 db.collection('users_logs', function (err, collection) {
                     collection.insert({
                         user:item._id,
                         action: { type:'login' },
-                        actionDate: insertDate
+                        actionDate: new Date(moment.tz(new Date().getTime(),"Indian/Reunion").format("MMM DD, YYYY HH:mm:SS"))
                         }, function (err, saved) {
                             res.send({success:true,_id:item._id, name:item.name, surn:item.surn, type:item.type ,orga:item.orga, token:token}); 
                     });
