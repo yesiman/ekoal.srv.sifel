@@ -160,7 +160,7 @@ function getAlertDate(dateStartAt,nbDayToSub,hour) {
     var dAlert = new Date(dateStartAt);
     dAlert = new Date(dAlert.setTime( dAlert.getTime() - (nbDayToSub * 86400000)));
     //DEFINE SEND HOUR
-    dAlert.setHours(12);
+    dAlert.setHours(hour);
     dAlert.setMinutes(0);
     dAlert.setSeconds(0);
     return dAlert;
@@ -179,38 +179,26 @@ function addPlanifAlertLine(line, alertParams) {
                     producteur:new require('mongodb').ObjectID(line.producteur),
                     sent:false
                 };
-
+                db.collection('planifs_lines_alerts', function (err, collection) {
                 if (alertParams.d1)
                 {
                     nuAlert.dateAlert = getAlertDate(line.startAt,1,alertParams.sendHour);
-                    db.collection('planifs_lines_alerts', function (err, collection) {
-                        collection.insert(nuAlert, function (err, saved) { 
-                        });
-                    });
+                    collection.insert(nuAlert, function (err, saved) { });
                 }
                 else if (alertParams.d7)
                 {
                     nuAlert.dateAlert = getAlertDate(line.startAt,7,alertParams.sendHour);
-                    db.collection('planifs_lines_alerts', function (err, collection) {
-                        collection.insert(nuAlert, function (err, saved) { 
-                        });
-                    });
+                    collection.insert(nuAlert, function (err, saved) { });
                 }
                 if (alertParams.d15)
                 {
                     nuAlert.dateAlert = getAlertDate(line.startAt,15,alertParams.sendHour);
-                    db.collection('planifs_lines_alerts', function (err, collection) {
-                        collection.insert(nuAlert, function (err, saved) { 
-                        });
-                    });
+                    collection.insert(nuAlert, function (err, saved) { });
                 }
                 else if (alertParams.d30)
                 {
                     nuAlert.dateAlert = getAlertDate(line.startAt,30,alertParams.sendHour);
-                    db.collection('planifs_lines_alerts', function (err, collection) {
-                        collection.insert(nuAlert, function (err, saved) { 
-                        });
-                    });
+                    collection.insert(nuAlert, function (err, saved) { });
                 }
                 resolve({ok:"ok"})
                 /*db.collection('planifs_lines_alerts', function (err, collection) {
