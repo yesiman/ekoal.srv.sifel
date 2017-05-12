@@ -156,15 +156,7 @@ exports.add = function (req, res) {
     res.send(true)
 };
 
-function getAlertDate(dateStartAt,nbDayToSub,hour) {
-    var dAlert = new Date(dateStartAt);
-    dAlert = new Date(dAlert.setTime( dAlert.getTime() - (nbDayToSub * 86400000)));
-    //DEFINE SEND HOUR
-    dAlert.setHours(hour);
-    dAlert.setMinutes(0);
-    dAlert.setSeconds(0);
-    return dAlert;
-}
+
 
 function addPlanifAlertLine(line, alertParams) {
   return new Promise(function (resolve, reject) {
@@ -183,27 +175,19 @@ function addPlanifAlertLine(line, alertParams) {
                     var aBulkI = [];
                     if (alertParams.d1)
                     {
-                        nuAlert.dateAlert = getAlertDate(line.startAt,1,alertParams.sendHour);
-                        nuAlert._id = new require('mongodb').ObjectID();
-                        aBulkI.push(nuAlert);
+                        addAlert(nuAlert, line.startAt,1,alertParams.sendHour);
                     }
                     if (alertParams.d7)
                     {
-                        nuAlert.dateAlert = getAlertDate(line.startAt,7,alertParams.sendHour);
-                        nuAlert._id = new require('mongodb').ObjectID();
-                        aBulkI.push(nuAlert);
+                        addAlert(nuAlert, line.startAt,7,alertParams.sendHour);
                     }
                     if (alertParams.d15)
                     {
-                        nuAlert.dateAlert = getAlertDate(line.startAt,15,alertParams.sendHour);
-                        nuAlert._id = new require('mongodb').ObjectID();
-                        aBulkI.push(nuAlert);
+                        addAlert(nuAlert, line.startAt,15,alertParams.sendHour);
                     }
                     if (alertParams.d30)
                     {
-                        nuAlert.dateAlert = getAlertDate(line.startAt,30,alertParams.sendHour);
-                        nuAlert._id = new require('mongodb').ObjectID();
-                        aBulkI.push(nuAlert);
+                        addAlert(nuAlert, line.startAt,30,alertParams.sendHour);
                     }
                     console.log(aBulkI);
                     collection.insertMany(aBulkI, function (err, saved) { 
@@ -216,10 +200,35 @@ function addPlanifAlertLine(line, alertParams) {
                             resolve(saved) 
                         });*/
                 });
+                resolve({ok:"ok"}) 
             }
             else {
                 resolve({ok:"ok"}) 
             }
+        });
+    });
+  })
+}
+
+function getAlertDate(dateStartAt,nbDayToSub,hour) {
+    
+    return dAlert;
+}
+
+function addAlert (obj,dateStartAt,nbDayToSub,hour) {
+  return new Promise(function (resolve, reject) {
+    var dAlert = new Date(dateStartAt);
+    dAlert = new Date(dAlert.setTime( dAlert.getTime() - (nbDayToSub * 86400000)));
+    //DEFINE SEND HOUR
+    dAlert.setHours(hour);
+    dAlert.setMinutes(0);
+    dAlert.setSeconds(0);
+    obj.dateAlert = dAlert;
+    obj._id = new require('mongodb').ObjectID();
+    db.collection('planifs_lines_alerts', function (err, collection) {
+        collection.insert(obj, function (err, saved) {
+            if (err) return reject(err) // rejects the promise with `err` as the reason
+            resolve(saved) 
         });
     });
   })
