@@ -201,7 +201,7 @@ Date.prototype.getWeek = function() {
     return Math.ceil(dayDiff / 7); 
   }
 };
-getReunionLocalDate()
+function getReunionLocalDate()
 {
     return moment.tz(new Date().getTime(),"Indian/Reunion").toDate();
-}
+};
