@@ -180,33 +180,33 @@ function addPlanifAlertLine(line, alertParams) {
                     sent:false
                 };
                 db.collection('planifs_lines_alerts', function (err, collection) {
-                if (alertParams.d1)
-                {
-                    nuAlert.dateAlert = getAlertDate(line.startAt,1,alertParams.sendHour);
-                    collection.insert(nuAlert, function (err, saved) { });
-                }
-                else if (alertParams.d7)
-                {
-                    nuAlert.dateAlert = getAlertDate(line.startAt,7,alertParams.sendHour);
-                    collection.insert(nuAlert, function (err, saved) { });
-                }
-                if (alertParams.d15)
-                {
-                    nuAlert.dateAlert = getAlertDate(line.startAt,15,alertParams.sendHour);
-                    collection.insert(nuAlert, function (err, saved) { });
-                }
-                else if (alertParams.d30)
-                {
-                    nuAlert.dateAlert = getAlertDate(line.startAt,30,alertParams.sendHour);
-                    collection.insert(nuAlert, function (err, saved) { });
-                }
-                resolve({ok:"ok"})
-                /*db.collection('planifs_lines_alerts', function (err, collection) {
-                    collection.insert(nuAlert, function (err, saved) { 
-                        if (err) return reject(err) // rejects the promise with `err` as the reason
-                        resolve(saved) 
-                    });
-                });*/
+                    if (alertParams.d1)
+                    {
+                        nuAlert.dateAlert = getAlertDate(line.startAt,1,alertParams.sendHour);
+                        collection.insert(nuAlert, function (err, saved) { });
+                    }
+                    else if (alertParams.d7)
+                    {
+                        nuAlert.dateAlert = getAlertDate(line.startAt,7,alertParams.sendHour);
+                        collection.insert(nuAlert, function (err, saved) { });
+                    }
+                    if (alertParams.d15)
+                    {
+                        nuAlert.dateAlert = getAlertDate(line.startAt,15,alertParams.sendHour);
+                        collection.insert(nuAlert, function (err, saved) { });
+                    }
+                    else if (alertParams.d30)
+                    {
+                        nuAlert.dateAlert = getAlertDate(line.startAt,30,alertParams.sendHour);
+                        collection.insert(nuAlert, function (err, saved) { });
+                    }
+                    resolve({ok:"ok"})
+                    /*db.collection('planifs_lines_alerts', function (err, collection) {
+                        collection.insert(nuAlert, function (err, saved) { 
+                            if (err) return reject(err) // rejects the promise with `err` as the reason
+                            resolve(saved) 
+                        });*/
+                });
             }
             else {
                 resolve({ok:"ok"}) 
