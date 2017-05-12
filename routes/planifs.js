@@ -185,7 +185,7 @@ function addPlanifAlertLine(line, alertParams) {
                         nuAlert.dateAlert = getAlertDate(line.startAt,1,alertParams.sendHour);
                         collection.insert(nuAlert, function (err, saved) { });
                     }
-                    else if (alertParams.d7)
+                    if (alertParams.d7)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,7,alertParams.sendHour);
                         collection.insert(nuAlert, function (err, saved) { });
@@ -195,7 +195,7 @@ function addPlanifAlertLine(line, alertParams) {
                         nuAlert.dateAlert = getAlertDate(line.startAt,15,alertParams.sendHour);
                         collection.insert(nuAlert, function (err, saved) { });
                     }
-                    else if (alertParams.d30)
+                    if (alertParams.d30)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,30,alertParams.sendHour);
                         collection.insert(nuAlert, function (err, saved) { });
