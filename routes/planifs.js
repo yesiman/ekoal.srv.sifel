@@ -189,11 +189,7 @@ function addPlanifAlertLine(line, alertParams) {
                     {
                         addAlert(nuAlert, line.startAt,30,alertParams.sendHour);
                     }
-                    console.log(aBulkI);
-                    collection.insertMany(aBulkI, function (err, saved) { 
-                        if (err) return reject(err) // rejects the promise with `err` as the reason
-                        resolve(saved) 
-                    });
+                    
                     /*db.collection('planifs_lines_alerts', function (err, collection) {
                         collection.insert(nuAlert, function (err, saved) { 
                             if (err) return reject(err) // rejects the promise with `err` as the reason
