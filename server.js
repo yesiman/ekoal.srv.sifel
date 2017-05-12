@@ -22,13 +22,14 @@ var express = require('express'),
     mongoOplog = require('mongo-oplog'),
     cors = require('cors'),
     multer = require('multer'),
-    upload = multer().any(),
-    moment = require('moment-timezone');
+    upload = multer().any();
 //
 var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
 //
 jwt = require('jsonwebtoken');
+moment = require('moment-timezone');
 io = require('socket.io').listen(server);
+
 //
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {
@@ -62,9 +63,8 @@ server.listen(port, function() {
 console.log("Server listening:" + port);
 setInterval(function(){
     console.log("Heroku Time",new Date());
-    console.log("Paris Time",moment.tz(new Date().getTime(),"Europe/Paris").format());
-    
-    console.log("Reunion Time",moment.tz(new Date().getTime(),"Indian/Reunion").format());
+    console.log("Paris Time",moment.tz(new Date().getTime(),"Europe/Paris").toDate());
+    console.log("Reunion Time",getReunionLocalDate());
     //messaging.sendSmsToProducteurs();
 }, 1000);      
 
@@ -201,3 +201,7 @@ Date.prototype.getWeek = function() {
     return Math.ceil(dayDiff / 7); 
   }
 };
+getReunionLocalDate()
+{
+    return moment.tz(new Date().getTime(),"Indian/Reunion").toDate();
+}
