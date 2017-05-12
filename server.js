@@ -62,7 +62,7 @@ server.listen(port, function() {
 console.log("Server listening:" + port);
 setInterval(function(){
     messaging.sendSmsToProducteurs();
-}, 60000);      
+}, 30000);      
 
 //MIDDLE
 app.use(bodyParser.urlencoded({ extended: true }));

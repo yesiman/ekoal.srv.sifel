@@ -3,6 +3,7 @@ var Client = require('node-rest-client').Client;
 
 exports.sendSmsToProducteurs = function(req, res) {
     //READ 
+    var curDateT = shared.getReunionLocalDate();
     var beg = shared.getReunionLocalDate();
     beg.setHours(0);
     beg.setMinutes(0);
@@ -21,12 +22,15 @@ exports.sendSmsToProducteurs = function(req, res) {
         ).toArray(function (err, items) {
             for (var i = 0;i < items.length;i++)
             {
+                if (curDateT.getHours() == new Date(dateAlert).getHours())
+                {
+                    console.log(items[i].planif);
+                    var count = 0;
+                    makeSmsSend(items[i]).then(function (data) {
+                        count++;
+                    });    
+                }
                 //GROUPER TEXTE PAR PRODUCTEUR
-                console.log(items[i].planif);
-                var count = 0;
-                makeSmsSend(items[i]).then(function (data) {
-                    count++;
-                });
             }
         });
     });

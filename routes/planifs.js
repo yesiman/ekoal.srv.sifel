@@ -206,10 +206,6 @@ function addPlanifAlertLine(line, alertParams) {
   })
 }
 
-function getAlertDate(dateStartAt,nbDayToSub,hour) {
-    
-    return dAlert;
-}
 
 function addAlert (obj,dateStartAt,nbDayToSub,hour) {
   return new Promise(function (resolve, reject) {
