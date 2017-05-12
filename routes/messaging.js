@@ -22,7 +22,7 @@ exports.sendSmsToProducteurs = function(req, res) {
         ).toArray(function (err, items) {
             for (var i = 0;i < items.length;i++)
             {
-                if (curDateT.getHours() == new Date(dateAlert).getHours())
+                if (curDateT.getHours() == new Date(items[i].dateAlert).getHours())
                 {
                     console.log(items[i].planif);
                     var count = 0;
