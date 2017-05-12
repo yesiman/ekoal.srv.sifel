@@ -11,7 +11,7 @@ exports.login = function (req, res) {
                     collection.insert({
                         user:item._id,
                         action: { type:'login' },
-                        actionDate: new Date(moment.tz(new Date().getTime(),"Indian/Reunion").format("MMM DD, YYYY HH:mm:SS"))
+                        actionDate: shared.getReunionLocalDate()
                         }, function (err, saved) {
                             res.send({success:true,_id:item._id, name:item.name, surn:item.surn, type:item.type ,orga:item.orga, token:token}); 
                     });
@@ -28,7 +28,7 @@ exports.refreshToken = function (req, res) {
     delete user.iat;
     delete user.exp;
     var newToken = jwt.sign(user, process.env.JWT, {
-        expiresIn: 60
+        expiresIn: 60   
     });
     res.send({tk:newToken});
 };
