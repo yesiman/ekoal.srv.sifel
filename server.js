@@ -63,7 +63,7 @@ server.listen(port, function() {
 console.log("Server listening:" + port);
 setInterval(function(){
     console.log("Heroku Time",new Date());
-    console.log("Paris Time",moment.tz(new Date().getTime(),"Europe/Paris").toDate());
+    console.log("Paris Time",moment.tz(new Date().getTime(),"Europe/Paris").format());
     console.log("Reunion Time",getReunionLocalDate());
     //messaging.sendSmsToProducteurs();
 }, 1000);      
@@ -203,5 +203,5 @@ Date.prototype.getWeek = function() {
 };
 function getReunionLocalDate()
 {
-    return moment.tz(new Date().getTime(),"Indian/Reunion").toDate();
+    return moment.tz(new Date().getTime(),"Indian/Reunion").format();
 };
