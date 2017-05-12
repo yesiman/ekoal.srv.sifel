@@ -23,7 +23,7 @@ var express = require('express'),
     cors = require('cors'),
     multer = require('multer'),
     upload = multer().any(),
-    moment = require('moment');
+    moment = require('moment-timezone');
 //
 var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
 //
@@ -62,7 +62,9 @@ server.listen(port, function() {
 console.log("Server listening:" + port);
 setInterval(function(){
     console.log("Heroku Time",new Date());
-    console.log("Paris Time",moment.tz((new Date()),"Europe/Paris").format());
+    console.log("Paris Time",moment.tz(new Date().getTime(),"Europe/Paris").format());
+    
+    console.log("Reunion Time",moment.tz(new Date().getTime(),"Indian/Reunion").format());
     //messaging.sendSmsToProducteurs();
 }, 1000);      
 
