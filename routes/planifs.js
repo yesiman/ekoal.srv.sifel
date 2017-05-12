@@ -105,7 +105,8 @@ exports.add = function (req, res) {
                             lines[i].startAt = new Date(lines[i].startAt);
                             
                             addPlanifAlertLine(
-                                lines[i]
+                                lines[i],
+                                req.body.planif.alertsParams
                                 ).then(function (data) {
                             });                              
                         }
@@ -137,9 +138,10 @@ exports.add = function (req, res) {
                                                 lines[i].producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
                                                 lines[i].startAt = new Date(lines[i].startAt);
                                                 addPlanifAlertLine(
-                                                    lines[i]
+                                                    lines[i],
+                                                    req.body.planif.alertsParams
                                                     ).then(function (data) {
-                                                });   
+                                                }); 
                                             }
                                         }
                                     );
@@ -154,34 +156,40 @@ exports.add = function (req, res) {
     res.send(true)
 };
 
-function addPlanifAlertLine(line) {
+function addPlanifAlertLine(line, alertParams) {
   return new Promise(function (resolve, reject) {
-      db.collection('planifs_lines', function (err, collection) {
-          collection.insert(line, function (err, saved) { 
-            var dAlert = new Date(line.startAt);
-            dAlert = new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
-            //DEFINE SEND HOUR
-            dAlert.setHours(12);
-            dAlert.setMinutes(0);
-            dAlert.setSeconds(0);
-            console.log("lines[i].startAt",line.startAt);
-            console.log("dAlert",dAlert);
-            var nuAlert = {
-                planif_line:new require('mongodb').ObjectID(saved.insertedIds[0]),
-                planif:new require('mongodb').ObjectID(line.planif),
-                produit:new require('mongodb').ObjectID(line.produit),
-                producteur:new require('mongodb').ObjectID(line.producteur),
-                dateAlert: dAlert,
-                sent:false
-            };
-            db.collection('planifs_lines_alerts', function (err, collection) {
-                collection.insert(nuAlert, function (err, saved) { 
-                    if (err) return reject(err) // rejects the promise with `err` as the reason
-                    resolve(saved) 
+      if (alertParams.actif)
+      {
+          db.collection('planifs_lines', function (err, collection) {
+            collection.insert(line, function (err, saved) { 
+                var dAlert = new Date(line.startAt);
+                dAlert = new Date(dAlert.setTime( dAlert.getTime() - 1 * 86400000))
+                //DEFINE SEND HOUR
+                dAlert.setHours(12);
+                dAlert.setMinutes(0);
+                dAlert.setSeconds(0);
+                console.log("lines[i].startAt",line.startAt);
+                console.log("dAlert",dAlert);
+                var nuAlert = {
+                    planif_line:new require('mongodb').ObjectID(saved.insertedIds[0]),
+                    planif:new require('mongodb').ObjectID(line.planif),
+                    produit:new require('mongodb').ObjectID(line.produit),
+                    producteur:new require('mongodb').ObjectID(line.producteur),
+                    dateAlert: dAlert,
+                    sent:false
+                };
+                db.collection('planifs_lines_alerts', function (err, collection) {
+                    collection.insert(nuAlert, function (err, saved) { 
+                        if (err) return reject(err) // rejects the promise with `err` as the reason
+                        resolve(saved) 
+                    });
                 });
             });
         });
-      });
+      }
+      else {
+          resolve({ok:"ok"}) 
+      }
   })
 }
 

@@ -7,7 +7,7 @@ exports.produits = function (req, res) {
         var line = lines[i].split(";");
         var produit = {
             user:new require('mongodb').ObjectID(req.decoded._id),
-            dateModif: new Date(),
+            dateModif: shared.getReunionLocalDate(),
             orga:new require('mongodb').ObjectID(req.decoded.orga),
             codeProd:line[0],
             lib:line[1],
@@ -47,7 +47,7 @@ exports.producteurs = function (req, res) {
             
             var user = {
                 type:4,
-                dateModif: new Date(),
+                dateModif: shared.getReunionLocalDate(),
                 orga:new require('mongodb').ObjectID(req.decoded.orga),
                 codeAdh:line[2],
                 name:line[4],

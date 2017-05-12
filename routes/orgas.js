@@ -73,7 +73,7 @@ exports.delete = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.orga.dateModif = new Date();
+    req.body.orga.dateModif = shared.getReunionLocalDate();
     db.collection('orgas', function (err, collection) {
         if (pid == "-1")
         {

@@ -230,7 +230,7 @@ exports.add = function (req, res) {
 
 
     var uid = req.params.id;
-    req.body.user.dateModif = new Date();
+    req.body.user.dateModif = shared.getReunionLocalDate();
     var parcelles = req.body.user.parcelles;
     var parcellesToRem = req.body.user.parcellesToRem;
     delete req.body.user.parcelles;

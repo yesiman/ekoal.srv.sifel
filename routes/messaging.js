@@ -3,11 +3,11 @@ var Client = require('node-rest-client').Client;
 
 exports.sendSmsToProducteurs = function(req, res) {
     //READ 
-    var beg = new Date();
+    var beg = shared.getReunionLocalDate();
     beg.setHours(0);
     beg.setMinutes(0);
     beg.setSeconds(0);
-    var end = new Date();
+    var end = shared.getReunionLocalDate();
     end.setHours(23);
     end.setMinutes(59);
     end.setSeconds(59);
@@ -51,7 +51,7 @@ function makeSmsSend (pla) {
                     var pid = pla._id;
                     delete pla._id;
                     pla.sent = true;
-                    pla.dateSent = new Date();
+                    pla.dateSent = shared.getReunionLocalDate();
                     pla.to = smsDatas.u.mobPhone;
                     pla.sid = data.sid;
                     pla.message = data.body;
@@ -158,7 +158,7 @@ exports.smsReceive = function(req, res)
     var tel = req.body.From.replace("+33","").replace("+262","");
     db.collection('planifs_lines_alerts', function (err, collection) {
         collection.update(
-        { to: { '$regex': tel, $options: 'i' }, reply: {$exists: false},dateAlert: { $lt: new Date()} },
+        { to: { '$regex': tel, $options: 'i' }, reply: {$exists: false},dateAlert: { $lt: shared.getReunionLocalDate()} },
         {
             $set: {reply:req.body.Body}
         }
