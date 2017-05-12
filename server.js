@@ -22,7 +22,8 @@ var express = require('express'),
     mongoOplog = require('mongo-oplog'),
     cors = require('cors'),
     multer = require('multer'),
-    upload = multer().any();
+    upload = multer().any(),
+    moment = require('moment');
 //
 var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
 //
@@ -60,6 +61,7 @@ server.listen(port, function() {
 });
 console.log("Server listening:" + port);
 setInterval(function(){
+    console.log("Paris Time",moment(new Date()).tz("Europe/Paris").format());
     messaging.sendSmsToProducteurs();
 }, 60000);      
 
