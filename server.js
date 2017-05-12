@@ -61,7 +61,8 @@ server.listen(port, function() {
 });
 console.log("Server listening:" + port);
 setInterval(function(){
-    console.log("Paris Time",moment(new Date()).tz("Europe/Paris").format());
+    console.log("Heroku Time",new Date());
+    console.log("Paris Time",moment.tz((new Date()),"Europe/Paris").format());
     //messaging.sendSmsToProducteurs();
 }, 1000);      
 
