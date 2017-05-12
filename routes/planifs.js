@@ -205,6 +205,7 @@ function addPlanifAlertLine(line, alertParams) {
                         nuAlert._id = new require('mongodb').ObjectID();
                         aBulkI.push(nuAlert);
                     }
+                    console.log(aBulkI);
                     collection.insertMany(aBulkI, function (err, saved) { 
                         if (err) return reject(err) // rejects the promise with `err` as the reason
                         resolve(saved) 
