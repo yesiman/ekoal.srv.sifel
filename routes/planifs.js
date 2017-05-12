@@ -184,25 +184,25 @@ function addPlanifAlertLine(line, alertParams) {
                     if (alertParams.d1)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,1,alertParams.sendHour);
-                        console.log("d1",nuAlert.dateAlert);
+                        nuAlert._id = new require('mongodb').ObjectID();
                         aBulkI.push(nuAlert);
                     }
                     if (alertParams.d7)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,7,alertParams.sendHour);
-                        console.log("d7",nuAlert.dateAlert);
+                        nuAlert._id = new require('mongodb').ObjectID();
                         aBulkI.push(nuAlert);
                     }
                     if (alertParams.d15)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,15,alertParams.sendHour);
-                        console.log("d15",nuAlert.dateAlert);
+                        nuAlert._id = new require('mongodb').ObjectID();
                         aBulkI.push(nuAlert);
                     }
                     if (alertParams.d30)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,30,alertParams.sendHour);
-                        console.log("d30",nuAlert.dateAlert);
+                        nuAlert._id = new require('mongodb').ObjectID();
                         aBulkI.push(nuAlert);
                     }
                     collection.insertMany(aBulkI, function (err, saved) { 
