@@ -180,31 +180,35 @@ function addPlanifAlertLine(line, alertParams) {
                     sent:false
                 };
                 db.collection('planifs_lines_alerts', function (err, collection) {
+                    var aBulkI = [];
                     if (alertParams.d1)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,1,alertParams.sendHour);
                         console.log("d1",nuAlert.dateAlert);
-                        collection.insert(nuAlert, function (err, saved) { });
+                        aBulkI.push(nuAlert);
                     }
                     if (alertParams.d7)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,7,alertParams.sendHour);
                         console.log("d7",nuAlert.dateAlert);
-                        collection.insert(nuAlert, function (err, saved) { });
+                        aBulkI.push(nuAlert);
                     }
                     if (alertParams.d15)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,15,alertParams.sendHour);
                         console.log("d15",nuAlert.dateAlert);
-                        collection.insert(nuAlert, function (err, saved) { });
+                        aBulkI.push(nuAlert);
                     }
                     if (alertParams.d30)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,30,alertParams.sendHour);
                         console.log("d30",nuAlert.dateAlert);
-                        collection.insert(nuAlert, function (err, saved) { });
+                        aBulkI.push(nuAlert);
                     }
-                    resolve({ok:"ok"})
+                    collection.insertMany(aBulkI, function (err, saved) { 
+                        if (err) return reject(err) // rejects the promise with `err` as the reason
+                        resolve(saved) 
+                    });
                     /*db.collection('planifs_lines_alerts', function (err, collection) {
                         collection.insert(nuAlert, function (err, saved) { 
                             if (err) return reject(err) // rejects the promise with `err` as the reason
