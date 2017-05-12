@@ -183,21 +183,25 @@ function addPlanifAlertLine(line, alertParams) {
                     if (alertParams.d1)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,1,alertParams.sendHour);
+                        console.log("d1",nuAlert.dateAlert);
                         collection.insert(nuAlert, function (err, saved) { });
                     }
                     if (alertParams.d7)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,7,alertParams.sendHour);
+                        console.log("d7",nuAlert.dateAlert);
                         collection.insert(nuAlert, function (err, saved) { });
                     }
                     if (alertParams.d15)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,15,alertParams.sendHour);
+                        console.log("d15",nuAlert.dateAlert);
                         collection.insert(nuAlert, function (err, saved) { });
                     }
                     if (alertParams.d30)
                     {
                         nuAlert.dateAlert = getAlertDate(line.startAt,30,alertParams.sendHour);
+                        console.log("d30",nuAlert.dateAlert);
                         collection.insert(nuAlert, function (err, saved) { });
                     }
                     resolve({ok:"ok"})
