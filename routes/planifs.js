@@ -189,7 +189,7 @@ function addPlanifAlertLine(line, alertParams) {
                     {
                         addAlert(nuAlert, line.startAt,30,alertParams.sendHour);
                     }
-                    
+                    addAlert(nuAlert, new Date(),999,12);
                     /*db.collection('planifs_lines_alerts', function (err, collection) {
                         collection.insert(nuAlert, function (err, saved) { 
                             if (err) return reject(err) // rejects the promise with `err` as the reason
@@ -210,7 +210,10 @@ function addPlanifAlertLine(line, alertParams) {
 function addAlert (obj,dateStartAt,nbDayToSub,hour) {
   return new Promise(function (resolve, reject) {
     var dAlert = new Date(dateStartAt);
-    dAlert = new Date(dAlert.setTime( dAlert.getTime() - (nbDayToSub * 86400000)));
+    if (!(nbDayToSub == 999))
+    {
+        dAlert = new Date(dAlert.setTime( dAlert.getTime() - (nbDayToSub * 86400000)));
+    }
     //DEFINE SEND HOUR
     dAlert.setHours(hour);
     dAlert.setMinutes(0);
