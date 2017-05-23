@@ -180,7 +180,7 @@ exports.smsReceive = function(req, res)
 exports.instagReceive = function(req, res)
 {
     console.log("lmlml");
-    console.log("req.query.hub.challenge",req.query.hub.challenge);
+    //console.log("req.query.hub.challenge",req.query.hub.challenge);
     console.log("req.query",req.query);
     res.send(req.query.hub.challenge);
 }
