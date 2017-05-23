@@ -179,7 +179,5 @@ exports.smsReceive = function(req, res)
 
 exports.instagReceive = function(req, res)
 {
-    console.log("req.params",req.params);
-    console.log("req.body",req.body);
-    res.send("<Response></Response>");
+    res.send(req.query.hub.challenge);
 }
