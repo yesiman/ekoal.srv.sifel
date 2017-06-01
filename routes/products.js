@@ -106,7 +106,10 @@ exports.add = function (req, res) {
     objectif.user = new require('mongodb').ObjectID(req.decoded._id);
     delete req.body.product.objectif;    
     req.body.product.dateModif = shared.getReunionLocalDate();
-    req.body.product.parent._id =  new require('mongodb').ObjectID(req.body.product.parent._id);
+    if (req.body.product.parent)
+    {
+        req.body.product.parent._id =  new require('mongodb').ObjectID(req.body.product.parent._id);
+    }
     req.body.product.orga =  new require('mongodb').ObjectID(req.decoded.orga);
     db.collection('products', function (err, collection) {
         if (pid == "-1")
