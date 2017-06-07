@@ -1,3 +1,4 @@
+//STATS PAR PRODUITS
 exports.prevsByDay = function (req, res) {
     getStdArrays(req.decoded,req.body,function(result)
     {   
@@ -101,6 +102,7 @@ exports.prevsByDay = function (req, res) {
         });  
     });
 };
+//STATS PAR PRODUCTEURS
 exports.prevsByProducteur = function (req, res) {
     getStdArrays(req.decoded,req.body,function(result)
     {   
@@ -203,6 +205,7 @@ exports.prevsByProducteur = function (req, res) {
         });  
     });    
 };
+//LIGNES PLANIFICATIONS
 exports.prevsPlanifsLines = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
@@ -229,32 +232,7 @@ exports.prevsPlanifsLines = function (req, res) {
         });  
     });
 };
-exports.prevsPlanifsLines = function (req, res) {
-    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
-    var limit = parseInt(req.params.nbr);
-    getStdArrays(req.decoded,req.body,function(result)
-    {   
-        var obj_ids = result.produisIds;
-        var producteurs = result.producteurs;
-        db.collection('planifs_lines', function (err, collection) {
-            var query = {
-                produit:{ "$in": obj_ids },
-                startAt:getDatesFilter(req.body)
-            };
-            if (req.decoded.type == 1){
-                //filtre produits publiques
-            }
-            else {
-                query["producteur"] = { "$in": producteurs };
-            }
-            collection.count(query, function (err, count) {
-                collection.find(query).sort({startAt:1}).skip(skip).limit(limit).toArray(function (err, items) {
-                    res.send({count:count,items:items});        
-                });
-            });
-        });  
-    });
-};
+//APPLICATION COEF MAJ/MIN SUR SELECTION UI
 exports.prevsPlanifsLinesApplyPercent = function (req, res) {
     var percent = req.body.percent;    
     console.log("percent",percent);
@@ -290,7 +268,16 @@ exports.prevsPlanifsLinesApplyPercent = function (req, res) {
         });  
     });
 };
+//
+exports.getDataFile = function (req, res) {
+    getStdArrays(req.decoded,req.body,function(result)
+    {   
+        console.log("numFile",req.params.numFile);
+        res.send({ok:true});
+    });
+};
 
+//
 function getDatesFilter(body) {
     var beg = new Date(body.dateFrom);
     beg.setHours(0);

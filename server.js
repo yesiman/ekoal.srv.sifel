@@ -9,6 +9,7 @@ var express = require('express'),
     server = require('http').createServer(app),
     products = require('./routes/products'),
     productsGroups = require('./routes/products_groups'),
+    stations = require('./routes/stations'),
     orgas = require('./routes/orgas'),
     users = require('./routes/users'),
     usersGroups = require('./routes/users_groups'),
@@ -141,6 +142,12 @@ app.get('/orgas/getAll/:idp/:nbr', cors(), bodyParser.json(), orgas.getAll);
 app.delete('/orgas/delete/:id', cors(), bodyParser.json(), orgas.delete);
 app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END ORGAS
+//STATIONS
+app.get('/stations/get/:id', cors(), bodyParser.json(), stations.get);
+app.get('/stations/getAll/:idp/:nbr', cors(), bodyParser.json(), stations.getAll);
+app.delete('/stations/delete/:id', cors(), bodyParser.json(), stations.delete);
+app.post('/stations/add/:id', cors(), bodyParser.json(), stations.add);
+//END STATIONS
 //PLANIFS
 app.get('/planifs/get/:id', cors(), bodyParser.json(), planifs.get);
 app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
@@ -161,6 +168,7 @@ app.post('/stats/prevsByDay/', cors(), bodyParser.json(), stats.prevsByDay);
 app.post('/stats/prevsByProd/', cors(), bodyParser.json(), stats.prevsByProducteur);
 app.post('/stats/prevsPlanifsLines/:idp/:nbr', cors(), bodyParser.json(), stats.prevsPlanifsLines);
 app.post('/stats/prevsPlanifsLinesApplyPercent', cors(), bodyParser.json(), stats.prevsPlanifsLinesApplyPercent);
+app.post('/stats/getDataFile/:numFile', cors(), bodyParser.json(), stats.getDataFile);
 //
 app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
 
