@@ -43,7 +43,7 @@ exports.add = function (req, res) {
             });
         }
         else {
-            delete req.body.orga._id;
+            delete req.body.station._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 req.body.station);
