@@ -10,6 +10,7 @@ var express = require('express'),
     products = require('./routes/products'),
     productsGroups = require('./routes/products_groups'),
     stations = require('./routes/stations'),
+    bons = require('./routes/bons'),
     orgas = require('./routes/orgas'),
     users = require('./routes/users'),
     usersGroups = require('./routes/users_groups'),
@@ -149,6 +150,12 @@ app.get('/stations/getAll/:idp/:nbr', cors(), bodyParser.json(), stations.getAll
 app.delete('/stations/delete/:id', cors(), bodyParser.json(), stations.delete);
 app.post('/stations/add/:id', cors(), bodyParser.json(), stations.add);
 //END STATIONS
+//BONS
+app.get('/bons/get/:id', cors(), bodyParser.json(), bons.get);
+app.get('/bons/getAll/:idp/:nbr', cors(), bodyParser.json(), bons.getAll);
+app.delete('/bons/delete/:id', cors(), bodyParser.json(), bons.delete);
+app.post('/bons/add/:id', cors(), bodyParser.json(), bons.add);
+//END BONS
 //PLANIFS
 app.get('/planifs/get/:id', cors(), bodyParser.json(), planifs.get);
 app.post('/planifs/add/:id', cors(), bodyParser.json(), planifs.add);
