@@ -1,6 +1,9 @@
 exports.get = function (req, res) {
-    db.collection('stations', function (err, collection) {
-        collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id),orga:new require('mongodb').ObjectID(req.decoded.orga) }, function (err, item) {
+    db.collection('bons', function (err, collection) {
+        collection.findOne({ 
+            _id: new require('mongodb').ObjectID(req.params.id),
+            orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
+        function (err, item) {
             res.send(item);
         })
     });
@@ -10,7 +13,7 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
     var filters = {orga:new require('mongodb').ObjectID(req.decoded.orga)};
-    db.collection('stations', function (err, collection) {
+    db.collection('bons', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
@@ -21,7 +24,7 @@ exports.getAll = function (req, res) {
     });
 };
 exports.delete = function (req, res) {
-    db.collection('station', function (err, collection) {
+    db.collection('bons', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
             res.send(result);
@@ -30,13 +33,13 @@ exports.delete = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.station.dateModif = shared.getReunionLocalDate();
-    req.body.station.user = new require('mongodb').ObjectID(req.decoded._id);
-    req.body.station.orga =  new require('mongodb').ObjectID(req.decoded.orga);
-    db.collection('stations', function (err, collection) {
+    req.body.bon.dateModif = shared.getReunionLocalDate();
+    req.body.bon.user = new require('mongodb').ObjectID(req.decoded._id);
+    req.body.bon.orga =  new require('mongodb').ObjectID(req.decoded.orga);
+    db.collection('bon', function (err, collection) {
         if (pid == "-1")
         {
-            collection.insert( req.body.station , function (err, saved) {
+            collection.insert( req.body.bon , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
                 }
@@ -46,10 +49,10 @@ exports.add = function (req, res) {
             });
         }
         else {
-            delete req.body.station._id;
+            delete req.body.bon._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
-                req.body.station);
+                req.body.bon);
                 res.send(true);
         }      
     });

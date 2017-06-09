@@ -124,6 +124,7 @@ app.post('/usersGroups/add/:id', cors(), bodyParser.json(), usersGroups.add);
 //END USERS
 //PRODS
 app.get('/products/get/:id', cors(), bodyParser.json(), products.get);
+app.get('/products/getAll/:idp/:nbr/:mobile', cors(), bodyParser.json(), products.getAll);
 app.get('/products/getAll/:idp/:nbr', cors(), bodyParser.json(), products.getAll);
 app.get('/products/getAllByLib/:idp/:nbr/:req', cors(), bodyParser.json(), products.getAllByLib);
 app.delete('/products/delete/:id', cors(), bodyParser.json(), products.delete);
