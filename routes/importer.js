@@ -43,7 +43,6 @@ exports.producteurs = function (req, res) {
     var errors = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
-        console.log(line);
         if (line[7])
         {
             var user = {
@@ -62,8 +61,11 @@ exports.producteurs = function (req, res) {
             users.push(user);
         }
     }
+    console.log(users.length + " Users");
     if (errors.length == 0)
     {
+        
+        console.log("inLoop");
         db.collection('users', function (err, collection) {
             for (var i = 0; i < users.length; i++) {
                 collection.update(
@@ -71,7 +73,6 @@ exports.producteurs = function (req, res) {
                     users[i], 
                     { "upsert": true },
                     function(err, results) {
-                        console.log(err);
                 });
             }
             res.send({success:true});
