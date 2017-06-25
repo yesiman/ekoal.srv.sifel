@@ -43,6 +43,7 @@ exports.producteurs = function (req, res) {
     var errors = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
+        console.log(line);
         if (line[7])
         {
             var user = {
