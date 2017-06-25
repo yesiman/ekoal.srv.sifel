@@ -109,7 +109,7 @@ app.get('/users/clearAll', cors(), bodyParser.json(), users.clearAll);
 app.get('/users/refreshToken', cors(), bodyParser.json(), users.refreshToken);
 app.get('/users/get/:id', cors(), bodyParser.json(), users.get);
 app.post('/users/getParcelles/:idp/:nbr/:id', cors(), bodyParser.json(), users.getParcelles);
-app.post('/users/getParcellesAll/:idp/:nbr', cors(), bodyParser.json(), users.getParcellesAll);
+//app.post('/users/getParcellesAll/:idp/:nbr', cors(), bodyParser.json(), users.getParcellesAll);
 app.post('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
 app.get('/users/getAllByType/:idp/:nbr/:idt/:req', cors(), bodyParser.json(), users.getAllByType);
 app.post('/users/getAllByOrga/:idp/:nbr/:ido', cors(), bodyParser.json(), users.getAllByOrga);
