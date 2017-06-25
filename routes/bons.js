@@ -36,7 +36,7 @@ exports.add = function (req, res) {
     req.body.bon.dateModif = shared.getReunionLocalDate();
     req.body.bon.user = new require('mongodb').ObjectID(req.decoded._id);
     req.body.bon.orga =  new require('mongodb').ObjectID(req.decoded.orga);
-    db.collection('bon', function (err, collection) {
+    db.collection('bons', function (err, collection) {
         if (pid == "-1")
         {
             collection.insert( req.body.bon , function (err, saved) {

@@ -7,6 +7,7 @@ exports.produits = function (req, res) {
         var line = lines[i].split(";");
         var produit = {
             user:new require('mongodb').ObjectID(req.decoded._id),
+            dateCreation: shared.getReunionLocalDate(),
             dateModif: shared.getReunionLocalDate(),
             orga:new require('mongodb').ObjectID(req.decoded.orga),
             codeProd:line[0],
@@ -44,20 +45,19 @@ exports.producteurs = function (req, res) {
         var line = lines[i].split(";");
         if (line[9])
         {
-            
             var user = {
                 type:4,
+                dateCreation: shared.getReunionLocalDate(),
                 dateModif: shared.getReunionLocalDate(),
                 orga:new require('mongodb').ObjectID(req.decoded.orga),
-                codeAdh:line[2],
-                name:line[4],
-                surn:line[5],
-                email:line[6],
-                pass:line[7],
-                mobPhone:line[8],
-                certif:line[9].replace(/(\r\n|\n|\r)/gm,"")
+                codeAdh:line[0],
+                name:line[2],
+                surn:line[3],
+                email:line[4],
+                pass:line[5],
+                mobPhone:line[6],
+                certif:line[7].replace(/(\r\n|\n|\r)/gm,"")
             };
-            console.log(line[9]);
             users.push(user);
         }
     }
