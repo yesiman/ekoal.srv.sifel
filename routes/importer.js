@@ -43,7 +43,7 @@ exports.producteurs = function (req, res) {
     var errors = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
-        if (line[7])
+        if (line.length == 9)
         {
             var user = {
                 type:4,
@@ -56,7 +56,8 @@ exports.producteurs = function (req, res) {
                 email:line[4],
                 pass:line[5],
                 mobPhone:line[6],
-                certif:line[7].replace(/(\r\n|\n|\r)/gm,"")
+                certif:line[7].replace(/(\r\n|\n|\r)/gm,""),
+                adresse:line[8].replace(/(\r\n|\n|\r)/gm,"")
             };
             users.push(user);
         }
@@ -64,7 +65,7 @@ exports.producteurs = function (req, res) {
     console.log(users.length + " Users");
     if (errors.length == 0)
     {
-        
+
         console.log("inLoop");
         db.collection('users', function (err, collection) {
             for (var i = 0; i < users.length; i++) {
