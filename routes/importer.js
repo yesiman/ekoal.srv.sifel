@@ -65,7 +65,6 @@ exports.producteurs = function (req, res) {
     console.log(users.length + " Users");
     if (errors.length == 0)
     {
-
         console.log("inLoop");
         db.collection('users', function (err, collection) {
             for (var i = 0; i < users.length; i++) {
