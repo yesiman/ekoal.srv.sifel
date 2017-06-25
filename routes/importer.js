@@ -71,6 +71,7 @@ exports.producteurs = function (req, res) {
                     users[i], 
                     { "upsert": true },
                     function(err, results) {
+                        console.log(err);
                 });
             }
             res.send({success:true});
