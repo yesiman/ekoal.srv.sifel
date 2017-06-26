@@ -35,7 +35,7 @@ shared = require('./routes/_shared');
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {
     db = dbr;
-    db.collection('products', function (err, collection) {
+    /*db.collection('products', function (err, collection) {
         collection.update(
             { },{ $set:{actif: true} }, {multi:true}, 
             function(err, results) {
@@ -53,7 +53,7 @@ MongoClient.connect(composeMongoCstr, function (err, dbr) {
                         });
                 });
             });
-    });
+    });*/
 });
 //
 oplogMessages.on('update', function (doc) {
