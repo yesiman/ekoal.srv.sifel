@@ -98,6 +98,22 @@ exports.getParcelles = function (req, res) {
         })
     });
 };
+exports.getParcellesByProducteurs = function (req, res) {
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
+    var obj_ids = [];
+    for(var i=0;i<req.body.producteurs.length;i++)
+    {
+        obj_ids.push(new require('mongodb').ObjectID(req.body.producteurs[i]));
+    }
+    db.collection('parcelles', function (err, collection) {
+        collection.count({ producteur: {$in:obj_ids }}, function (err, count) {
+            collection.find({ producteur: {$in:obj_ids }}).toArray(function (err, items) {
+                res.send({items:items,count:count});
+            });
+        });
+    });
+};
 exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
