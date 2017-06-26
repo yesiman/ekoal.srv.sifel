@@ -7,6 +7,7 @@ exports.produits = function (req, res) {
         var line = lines[i].split(";");
         var produit = {
             user:new require('mongodb').ObjectID(req.decoded._id),
+            actif:true,
             dateCreation: shared.getReunionLocalDate(),
             dateModif: shared.getReunionLocalDate(),
             orga:new require('mongodb').ObjectID(req.decoded.orga),
@@ -47,6 +48,7 @@ exports.producteurs = function (req, res) {
         {
             var user = {
                 type:4,
+                actif:true,
                 dateCreation: shared.getReunionLocalDate(),
                 dateModif: shared.getReunionLocalDate(),
                 orga:new require('mongodb').ObjectID(req.decoded.orga),
@@ -62,10 +64,8 @@ exports.producteurs = function (req, res) {
             users.push(user);
         }
     }
-    console.log(users.length + " Users");
     if (errors.length == 0)
     {
-        console.log("inLoop");
         db.collection('users', function (err, collection) {
             for (var i = 0; i < users.length; i++) {
                 collection.update(

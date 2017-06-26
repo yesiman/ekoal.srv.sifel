@@ -35,6 +35,25 @@ shared = require('./routes/_shared');
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {
     db = dbr;
+    db.collection('products', function (err, collection) {
+        collection.update(
+            { },{ $set:{actif: true} }, {multi:true}, 
+            function(err, results) {
+                db.collection('parcelles', function (err, collection) {
+                    collection.update(
+                        { },{ $set:{actif: true} }, {multi:true}, 
+                        function(err, results) {
+                            db.collection('users', function (err, collection) {
+                                collection.update(
+                                    { },{ $set:{actif: true} }, {multi:true}, 
+                                    function(err, results) {
+                                        
+                                    });
+                            });
+                        });
+                });
+            });
+    });
 });
 //
 oplogMessages.on('update', function (doc) {
