@@ -1,17 +1,31 @@
 
 exports.uploadDatas = function (req, res) {
     var lines = req.body.lines;
-    db.collection('parcelles', function (err, collection) {
+    
         for (var i = 0; i < lines.length; i++) {
-            console.log("line",lines[i]);
-            //SET MONGOGEO CORRECTLY "POLYGON"
-            /*collection.update(
-                    { _id: lines[i]._id },
-                    lines[i], 
-                    { "upsert": true },
-                    function(err, results) {
-                    });*/ 
+            switch(lines[i].type)
+            {
+                case "parcelle":
+                    db.collection('parcelles', function (err, collection) {
+                        //SET MONGOGEO CORRECTLY "POLYGON"
+                        collection.update(
+                            { _id: new require('mongodb').ObjectID(lines[i]._id) },
+                            {
+                                $set:{
+                                    surface:lines[i].surface,
+                                    altitude:lines[i].altitude,
+                                    coordonnees:{ type: "Polygon", coordinates: lines[i].coordonnees}
+                                }
+                            }, 
+                            { "upsert": true },
+                            function(err, results) {
+                            });
+                        });
+                    }
+                    break;
+            }
+            
         }
         res.send({success:true});
-    });
+    
 }
