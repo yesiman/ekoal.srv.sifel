@@ -16,6 +16,7 @@ exports.uploadDatas = function (req, res) {
 }
 
 function updParcelle(id,surface,altitude,coordonnees) {
+    console.log(id + "-" + surface + "-" + altitude +"-" + coordonnees);
   return new Promise(function (resolve, reject) {
       db.collection('parcelles', function (err, collection) {
           collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
