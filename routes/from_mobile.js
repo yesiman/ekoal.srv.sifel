@@ -8,20 +8,20 @@ exports.uploadDatas = function (req, res) {
                 db.collection('parcelles', function (err, collection) {
                     //SET MONGOGEO CORRECTLY "POLYGON"
                    collection.findOne({ _id: new require('mongodb').ObjectID(lines[i]._id) }, function (err, item) {
-                       console.log("FOUNDONE",item);
-                       /*collection.update(
-                        { _id: new require('mongodb').ObjectID(lines[i]._id) },
-                        {
-                            $set:{
-                                surface:lines[i].surface,
-                                altitude:lines[i].altitude,
-                                coordonnees:{ type: "Polygon", coordinates: lines[i].coordonnees}
-                            }
-                        }, 
-                        { "upsert": true },
-                        function(err, results) {
-                            console.log("results",results);
-                        });*/
+                       if (item)
+                       {
+                           console.log("nualt",lines[i].altitude);
+                           collection.update(
+                            { _id: new require('mongodb').ObjectID(item._id) },
+                            {
+                                $set:{
+                                    surface:lines[i].surface,
+                                    altitude:lines[i].altitude,
+                                    coordonnees:{ type: "Polygon", coordinates: lines[i].coordonnees}
+                                }
+                            }, 
+                            { "upsert": true });
+                       }
                    });
                     
                 });
