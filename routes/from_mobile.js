@@ -26,6 +26,8 @@ function updParcelle(id,surface,altitude,coordonnees) {
                     { _id: new require('mongodb').ObjectID(id) },
                     {
                         $set:{
+                            code:code,
+                            lib:lib,
                             surface:surface,
                             altitude:altitude,
                             coordonnees:coordonnees
