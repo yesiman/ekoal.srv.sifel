@@ -6,7 +6,7 @@ exports.uploadDatas = function (req, res) {
         {
             case "parcelle":
                 //SET MONGOGEO CORRECTLY "POLYGON"
-                updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees)
+                updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees,lines[i].code,lines[i].lib)
                 break;
         }
     }
@@ -15,7 +15,7 @@ exports.uploadDatas = function (req, res) {
     
 }
 
-function updParcelle(id,surface,altitude,coordonnees) {
+function updParcelle(id,surface,altitude,coordonnees,code,lib) {
     console.log(id + "-" + surface + "-" + altitude +"-" + coordonnees);
   return new Promise(function (resolve, reject) {
       db.collection('parcelles', function (err, collection) {
