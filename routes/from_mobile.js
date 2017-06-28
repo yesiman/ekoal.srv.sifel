@@ -6,7 +6,7 @@ exports.uploadDatas = function (req, res) {
         {
             case "parcelle":
                 //SET MONGOGEO CORRECTLY "POLYGON"
-                updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,{ type: "Polygon", coordinates: lines[i].coordonnees})
+                updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees)
                 break;
         }
     }
