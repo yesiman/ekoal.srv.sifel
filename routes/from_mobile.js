@@ -7,7 +7,9 @@ exports.uploadDatas = function (req, res) {
             case "parcelle":
                 db.collection('parcelles', function (err, collection) {
                     //SET MONGOGEO CORRECTLY "POLYGON"
-                    collection.update(
+                   collection.findOne({ _id: new require('mongodb').ObjectID(lines[i]._id) }, function (err, item) {
+                       console.log("FOUNDONE",lines[i]._id)
+                       collection.update(
                         { _id: new require('mongodb').ObjectID(lines[i]._id) },
                         {
                             $set:{
@@ -20,6 +22,8 @@ exports.uploadDatas = function (req, res) {
                         function(err, results) {
                             console.log("results",results);
                         });
+                   });
+                    
                 });
                 break;
         }
