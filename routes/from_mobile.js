@@ -18,7 +18,7 @@ exports.uploadDatas = function (req, res) {
                         }, 
                         { "upsert": true },
                         function(err, results) {
-
+                            console.log(err);
                         });
                 });
                 break;
