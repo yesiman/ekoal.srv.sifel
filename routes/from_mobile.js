@@ -1,6 +1,7 @@
 
 exports.uploadDatas = function (req, res) {
     var lines = req.body.lines;
+    db.collection('parcelles', function (err, collection) {
     for (var i = 0; i < lines.length; i++) {
         switch(lines[i].type)
         {
@@ -15,7 +16,9 @@ exports.uploadDatas = function (req, res) {
                 break;
         }
     }
+
     res.send({success:true});
+    });
 }
 
 function updParcelle(id,surface,altitude,coordonnees) {
