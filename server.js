@@ -16,6 +16,7 @@ var express = require('express'),
     usersGroups = require('./routes/users_groups'),
     planifs = require('./routes/planifs'),
     stats = require('./routes/stats'),
+    fromMobile = require('./routes/from_mobile'),
     rules = require('./routes/rules'),
     mailing = require('./routes/mailing'),
     messaging = require('./routes/messaging'),
@@ -204,6 +205,8 @@ app.post('/importer/produits/', cors(), bodyParser.json(), upload, importer.prod
 app.post('/importer/producteurs/', cors(), bodyParser.json(), upload, importer.producteurs);
 app.post('/importer/objectifs/', cors(), bodyParser.json(), upload, importer.objectifs);
 app.post('/importer/parcelles/', cors(), bodyParser.json(), upload, importer.parcelles);
+//
+app.post('/frommobile/uploadDatas/', cors(), bodyParser.json(), fromMobile.uploadDatas);
 //END.ROUTES
 
 Date.prototype.getWeek = function() { 
