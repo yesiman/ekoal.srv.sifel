@@ -10,6 +10,7 @@ var express = require('express'),
     products = require('./routes/products'),
     productsGroups = require('./routes/products_groups'),
     productsCondits = require('./routes/products_condits'),
+    productsCalibrs = require('./routes/products_calibres'),
     stations = require('./routes/stations'),
     bons = require('./routes/bons'),
     orgas = require('./routes/orgas'),
@@ -166,6 +167,12 @@ app.get('/productsCondits/getAll/:idp/:nbr', cors(), bodyParser.json(), products
 app.delete('/productsCondits/delete/:id', cors(), bodyParser.json(), productsCondits.delete);
 app.post('/productsCondits/add/:id', cors(), bodyParser.json(), productsCondits.add);
 //END CONDITS
+//CALIBRS
+app.get('/productsCalibrs/get/:id', cors(), bodyParser.json(), productsCalibrs.get);
+app.get('/productsCalibrs/getAll/:idp/:nbr', cors(), bodyParser.json(), productsCalibrs.getAll);
+app.delete('/productsCalibrs/delete/:id', cors(), bodyParser.json(), productsCalibrs.delete);
+app.post('/productsCalibrs/add/:id', cors(), bodyParser.json(), productsCalibrs.add);
+//END CALIBRS
 //END PRODS
 //ORGAS
 app.get('/orgas/get/:id', cors(), bodyParser.json(), orgas.get);

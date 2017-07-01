@@ -1,5 +1,5 @@
 exports.get = function (req, res) {
-    db.collection('products_groups', function (err, collection) {
+    db.collection('products_calibres', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
             res.send(item);
         })
@@ -9,7 +9,7 @@ exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
-    db.collection('products_groups', function (err, collection) {
+    db.collection('products_calibres', function (err, collection) {
         collection.count({orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, count) {
             ret.count = count;
             collection.find({orga:new require('mongodb').ObjectID(req.decoded.orga)}).skip(skip).limit(limit).toArray(function (err, items) {
@@ -20,7 +20,7 @@ exports.getAll = function (req, res) {
     });
 };
 exports.delete = function (req, res) {
-    db.collection('products_groups', function (err, collection) {
+    db.collection('products_calibres', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
             res.send(result);
@@ -29,13 +29,13 @@ exports.delete = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.group.dateModif = shared.getReunionLocalDate();
-    req.body.group.user = new require('mongodb').ObjectID(req.decoded._id);
-    req.body.group.orga =  new require('mongodb').ObjectID(req.decoded.orga);
-    db.collection('products_groups', function (err, collection) {
+    req.body.calibr.dateModif = shared.getReunionLocalDate();
+    req.body.calibr.user = new require('mongodb').ObjectID(req.decoded._id);
+    req.body.calibr.orga =  new require('mongodb').ObjectID(req.decoded.orga);
+    db.collection('products_calibres', function (err, collection) {
         if (pid == "-1")
         {
-            collection.insert( req.body.group , function (err, saved) {
+            collection.insert( req.body.calibr , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
                 }
@@ -45,10 +45,10 @@ exports.add = function (req, res) {
             });
         }
         else {
-            delete req.body.group._id;
+            delete req.body.calibr._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
-                req.body.group);
+                req.body.condit);
                 res.send(true);
         }      
     });
