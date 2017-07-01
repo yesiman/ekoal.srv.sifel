@@ -168,10 +168,10 @@ app.delete('/productsCondits/delete/:id', cors(), bodyParser.json(), productsCon
 app.post('/productsCondits/add/:id', cors(), bodyParser.json(), productsCondits.add);
 //END CONDITS
 //CALIBRS
-app.get('/productsCalibrs/get/:id', cors(), bodyParser.json(), productsCalibrs.get);
-app.get('/productsCalibrs/getAll/:idp/:nbr', cors(), bodyParser.json(), productsCalibrs.getAll);
-app.delete('/productsCalibrs/delete/:id', cors(), bodyParser.json(), productsCalibrs.delete);
-app.post('/productsCalibrs/add/:id', cors(), bodyParser.json(), productsCalibrs.add);
+app.get('/productsCategs/get/:id', cors(), bodyParser.json(), productsCategs.get);
+app.get('/productsCategs/getAll/:idp/:nbr', cors(), bodyParser.json(), productsCategs.getAll);
+app.delete('/productsCategs/delete/:id', cors(), bodyParser.json(), productsCategs.delete);
+app.post('/productsCategs/add/:id', cors(), bodyParser.json(), productsCategs.add);
 //END CALIBRS
 //END PRODS
 //ORGAS
