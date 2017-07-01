@@ -9,6 +9,7 @@ var express = require('express'),
     server = require('http').createServer(app),
     products = require('./routes/products'),
     productsGroups = require('./routes/products_groups'),
+    productsCondits = require('./routes/products_condits'),
     stations = require('./routes/stations'),
     bons = require('./routes/bons'),
     orgas = require('./routes/orgas'),
@@ -159,6 +160,12 @@ app.get('/productsGroups/getAll/:idp/:nbr', cors(), bodyParser.json(), productsG
 app.delete('/productsGroups/delete/:id', cors(), bodyParser.json(), productsGroups.delete);
 app.post('/productsGroups/add/:id', cors(), bodyParser.json(), productsGroups.add);
 //END GROUPS
+//CONDITS
+app.get('/productsCondits/get/:id', cors(), bodyParser.json(), productsCondits.get);
+app.get('/productsCondits/getAll/:idp/:nbr', cors(), bodyParser.json(), productsCondits.getAll);
+app.delete('/productsCondits/delete/:id', cors(), bodyParser.json(), productsCondits.delete);
+app.post('/productsCondits/add/:id', cors(), bodyParser.json(), productsCondits.add);
+//END CONDITS
 //END PRODS
 //ORGAS
 app.get('/orgas/get/:id', cors(), bodyParser.json(), orgas.get);

@@ -74,6 +74,7 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.orga.dateModif = shared.getReunionLocalDate();
+    req.body.orga.user = new require('mongodb').ObjectID(req.decoded._id);
     db.collection('orgas', function (err, collection) {
         if (pid == "-1")
         {

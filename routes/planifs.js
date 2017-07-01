@@ -48,6 +48,8 @@ exports.add = function (req, res) {
     req.body.planif.dateModif = new Date();
     req.body.planif.produit = new require('mongodb').ObjectID(req.body.planif.produit);
     req.body.planif.producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
+    req.body.planif.user = new require('mongodb').ObjectID(req.decoded._id);
+    req.body.planif.orga =  new require('mongodb').ObjectID(req.decoded.orga);
     if(req.body.planif.parcelle)
     {
         req.body.planif.parcelle = new require('mongodb').ObjectID(req.body.planif.parcelle);
