@@ -15,11 +15,7 @@ exports.uploadDatas = function (req, res) {
                 });
                 break;
         }
-        if (!success) {res.send({success:false});break;}
-        if (i == lines.length-1)
-        {
-            res.send({success:true});
-        }
+        res.send({success:success});
     }
 }
 
