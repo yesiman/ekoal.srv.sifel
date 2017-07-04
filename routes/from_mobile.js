@@ -45,11 +45,9 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
             console.log("insert",ins);
       db.collection('parcelles', function (err, collection) {
           if (id.startsWith('nu') == true)
-          {
-              
-            
-              
-              collection.insert(i);
+          {  
+              console.log("startwithHHHHHHHHHHHHHHHHHHHH",ins);
+              collection.insert(ins);
           }
           else {
             collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
