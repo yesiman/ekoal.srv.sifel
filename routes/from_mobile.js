@@ -6,7 +6,7 @@ exports.uploadDatas = function (req, res) {
         {
             case "parcelle":
                 //SET MONGOGEO CORRECTLY "POLYGON"
-                updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees,lines[i].code,lines[i].lib)
+                updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees,lines[i].code,lines[i].lib,lines[i].producteur)
                 break;
         }
     }
@@ -15,7 +15,7 @@ exports.uploadDatas = function (req, res) {
     
 }
 
-function updParcelle(id,surface,altitude,coordonnees,code,lib) {
+function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
     console.log(id + "-" + surface + "-" + altitude +"-" + coordonnees);
   return new Promise(function (resolve, reject) {
       db.collection('parcelles', function (err, collection) {
@@ -34,6 +34,19 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib) {
                         }
                     }, 
                     { "upsert": true });
+            }
+            else {
+                collection.insert(
+                    {
+                        user:new require('mongodb').ObjectID(req.decoded._id),
+                        orga:new require('mongodb').ObjectID(req.decoded.orga),
+                        producteur:new require('mongodb').ObjectID(producteur),
+                        code:code,
+                        lib:lib,
+                        surface:surface,
+                        altitude:altitude,
+                        coordonnees:coordonnees
+                    });
             }
         });
     });
