@@ -15,10 +15,12 @@ exports.uploadDatas = function (req, res) {
                 });
                 break;
         }
+        if (!success) {res.send({success:false});break;}
+        if (i == lines.length-1)
+        {
+            res.send({success:true});
+        }
     }
-
-    res.send({success:success});
-    
 }
 
 function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
@@ -37,8 +39,9 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
                             altitude:altitude,
                             coordonnees:coordonnees
                         };
+                        
+              console.log("insert",ins);
               collection.insert(i);
-              console.log("insert");
           }
           else {
             collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
