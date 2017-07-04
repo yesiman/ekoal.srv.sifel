@@ -34,6 +34,8 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
     console.log(id + "-" + surface + "-" + altitude +"-" + coordonnees);
   return new Promise(function (resolve, reject) {
       db.collection('parcelles', function (err, collection) {
+          console.log("id",id + "+" + id.startsWith("nu"));
+          
           if (id.startsWith("nu"))
           {
               var ins = {
