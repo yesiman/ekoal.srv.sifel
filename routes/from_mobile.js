@@ -12,6 +12,7 @@ exports.uploadDatas = function (req, res) {
             {
                 case "parcelle":
                     //SET MONGO GEO CORRECTLY "POLYGON"
+                    console.log("line",lines[i]);
                     updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees,lines[i].code,lines[i].lib,lines[i].producteur)
                     .then(function(value) {
                     }).catch(function(e) {
