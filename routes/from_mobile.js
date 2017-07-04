@@ -32,10 +32,7 @@ exports.uploadDatas = function (req, res) {
 
 function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
     return new Promise(function (resolve, reject) {
-      db.collection('parcelles', function (err, collection) {
-          if (id.startsWith('nu') == true)
-          {
-              var ins = {
+        var ins = {
                 user:new require('mongodb').ObjectID(req.decoded._id),
                 orga:new require('mongodb').ObjectID(req.decoded.orga),
                 producteur:new require('mongodb').ObjectID(producteur),
@@ -45,8 +42,13 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
                 altitude:altitude,
                 coordonnees:coordonnees
             };
+            console.log("insert",ins);
+      db.collection('parcelles', function (err, collection) {
+          if (id.startsWith('nu') == true)
+          {
+              
             
-              console.log("insert",ins);
+              
               collection.insert(i);
           }
           else {
