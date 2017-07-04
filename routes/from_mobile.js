@@ -21,6 +21,7 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
       db.collection('parcelles', function (err, collection) {
           if (id.startsWith("nu"))
           {
+              console.log("insert");
               collection.insert(
                     {
                         user:new require('mongodb').ObjectID(req.decoded._id),
