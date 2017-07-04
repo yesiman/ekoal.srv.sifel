@@ -31,22 +31,21 @@ exports.uploadDatas = function (req, res) {
 }
 
 function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
-    console.log(id + "-" + surface + "-" + altitude +"-" + coordonnees);
-  return new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
       db.collection('parcelles', function (err, collection) {
-          if (id.startsWith("nu") === true)
+          if (id.startsWith('nu') == true)
           {
               var ins = {
-                            user:new require('mongodb').ObjectID(req.decoded._id),
-                            orga:new require('mongodb').ObjectID(req.decoded.orga),
-                            producteur:new require('mongodb').ObjectID(producteur),
-                            code:code,
-                            lib:lib,
-                            surface:surface,
-                            altitude:altitude,
-                            coordonnees:coordonnees
-                        };
-                        
+                user:new require('mongodb').ObjectID(req.decoded._id),
+                orga:new require('mongodb').ObjectID(req.decoded.orga),
+                producteur:new require('mongodb').ObjectID(producteur),
+                code:code,
+                lib:lib,
+                surface:surface,
+                altitude:altitude,
+                coordonnees:coordonnees
+            };
+            
               console.log("insert",ins);
               collection.insert(i);
           }
