@@ -2,20 +2,30 @@
 exports.uploadDatas = function (req, res) {
     var lines = req.body.lines;
     var success = true;
-    for (var i = 0; i < lines.length; i++) {
-        switch(lines[i].type)
-        {
-            case "parcelle":
-                //SET MONGO GEO CORRECTLY "POLYGON"
-                updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees,lines[i].code,lines[i].lib,lines[i].producteur)
-                .then(function(value) {
-                }).catch(function(e) {
-                    success = false;
-                }).then(function(e) {
-                });
-                break;
+    if (lines.length == 0)
+    {
+        res.send({success:true});
+    }
+    else {
+        for (var i = 0; i < lines.length; i++) {
+            switch(lines[i].type)
+            {
+                case "parcelle":
+                    //SET MONGO GEO CORRECTLY "POLYGON"
+                    updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees,lines[i].code,lines[i].lib,lines[i].producteur)
+                    .then(function(value) {
+                    }).catch(function(e) {
+                        success = false;
+                    }).then(function(e) {
+                    });
+                    break;
+            }
+            if (!success) {res.send({success:false});break;}
+            if (i == lines.length-1)
+            {
+                res.send({success:true});
+            }
         }
-        res.send({success:success});
     }
 }
 
