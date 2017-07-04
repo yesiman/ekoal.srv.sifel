@@ -19,7 +19,22 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
     console.log(id + "-" + surface + "-" + altitude +"-" + coordonnees);
   return new Promise(function (resolve, reject) {
       db.collection('parcelles', function (err, collection) {
-          collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
+          if (id.startsWith("nu"))
+          {
+              collection.insert(
+                    {
+                        user:new require('mongodb').ObjectID(req.decoded._id),
+                        orga:new require('mongodb').ObjectID(req.decoded.orga),
+                        producteur:new require('mongodb').ObjectID(producteur),
+                        code:code,
+                        lib:lib,
+                        surface:surface,
+                        altitude:altitude,
+                        coordonnees:coordonnees
+                    });
+          }
+          else {
+            collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
             if (item)
             {
                 collection.update(
@@ -35,20 +50,10 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur) {
                     }, 
                     { "upsert": true });
             }
-            else {
-                collection.insert(
-                    {
-                        user:new require('mongodb').ObjectID(req.decoded._id),
-                        orga:new require('mongodb').ObjectID(req.decoded.orga),
-                        producteur:new require('mongodb').ObjectID(producteur),
-                        code:code,
-                        lib:lib,
-                        surface:surface,
-                        altitude:altitude,
-                        coordonnees:coordonnees
-                    });
-            }
-        });
+            
+        });    
+          }
+          
     });
   })
 }
