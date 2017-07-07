@@ -1,35 +1,42 @@
 exports.login = function (req, res) {
-    db.collection('users', function (err, collection) {
-        collection.findOne({ login: req.body.user.login, pass: req.body.user.pass }, function (err, item) {
-            if (item)
-            {
-                var token = jwt.sign(item, process.env.JWT, {
-                    expiresIn: 14400 
-                });
-                //1440
+    if ((req.body.user.login != "") && (req.body.user.pass != "")) 
+    {
+        db.collection('users', function (err, collection) {
+            collection.findOne({ login: req.body.user.login, pass: req.body.user.pass }, function (err, item) {
+                if (item)
+                {
+                    var token = jwt.sign(item, process.env.JWT, {
+                        expiresIn: 14400 
+                    });
+                    //1440
 
-                collection.update({_id:item._id},
-                    {
-                        $set:{lastLog: shared.getReunionLocalDate()}
-                    }, function (err, saved) {
-                        db.collection('users_logs', function (err, collection) {
-                            collection.insert({
-                                user:item._id,
-                                action: { type:'login' },
-                                actionDate: shared.getReunionLocalDate()
-                                }, function (err, saved) {
-                                    res.send({success:true,_id:item._id, name:item.name, surn:item.surn, type:item.type ,orga:item.orga, token:token}); 
+                    collection.update({_id:item._id},
+                        {
+                            $set:{lastLog: shared.getReunionLocalDate()}
+                        }, function (err, saved) {
+                            db.collection('users_logs', function (err, collection) {
+                                collection.insert({
+                                    user:item._id,
+                                    action: { type:'login' },
+                                    actionDate: shared.getReunionLocalDate()
+                                    }, function (err, saved) {
+                                        res.send({success:true,_id:item._id, name:item.name, surn:item.surn, type:item.type ,orga:item.orga, token:token}); 
+                                });
                             });
-                        });
-                });
-
-                
-            }
-            else {
-                res.send({success:false});
-            }  
-        })
-    });
+                    });
+                    
+                    
+                }
+                else {
+                    res.send({success:false});
+                }  
+            })
+        });
+    }
+    else 
+    {
+         res.send({success:false});
+    }
 };
 exports.refreshToken = function (req, res) {
     var user = req.decoded;

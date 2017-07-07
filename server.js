@@ -222,6 +222,8 @@ app.post('/stats/getDataFile/:numFile', cors(), bodyParser.json(), stats.getData
 //
 app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
 
+app.post('/importer/clients/', cors(), bodyParser.json(), upload, importer.clients);
+
 app.post('/importer/produits/', cors(), bodyParser.json(), upload, importer.produits);
 app.post('/importer/producteurs/', cors(), bodyParser.json(), upload, importer.producteurs);
 app.post('/importer/objectifs/', cors(), bodyParser.json(), upload, importer.objectifs);

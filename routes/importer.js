@@ -83,6 +83,50 @@ exports.producteurs = function (req, res) {
     }
     
 }
+exports.clients = function (req, res) {
+    var lines = req.files[0].buffer.toString().split("\n");
+    var clients = [];
+    var errors = [];
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].split(";");
+        if (line.length == 8)
+        {
+            var client = {
+                actif:true,
+                dateCreation: shared.getReunionLocalDate(),
+                dateModif: shared.getReunionLocalDate(),
+                orga:new require('mongodb').ObjectID(req.decoded.orga),
+                code:line[0],
+                name:line[1],
+                surn:line[2],
+                adresse:line[3],
+                adresse_cp:line[4],
+                adresse_ville:line[5],
+                email:line[6],
+                mobPhone:line[7]
+            };
+            clients.push(user);
+        }
+    }
+    if (errors.length == 0)
+    {
+        db.collection('clients', function (err, collection) {
+            for (var i = 0; i < clients.length; i++) {
+                collection.update(
+                    { orga: clients[i].orga, code:clients[i].code},
+                    clients[i], 
+                    { "upsert": true },
+                    function(err, results) {
+                });
+            }
+            res.send({success:true});
+        });
+    }
+    else {
+        res.send({success:false,errors:errors});
+    }
+    
+}
 exports.objectifs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var errors = [];
