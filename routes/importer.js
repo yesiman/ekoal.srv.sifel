@@ -105,7 +105,7 @@ exports.clients = function (req, res) {
                 email:line[6],
                 mobPhone:line[7]
             };
-            clients.push(user);
+            clients.push(client);
         }
     }
     if (errors.length == 0)
