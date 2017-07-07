@@ -117,6 +117,7 @@ exports.clients = function (req, res) {
                     clients[i], 
                     { "upsert": true },
                     function(err, results) {
+                        
                 });
             }
             res.send({success:true});

@@ -105,6 +105,18 @@ exports.getParcelles = function (req, res) {
         })
     });
 };
+exports.getParcellesGeo = function (req, res) {
+    //var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    //var limit = parseInt(req.params.nbr);
+    
+    //GET PARCELLES
+    db.collection('parcelles', function (err, collection) {
+        collection.find({'coordonnees.coordinates.0': {$exists: true}}).toArray(function (err, items) {
+            res.send({items:items});
+        });
+    });
+
+};
 exports.getParcellesByProducteurs = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
