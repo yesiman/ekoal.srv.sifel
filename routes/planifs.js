@@ -45,7 +45,7 @@ exports.get = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.planif.dateModif = new Date();
+    req.body.planif.dateModif = getReunionLocalDate();
     req.body.planif.produit = new require('mongodb').ObjectID(req.body.planif.produit);
     req.body.planif.producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
     req.body.planif.user = new require('mongodb').ObjectID(req.decoded._id);

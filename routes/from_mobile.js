@@ -84,9 +84,10 @@ function updBon(bon) {
         var pals = bon.palettes;
         delete(bon.palettes)
         db.collection('bons', function (err, collection) {
-            if (bon._id.startsWith('nu') == true)
+            if (bon._id.startsWith('nu_') == true)
             {  
                 delete(bon._id);
+                bon.dateModif = getReunionLocalDate();
                 collection.insert( bon , function (err, saved) {
                     if (err || !saved) {
                         reject("err");
