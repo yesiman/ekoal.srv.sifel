@@ -92,6 +92,7 @@ function updBon(bon) {
                 bon.dateModif = getReunionLocalDate();
                 collection.insert( bon , function (err, saved) {
                     if (err || !saved) {
+                        console.log(err);
                         reject("err");
                     }
                     else {
