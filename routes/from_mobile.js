@@ -85,12 +85,13 @@ function updBon(bon) {
         var pals = bon.palettes;
         delete(bon.palettes)
         db.collection('bons', function (err, collection) {
+            console.log("2",bon._id);
             if (bon._id.startsWith('nu_') == true)
             {  
                 delete(bon._id);
                 bon.dateModif = getReunionLocalDate();
 
-console.log("2",bon.dateModif);
+
 
                 collection.insert( bon , function (err, saved) {
                     if (err || !saved) {
