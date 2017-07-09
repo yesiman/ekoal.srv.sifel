@@ -58,31 +58,70 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
           }
           else {
             collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
-            if (item)
-            {
-                collection.update(
-                    { _id: new require('mongodb').ObjectID(id) },
-                    {
-                        $set:{
-                            code:code,
-                            lib:lib,
-                            surface:surface,
-                            altitude:altitude,
-                            coordonnees:coordonnees
-                        }
-                    }, 
-                    { "upsert": true });
-            }
-            
-        });    
-          }
-          
+                if (item)
+                {
+                    collection.update(
+                        { _id: new require('mongodb').ObjectID(id) },
+                        {
+                            $set:{
+                                code:code,
+                                lib:lib,
+                                surface:surface,
+                                altitude:altitude,
+                                coordonnees:coordonnees
+                            }
+                        }, 
+                        { "upsert": true });
+                }
+            });    
+        }  
     });
   })
 }
 
 function updBon(bon) {
     return new Promise(function (resolve, reject) {
+        var pals = bon.palettes;
+        delete(bon.palettes)
+        db.collection('bons', function (err, collection) {
+            if (bon._id.startsWith('nu') == true)
+            {  
+                delete(bon._id);
+                collection.insert( bon , function (err, saved) {
+                    if (err || !saved) {
+                        reject("err");
+                    }
+                    else {
+                        var bid = new require('mongodb').ObjectID(saved.insertedIds[0]);
+                        db.collection('bons_lines', function (err, collection) {
+                            for (var relipal = 0;relipal<pals.length;relipal++)
+                            {
+                                delete(pals[relipal]._id);
+                                collection.insert(pals[relipal]);
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                collection.findOne({ _id: new require('mongodb').ObjectID(bon._id) }, function (err, item) {
+                    if (item)
+                    {
+                        collection.update(
+                            { _id: new require('mongodb').ObjectID(bon._id) },
+                            {
+                                bon
+                            }, 
+                            { "upsert": true });
+                    }
+                });    
+            }  
+
+
+
+            
+        });
+        
          console.log("--------------------");
         console.log("new bon arrive",bon);
         resolve("ok");
