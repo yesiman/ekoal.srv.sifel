@@ -81,6 +81,7 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
 
 function updBon(bon) {
     return new Promise(function (resolve, reject) {
+        console.log("1",bon);
         var pals = bon.palettes;
         delete(bon.palettes)
         db.collection('bons', function (err, collection) {
@@ -88,6 +89,9 @@ function updBon(bon) {
             {  
                 delete(bon._id);
                 bon.dateModif = getReunionLocalDate();
+
+console.log("2",bon.dateModif);
+
                 collection.insert( bon , function (err, saved) {
                     if (err || !saved) {
                         reject("err");
