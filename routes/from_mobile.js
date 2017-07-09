@@ -12,8 +12,15 @@ exports.uploadDatas = function (req, res) {
             {
                 case "parcelle":
                     //SET MONGO GEO CORRECTLY "POLYGON"
-                    console.log("line",lines[i]);
                     updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees,lines[i].code,lines[i].lib,new require('mongodb').ObjectID(lines[i].producteur),new require('mongodb').ObjectID(req.decoded._id),new require('mongodb').ObjectID(req.decoded.orga))
+                    .then(function(value) {
+                    }).catch(function(e) {
+                        success = false;
+                    }).then(function(e) {
+                    });
+                    break;
+                case "bon":
+                    updBon(lines[i])
                     .then(function(value) {
                     }).catch(function(e) {
                         success = false;
@@ -71,5 +78,13 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
           }
           
     });
+  })
+}
+
+function updBon(bon) {
+    return new Promise(function (resolve, reject) {
+         console.log("--------------------");
+        console.log("new bon arrive",bon);
+        resolve("ok");
   })
 }
