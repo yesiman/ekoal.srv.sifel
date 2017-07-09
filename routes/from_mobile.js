@@ -81,18 +81,15 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
 
 function updBon(bon) {
     return new Promise(function (resolve, reject) {
-        console.log("1",bon);
-        var pals = bon.palettes;
-        delete(bon.palettes)
         db.collection('bons', function (err, collection) {
+            console.log("1",bon);
+            var pals = bon.palettes;
+            delete(bon.palettes)
             console.log("2",bon._id);
             if (bon._id.startsWith('nu_') == true)
             {  
                 delete(bon._id);
                 bon.dateModif = getReunionLocalDate();
-
-
-
                 collection.insert( bon , function (err, saved) {
                     if (err || !saved) {
                         reject("err");
@@ -123,13 +120,6 @@ function updBon(bon) {
                 });    
             }  
 
-
-
-            
-        });
-        
-         console.log("--------------------");
-        console.log("new bon arrive",bon);
-        resolve("ok");
-  })
+        });     
+    });
 }
