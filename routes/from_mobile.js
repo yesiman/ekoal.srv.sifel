@@ -90,6 +90,7 @@ function updBon(bon) {
             {  
                 delete(bon._id);
                 bon.dateModif = getReunionLocalDate();
+                console.log("3",bon._id);
                 collection.insert( bon , function (err, saved) {
                     if (err || !saved) {
                         console.log(err);
