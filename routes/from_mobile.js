@@ -22,8 +22,8 @@ exports.uploadDatas = function (req, res) {
                 case "bon":
                     updBon(
                         lines[i]._id,
-                        new require('mongodb').ObjectID(req.decoded._id),
-                        new require('mongodb').ObjectID(req.decoded.orga),
+                        req.decoded._id,
+                        req.decoded.orga,
                         lines[i].destination,
                         lines[i].producteur,
                         lines[i].station,
@@ -32,9 +32,11 @@ exports.uploadDatas = function (req, res) {
                         lines[i].remarques
                     )
                     .then(function(value) {
+                        console.log("RESID",value);
                     }).catch(function(e) {
                         success = false;
                     }).then(function(e) {
+
                     });
                     break;
             }
@@ -92,20 +94,24 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
 function updBon(id,user,orga,destination,producteur,station,noLta,signatures,remarques) {
     return new Promise(function (resolve, reject) {
         var ins = {
-                user:user,
-                orga:orga,
-                destination:destination,
-                producteur:producteur,
-                station:station,
-                noLta:noLta,
-                signatures:signatures,
-                remarques:remarques
+            user:new require('mongodb').ObjectID(user),
+            orga:new require('mongodb').ObjectID(orga),
+            destination:destination,
+            producteur:new require('mongodb').ObjectID(producteur),
+            station:new require('mongodb').ObjectID(station),
+            noLta:noLta,
+            signatures:signatures,
+            remarques:remarques
             };
             console.log("insert",ins);
       db.collection('bons', function (err, collection) {
           if (id.startsWith('nu') == true)
           {  
-              collection.insert(ins);
+              collection.insert( ins , function (err, saved) {
+                if (err || !saved) {
+                    resolve(saved.insertedIds[0])
+                }
+            });
           }
           else {
             collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
@@ -123,6 +129,7 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
                             }
                         }, 
                         { "upsert": true });
+                    resolve(id)
                 }
             });    
         }  
