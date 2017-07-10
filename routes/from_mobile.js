@@ -34,10 +34,9 @@ exports.uploadDatas = function (req, res) {
                         lines[i].remarques
                     )
                     .then(function(value) {
-                        console.log("palettes",palettes);
                         for (var relipal = 0;relipal < palettes.length;relipal++)
                         {
-                            console.log(palettes[relipal]);
+                            updBonLine(palettes[relipal]);
                         }
                     }).catch(function(e) {
                         console.log("err",e);
@@ -98,7 +97,7 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
     });
   })
 }
-
+//
 function updBon(id,user,orga,destination,producteur,station,noLta,signatures,remarques) {
     return new Promise(function (resolve, reject) {
         var ins = {
@@ -144,5 +143,53 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
             });    
         }  
     });
+  })
+}
+function updBonLine(palette) {
+    return new Promise(function (resolve, reject) {
+        console.log(palette);
+        /*var ins = {
+            dateModif:shared.getReunionLocalDate(),
+            user:new require('mongodb').ObjectID(user),
+            orga:new require('mongodb').ObjectID(orga),
+            destination:destination,
+            producteur:new require('mongodb').ObjectID(producteur),
+            station:new require('mongodb').ObjectID(station),
+            noLta:noLta,
+            signatures:signatures,
+            remarques:remarques
+            };
+      db.collection('bons', function (err, collection) {
+          if (id.startsWith('nu') == true)
+          {  
+              collection.insert( ins , function (err, saved) {
+                resolve(saved.insertedIds[0])
+            });
+          }
+          else {
+            collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
+                if (item)
+                {
+                    collection.update(
+                        { _id: new require('mongodb').ObjectID(id) },
+                        {
+                            $set:{
+                                dateModif:shared.getReunionLocalDate(),
+                                user:new require('mongodb').ObjectID(user),
+                                orga:new require('mongodb').ObjectID(orga),
+                                destination:destination,
+                                producteur:new require('mongodb').ObjectID(producteur),
+                                station:new require('mongodb').ObjectID(station),
+                                noLta:noLta,
+                                signatures:signatures,
+                                remarques:remarques
+                            }
+                        }, 
+                        { "upsert": true });
+                    resolve(id)
+                }
+            });    
+        }  
+    });*/
   })
 }
