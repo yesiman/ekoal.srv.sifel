@@ -32,11 +32,13 @@ exports.uploadDatas = function (req, res) {
                         lines[i].remarques
                     )
                     .then(function(value) {
-                        console.log("RESID",value);
+                        console.log("BBEURKKKK");
+                        console.log("RESID.1",value);
                     }).catch(function(e) {
+                        console.log("ERRORROROROOR",e);
                         success = false;
                     }).then(function(e) {
-
+                        console.log("RESID.2",e);
                     });
                     break;
             }
@@ -52,6 +54,7 @@ exports.uploadDatas = function (req, res) {
 function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,orga) {
     return new Promise(function (resolve, reject) {
         var ins = {
+                dateModif:shared.getReunionLocalDate(),
                 user:user,
                 orga:orga,
                 producteur:producteur,
@@ -76,6 +79,7 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
                         { _id: new require('mongodb').ObjectID(id) },
                         {
                             $set:{
+                                dateModif:shared.getReunionLocalDate(),
                                 code:code,
                                 lib:lib,
                                 surface:surface,
@@ -94,6 +98,7 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
 function updBon(id,user,orga,destination,producteur,station,noLta,signatures,remarques) {
     return new Promise(function (resolve, reject) {
         var ins = {
+            dateModif:shared.getReunionLocalDate(),
             user:new require('mongodb').ObjectID(user),
             orga:new require('mongodb').ObjectID(orga),
             destination:destination,
@@ -103,14 +108,11 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
             signatures:signatures,
             remarques:remarques
             };
-            console.log("insert",ins);
       db.collection('bons', function (err, collection) {
           if (id.startsWith('nu') == true)
           {  
               collection.insert( ins , function (err, saved) {
-                if (err || !saved) {
-                    resolve(saved.insertedIds[0])
-                }
+                resolve(saved.insertedIds[0])
             });
           }
           else {
@@ -121,11 +123,15 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
                         { _id: new require('mongodb').ObjectID(id) },
                         {
                             $set:{
-                                code:code,
-                                lib:lib,
-                                surface:surface,
-                                altitude:altitude,
-                                coordonnees:coordonnees
+                                dateModif:shared.getReunionLocalDate(),
+                                user:new require('mongodb').ObjectID(user),
+                                orga:new require('mongodb').ObjectID(orga),
+                                destination:destination,
+                                producteur:new require('mongodb').ObjectID(producteur),
+                                station:new require('mongodb').ObjectID(station),
+                                noLta:noLta,
+                                signatures:signatures,
+                                remarques:remarques
                             }
                         }, 
                         { "upsert": true });
