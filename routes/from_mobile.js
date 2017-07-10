@@ -20,6 +20,7 @@ exports.uploadDatas = function (req, res) {
                     });
                     break;
                 case "bon":
+                    var palettes = lines[i].palettes;
                     updBon(
                         lines[i]._id,
                         req.decoded._id,
@@ -32,9 +33,9 @@ exports.uploadDatas = function (req, res) {
                         lines[i].remarques
                     )
                     .then(function(value) {
-                        for (var relipal = 0;relipal < lines[i].palettes;relipal++)
+                        for (var relipal = 0;relipal < palettes.length;relipal++)
                         {
-                            console.log(lines[i].palettes[relipal]);
+                            console.log(palettes[relipal]);
                         }
                     }).catch(function(e) {
                         console.log("err",e);
