@@ -150,7 +150,7 @@ function updBonLine(bonId,palette) {
     return new Promise(function (resolve, reject) {
         palette.bon = new require('mongodb').ObjectID(bonId);
         palette.condit = new require('mongodb').ObjectID(palette.condit);
-        for (var reliprod = 0;reliprod < palette.produits.length;relipal++)
+        for (var reliprod = 0;reliprod < palette.produits.length;reliprod++)
         {
             palette.produits[reliprod].categorie = new require('mongodb').ObjectID(palette.produits[reliprod].categorie);
             palette.produits[reliprod].produit = new require('mongodb').ObjectID(palette.produits[reliprod].produit);
