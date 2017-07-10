@@ -7,6 +7,7 @@ exports.uploadDatas = function (req, res) {
         res.send({success:true});
     }
     else {
+        var palettes;
         for (var i = 0; i < lines.length; i++) {
             switch(lines[i].type)
             {
@@ -20,7 +21,7 @@ exports.uploadDatas = function (req, res) {
                     });
                     break;
                 case "bon":
-                    var palettes = lines[i].palettes;
+                    palettes = lines[i].palettes;
                     updBon(
                         lines[i]._id,
                         req.decoded._id,
