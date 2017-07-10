@@ -158,7 +158,6 @@ function updBonLine(bonId,palette) {
         var ins = palette;
         
         ins.dateModif = shared.getReunionLocalDate();
-        console.log("ins",ins);
       db.collection('bons_lines', function (err, collection) {
           if (ins._id.startsWith('nu') == true)
           {  
