@@ -152,6 +152,7 @@ function updBonLine(bonId,palette) {
         palette.condit = new require('mongodb').ObjectID(palette.condit);
         for (var reliprod = 0;reliprod < palette.produits.length;reliprod++)
         {
+            delete(palette.produits[reliprod]._id);
             palette.produits[reliprod].categorie = new require('mongodb').ObjectID(palette.produits[reliprod].categorie);
             palette.produits[reliprod].produit = new require('mongodb').ObjectID(palette.produits[reliprod].produit);
         }
