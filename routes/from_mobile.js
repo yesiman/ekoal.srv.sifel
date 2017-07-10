@@ -34,6 +34,7 @@ exports.uploadDatas = function (req, res) {
                         lines[i].remarques
                     )
                     .then(function(value) {
+                        console.log("palettes",palettes);
                         for (var relipal = 0;relipal < palettes.length;relipal++)
                         {
                             console.log(palettes[relipal]);
