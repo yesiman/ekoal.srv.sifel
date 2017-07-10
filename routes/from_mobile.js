@@ -189,6 +189,6 @@ function updBonLine(bonId,palette) {
                 }
             });    
         }  
-    });*/
+    });
   })
 }
