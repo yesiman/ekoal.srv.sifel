@@ -155,12 +155,14 @@ function updBonLine(bonId,palette) {
             palette.produits[reliprod].categorie = new require('mongodb').ObjectID(palette.produits[reliprod].categorie);
             palette.produits[reliprod].produit = new require('mongodb').ObjectID(palette.produits[reliprod].produit);
         }
-        console.log(palette);
         var ins = palette;
+        
         ins.dateModif = shared.getReunionLocalDate();
+        console.log("ins",ins);
       db.collection('bons_lines', function (err, collection) {
-          if (id.startsWith('nu') == true)
+          if (ins._id.startsWith('nu') == true)
           {  
+              delete(ins._id);
               collection.insert( ins , function (err, saved) {
                 resolve(saved.insertedIds[0])
             });
