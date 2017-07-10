@@ -36,7 +36,8 @@ exports.uploadDatas = function (req, res) {
                     .then(function(value) {
                         for (var relipal = 0;relipal < palettes.length;relipal++)
                         {
-                            updBonLine(palettes[relipal]);
+
+                            updBonLine(value,palettes[relipal]);
                         }
                     }).catch(function(e) {
                         console.log("err",e);
@@ -145,21 +146,19 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
     });
   })
 }
-function updBonLine(palette) {
+function updBonLine(bonId,palette) {
     return new Promise(function (resolve, reject) {
+        palette.bon = new require('mongodb').ObjectID(bonId);
+        palette.condit = new require('mongodb').ObjectID(palette.condit);
+        for (var reliprod = 0;reliprod < palette.produits.length;relipal++)
+        {
+            palette.produits[reliprod].categorie = new require('mongodb').ObjectID(palette.produits[reliprod].categorie);
+            palette.produits[reliprod].produit = new require('mongodb').ObjectID(palette.produits[reliprod].produit);
+        }
         console.log(palette);
-        /*var ins = {
-            dateModif:shared.getReunionLocalDate(),
-            user:new require('mongodb').ObjectID(user),
-            orga:new require('mongodb').ObjectID(orga),
-            destination:destination,
-            producteur:new require('mongodb').ObjectID(producteur),
-            station:new require('mongodb').ObjectID(station),
-            noLta:noLta,
-            signatures:signatures,
-            remarques:remarques
-            };
-      db.collection('bons', function (err, collection) {
+        var ins = palette;
+        ins.dateModif = shared.getReunionLocalDate();
+      db.collection('bons_lines', function (err, collection) {
           if (id.startsWith('nu') == true)
           {  
               collection.insert( ins , function (err, saved) {
