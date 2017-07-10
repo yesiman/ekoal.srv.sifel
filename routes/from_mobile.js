@@ -31,7 +31,8 @@ exports.uploadDatas = function (req, res) {
                         lines[i].station,
                         lines[i].noLta,
                         lines[i].signatures,
-                        lines[i].remarques
+                        lines[i].remarques,
+                        lines[i].dateDoc
                     )
                     .then(function(value) {
                         for (var relipal = 0;relipal < palettes.length;relipal++)
@@ -99,10 +100,11 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
   })
 }
 //
-function updBon(id,user,orga,destination,producteur,station,noLta,signatures,remarques) {
+function updBon(id,user,orga,destination,producteur,station,noLta,signatures,remarques,dateDoc) {
     return new Promise(function (resolve, reject) {
         var ins = {
             dateModif:shared.getReunionLocalDate(),
+            dateDoc:new Date(dateDoc),
             user:new require('mongodb').ObjectID(user),
             orga:new require('mongodb').ObjectID(orga),
             destination:destination,
