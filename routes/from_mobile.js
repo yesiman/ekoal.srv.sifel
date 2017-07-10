@@ -20,7 +20,17 @@ exports.uploadDatas = function (req, res) {
                     });
                     break;
                 case "bon":
-                    updBon(lines[i])
+                    updBon(
+                        lines[i]._id,
+                        new require('mongodb').ObjectID(req.decoded._id),
+                        new require('mongodb').ObjectID(req.decoded.orga),
+                        lines[i].destination,
+                        lines[i].producteur,
+                        lines[i].station,
+                        lines[i].noLta,
+                        lines[i].signatures,
+                        lines[i].remarques
+                    )
                     .then(function(value) {
                     }).catch(function(e) {
                         success = false;
@@ -79,49 +89,43 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
   })
 }
 
-function updBon(bon) {
+function updBon(id,user,orga,destination,producteur,station,noLta,signatures,remarques) {
     return new Promise(function (resolve, reject) {
-        db.collection('bons', function (err, collection) {
-            console.log("1",bon);
-            var pals = bon.palettes;
-            delete(bon.palettes)
-            console.log("2",bon._id);
-            if (bon._id.startsWith('nu_') == true)
-            {  
-                delete(bon._id);
-                bon.dateModif = getReunionLocalDate();
-                console.log("3",bon._id);
-                collection.insert( bon , function (err, saved) {
-                    if (err || !saved) {
-                        console.log(err);
-                        reject("err");
-                    }
-                    else {
-                        var bid = new require('mongodb').ObjectID(saved.insertedIds[0]);
-                        db.collection('bons_lines', function (err, collection) {
-                            for (var relipal = 0;relipal<pals.length;relipal++)
-                            {
-                                delete(pals[relipal]._id);
-                                collection.insert(pals[relipal]);
+        var ins = {
+                user:user,
+                orga:orga,
+                destination:destination,
+                producteur:producteur,
+                station:station,
+                noLta:noLta,
+                signatures:signatures,
+                remarques:remarques
+            };
+            console.log("insert",ins);
+      db.collection('bons', function (err, collection) {
+          if (id.startsWith('nu') == true)
+          {  
+              collection.insert(ins);
+          }
+          else {
+            collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
+                if (item)
+                {
+                    collection.update(
+                        { _id: new require('mongodb').ObjectID(id) },
+                        {
+                            $set:{
+                                code:code,
+                                lib:lib,
+                                surface:surface,
+                                altitude:altitude,
+                                coordonnees:coordonnees
                             }
-                        });
-                    }
-                });
-            }
-            else {
-                collection.findOne({ _id: new require('mongodb').ObjectID(bon._id) }, function (err, item) {
-                    if (item)
-                    {
-                        collection.update(
-                            { _id: new require('mongodb').ObjectID(bon._id) },
-                            {
-                                bon
-                            }, 
-                            { "upsert": true });
-                    }
-                });    
-            }  
-
-        });     
+                        }, 
+                        { "upsert": true });
+                }
+            });    
+        }  
     });
+  })
 }
