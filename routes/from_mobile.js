@@ -32,13 +32,14 @@ exports.uploadDatas = function (req, res) {
                         lines[i].remarques
                     )
                     .then(function(value) {
-                        console.log("BBEURKKKK");
-                        console.log("RESID.1",value);
+                        for (var relipal = 0;relipal < lines[i].palettes;relipal++)
+                        {
+                            console.log(lines[i].palettes[relipal]);
+                        }
                     }).catch(function(e) {
-                        console.log("ERRORROROROOR",e);
+                        console.log("err",e);
                         success = false;
                     }).then(function(e) {
-                        console.log("RESID.2",e);
                     });
                     break;
             }
