@@ -35,6 +35,7 @@ exports.add = function (req, res) {
     db.collection('clients', function (err, collection) {
         if (pid == "-1")
         {
+            req.body.client.dateCreation = shared.getReunionLocalDate();
             collection.insert( req.body.client , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)

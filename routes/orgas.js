@@ -78,6 +78,7 @@ exports.add = function (req, res) {
     db.collection('orgas', function (err, collection) {
         if (pid == "-1")
         {
+            req.body.orga.dateCreation = shared.getReunionLocalDate();
             collection.insert( req.body.orga , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)

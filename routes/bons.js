@@ -24,7 +24,6 @@ exports.get = function (req, res) {
                             res.send(item);
                         })
                     });
-                    res.send(item);
                 })
             });
         })
@@ -61,6 +60,7 @@ exports.add = function (req, res) {
     db.collection('bons', function (err, collection) {
         if (pid == "-1")
         {
+            req.body.bon.dateCreation = shared.getReunionLocalDate();
             collection.insert( req.body.bon , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)

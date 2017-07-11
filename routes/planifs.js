@@ -90,6 +90,7 @@ exports.add = function (req, res) {
     db.collection('planifs', function (err, collection) {
         if (pid == "-1")
         {
+            req.body.planif.dateCreation = getReunionLocalDate();
             collection.insert( req.body.planif , function (err, saved) {
                 if (err || !saved) {
                     //res.send(false)

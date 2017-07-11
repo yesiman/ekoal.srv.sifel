@@ -35,6 +35,7 @@ exports.add = function (req, res) {
     db.collection('products_categs', function (err, collection) {
         if (pid == "-1")
         {
+            req.body.categ.dateCreation = shared.getReunionLocalDate();
             collection.insert( req.body.categ , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)

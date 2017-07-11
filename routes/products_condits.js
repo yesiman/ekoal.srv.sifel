@@ -35,6 +35,7 @@ exports.add = function (req, res) {
     db.collection('products_condits', function (err, collection) {
         if (pid == "-1")
         {
+            req.body.condit.dateCreation = shared.getReunionLocalDate();
             collection.insert( req.body.condit , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
