@@ -1,4 +1,4 @@
-
+//
 exports.uploadDatas = function (req, res) {
     var lines = req.body.lines;
     var success = true;
@@ -55,7 +55,7 @@ exports.uploadDatas = function (req, res) {
         }
     }
 }
-
+//
 function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,orga) {
     return new Promise(function (resolve, reject) {
         var ins = {
@@ -196,3 +196,4 @@ function updBonLine(bonId,palette) {
     });
   })
 }
+//

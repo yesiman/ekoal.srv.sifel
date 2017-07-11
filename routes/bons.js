@@ -1,10 +1,32 @@
 exports.get = function (req, res) {
+    var ret = {};
+    //GET BON
     db.collection('bons', function (err, collection) {
         collection.findOne({ 
             _id: new require('mongodb').ObjectID(req.params.id),
             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
         function (err, item) {
-            res.send(item);
+            ret = item;
+            //GET STATION
+            db.collection('stations', function (err, collection) {
+                collection.findOne({ 
+                    _id: new require('mongodb').ObjectID(ret.station._id),
+                    orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
+                function (err, item) {
+                    ret.station = item;
+                    //GET PRODUCTEUR
+                    db.collection('users', function (err, collection) {
+                        collection.findOne({ 
+                            _id: new require('mongodb').ObjectID(ret.producteur),
+                            orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
+                        function (err, item) {
+                            ret.producteur = item;
+                            res.send(item);
+                        })
+                    });
+                    res.send(item);
+                })
+            });
         })
     });
 };
