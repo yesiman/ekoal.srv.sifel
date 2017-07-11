@@ -10,8 +10,7 @@ exports.get = function (req, res) {
             //GET STATION
             db.collection('stations', function (err, collection) {
                 collection.findOne({ 
-                    _id: new require('mongodb').ObjectID(ret.station._id),
-                    orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
+                    _id: new require('mongodb').ObjectID(ret.station._id) }, 
                 function (err, item) {
                     ret.station = item;
                     //GET PRODUCTEUR
