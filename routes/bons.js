@@ -21,7 +21,7 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            res.send(item);
+                            res.send(ret);
                         })
                     });
                 })
