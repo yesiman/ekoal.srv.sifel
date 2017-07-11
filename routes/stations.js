@@ -31,11 +31,11 @@ exports.delete = function (req, res) {
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.station.dateModif = shared.getReunionLocalDate();
-    req.body.station.user = new require('mongodb').ObjectID(req.decoded._id);
     req.body.station.orga =  new require('mongodb').ObjectID(req.decoded.orga);
     db.collection('stations', function (err, collection) {
         if (pid == "-1")
         {
+            req.body.station.dateCreation = shared.getReunionLocalDate();
             collection.insert( req.body.station , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)

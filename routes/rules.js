@@ -43,6 +43,7 @@ exports.add = function (req, res) {
     db.collection('products_rules', function (err, collection) {
         if (pid == "-1")
         {
+            req.body.rule.dateCreation = shared.getReunionLocalDate();
             collection.insert( req.body.rule , function (err, saved) {
                 if (err || !saved) {
                     res.send({res:false})

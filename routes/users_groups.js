@@ -34,6 +34,7 @@ exports.add = function (req, res) {
     db.collection('users_groups', function (err, collection) {
         if (pid == "-1")
         {
+            req.body.group.dateCreation = shared.getReunionLocalDate();
             collection.insert( req.body.group , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)

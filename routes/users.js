@@ -299,6 +299,7 @@ exports.add = function (req, res) {
             {
                 if (uid == "-1")
                 {
+                    req.body.user.dateCreation = shared.getReunionLocalDate();
                     collection.insert(req.body.user, function (err, saved) {
                         if (err || !saved) {
                             res.send({res:false})
