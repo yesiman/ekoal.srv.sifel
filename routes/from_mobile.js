@@ -114,11 +114,18 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
             signatures:signatures,
             remarques:remarques
             };
+        var inSign = signatures;
       db.collection('bons', function (err, collection) {
           if (id.startsWith('nu') == true)
           {  
+              ///ADD SIGN DATA
               collection.insert( ins , function (err, saved) {
-                resolve(saved.insertedIds[0])
+                  inSign.bon = saved.insertedIds[0];
+                db.collection('bons_signatures', function (err, collection) {
+                    collection.insert( inSign , function (err, saved) {
+                        resolve(inSign.bon);
+                    });
+                });
             });
           }
           else {
@@ -136,12 +143,19 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
                                 producteur:new require('mongodb').ObjectID(producteur),
                                 station:new require('mongodb').ObjectID(station),
                                 noLta:noLta,
-                                signatures:signatures,
                                 remarques:remarques
                             }
                         }, 
                         { "upsert": true });
-                    resolve(id)
+                    db.collection('bons_signatures', function (err, collection) {
+                        collection.update(
+                            { bon: new require('mongodb').ObjectID(id) },
+                            {
+                                signatures
+                            }, 
+                            { "upsert": true });
+                        resolve(id);
+                    });
                 }
             });    
         }  
