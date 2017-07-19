@@ -19,7 +19,7 @@ exports.sendMail = function (to, subject,body) {
             from: 'Sifel <no_reply@arifel.org>',
             to: to,
             subject: '[SIFEL].' + subject,
-            html: html
+            html: body
         };
         mailgun.messages().send(data, function (error, body) {
             res.send({ success: true });
