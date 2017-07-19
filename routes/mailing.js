@@ -3,6 +3,11 @@ exports.sendMailRecover = function (req, res) {
     db.collection('users', function (err, collection) {
         collection.findOne({ email: req.body.email }, function (err, item) {
             if (item) {
+                var html = "Bonjour, <br/><br/>"
+                    + " Veuillez trouver ci-dessous vos identifiants de connexion : <br/>"
+                    + "Identifiant : " + req.body.email + "<br/>"
+                    + "Mot de passe : " + item.pass + "<br/><br/>"
+                    + "A bientot";
                 mailing.sendMail(req.body.email,"Vos identifiants de connexion",html);
             }
             else {
