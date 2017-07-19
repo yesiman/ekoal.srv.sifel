@@ -41,7 +41,6 @@ exports.uploadDatas = function (req, res) {
                     .then(function(value) {
                         for (var relipal = 0;relipal < palettes.length;relipal++)
                         {
-
                             updBonLine(value,palettes[relipal]);
                         }
                     }).catch(function(e) {
@@ -56,7 +55,26 @@ exports.uploadDatas = function (req, res) {
             }
             if (i == lines.length-1)
             {
-                res.send({success:true});
+                if (nbBons > 0)
+                {
+                    db.collection('orgas', function (err, collection) {
+                        collection.findOne({ _id: new require('mongodb').ObjectID(req.decoded.orga) }, function (err, item) {
+                            if (item) {
+                                var html = "Bonjour, <br/><br/>"
+                                    + " De nouveaux bons ont étés synchronisés"
+                                    + "A bientot";
+                                if (item.params)
+                                {
+                                    mailing.sendMail(item.params.notifs.sms_planif_ano,"Vos identifiants de connexion",html);
+                                }
+                            }
+                            res.send({success:true});
+                        })
+                    });
+                }
+                else {
+                    res.send({success:true});
+                }
             }
         }
     }
