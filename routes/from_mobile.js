@@ -65,7 +65,7 @@ exports.uploadDatas = function (req, res) {
                                     + "A bientot";
                                 if (item.params)
                                 {
-                                    mailing.sendMail(item.params.notifs.sms_planif_ano,"Vos identifiants de connexion",html);
+                                    mailing.sendMail(item.params.notifs.bon_new,"Nouveaux bons",html);
                                 }
                             }
                             res.send({success:true});

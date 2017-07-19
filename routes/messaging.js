@@ -168,11 +168,8 @@ exports.smsReceive = function(req, res)
         }
         )
     });
-
+    //ENVOI MAIL ANOMALIE -> TECH
     io.sockets.emit('numessag', req.body);
-
-
-
     res.type('text/xml');
     res.send("<Response></Response>");
 }

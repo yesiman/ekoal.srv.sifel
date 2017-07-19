@@ -45,7 +45,7 @@ exports.get = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.planif.dateModif = getReunionLocalDate();
+    req.body.planif.dateModif = shared.getReunionLocalDate();
     req.body.planif.produit = new require('mongodb').ObjectID(req.body.planif.produit);
     req.body.planif.producteur = new require('mongodb').ObjectID(req.body.planif.producteur);
     req.body.planif.user = new require('mongodb').ObjectID(req.decoded._id);
@@ -90,7 +90,7 @@ exports.add = function (req, res) {
     db.collection('planifs', function (err, collection) {
         if (pid == "-1")
         {
-            req.body.planif.dateCreation = getReunionLocalDate();
+            req.body.planif.dateCreation = shared.getReunionLocalDate();
             collection.insert( req.body.planif , function (err, saved) {
                 if (err || !saved) {
                     //res.send(false)
