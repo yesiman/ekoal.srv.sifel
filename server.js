@@ -21,7 +21,6 @@ var express = require('express'),
     stats = require('./routes/stats'),
     fromMobile = require('./routes/from_mobile'),
     rules = require('./routes/rules'),
-    mailing = require('./routes/mailing'),
     messaging = require('./routes/messaging'),
     importer = require('./routes/importer'),
     bodyParser = require('body-parser'),
@@ -35,6 +34,7 @@ var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' })
 jwt = require('jsonwebtoken');
 io = require('socket.io').listen(server);
 shared = require('./routes/_shared');
+mailing = require('./routes/mailing');
 //
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {

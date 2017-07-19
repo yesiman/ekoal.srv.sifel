@@ -1,5 +1,5 @@
 exports.login = function (req, res) {
-    if ((req.body.user.login != "") && (req.body.user.pass != "")) 
+    if ((req.body.user.login) && (req.body.user.pass) && (req.body.user.login != "") && (req.body.user.pass != "")) 
     {
         db.collection('users', function (err, collection) {
             collection.findOne({ login: req.body.user.login, pass: req.body.user.pass }, function (err, item) {
@@ -276,8 +276,12 @@ exports.add = function (req, res) {
     req.body.user.dateModif = shared.getReunionLocalDate();
     var parcelles = req.body.user.parcelles;
     var parcellesToRem = req.body.user.parcellesToRem;
+    var orga = req.body.user.orga;
+    
     delete req.body.user.parcelles;
     delete req.body.user.parcellesToRem;
+    delete req.body.user.orga;
+
     if (req.body.user.orga)
     {
         req.body.user.orga = new require('mongodb').ObjectID(req.body.user.orga);

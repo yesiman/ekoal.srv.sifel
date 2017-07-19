@@ -7,11 +7,14 @@ exports.uploadDatas = function (req, res) {
         res.send({success:true});
     }
     else {
+        var nbParcs = 0;
+        var nbBons = 0;
         var palettes;
         for (var i = 0; i < lines.length; i++) {
             switch(lines[i].type)
             {
                 case "parcelle":
+                    nbParcs++;
                     //SET MONGO GEO CORRECTLY "POLYGON"
                     updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees,lines[i].code,lines[i].lib,new require('mongodb').ObjectID(lines[i].producteur),new require('mongodb').ObjectID(req.decoded._id),new require('mongodb').ObjectID(req.decoded.orga))
                     .then(function(value) {
@@ -21,6 +24,7 @@ exports.uploadDatas = function (req, res) {
                     });
                     break;
                 case "bon":
+                    nbBons++;
                     palettes = lines[i].palettes;
                     updBon(
                         lines[i]._id,
@@ -47,7 +51,9 @@ exports.uploadDatas = function (req, res) {
                     });
                     break;
             }
-            if (!success) {res.send({success:false});break;}
+            if (!success) {
+                res.send({success:false});break;
+            }
             if (i == lines.length-1)
             {
                 res.send({success:true});
