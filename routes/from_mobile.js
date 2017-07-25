@@ -184,6 +184,7 @@ function updBonV2(user,orga,bon) {
             var id = bon._id;
             delete(bon._id);
             bon.dateModif = shared.getReunionLocalDate();
+            console.log("bon",bon);
             bon.dateDoc = new Date(bon.dateDoc);
             bon.user = new require('mongodb').ObjectID(bon.user);
             bon.orga = new require('mongodb').ObjectID(bon.orga);
