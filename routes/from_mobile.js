@@ -193,10 +193,11 @@ function updBonV2(user,orga,bon) {
             {
                 bon.palettes[relipal].produits[reliprod].produit = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].produit);   
             }
+            console.log("thepalproduits",bon.palettes[relipal].produits);
         }
         console.log("thebon",bon);
         console.log("ARGH");
-        console.log("thebonproduits",bon.palettes[relipal].produits);
+        
         resolve("ok");
     });
 }
