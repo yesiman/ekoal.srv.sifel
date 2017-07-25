@@ -215,6 +215,7 @@ exports.getAllByType = function (req, res) {
     }
     if (req.params.actifs == "1")
     {
+        console.log("NEED ACTIFS");
         filters["actif"] = true;
     }
     if (req.params.req && (req.params.req != ""))
