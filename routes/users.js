@@ -281,16 +281,13 @@ exports.add = function (req, res) {
     req.body.user.dateModif = shared.getReunionLocalDate();
     var parcelles = req.body.user.parcelles;
     var parcellesToRem = req.body.user.parcellesToRem;
-    var orga = req.body.user.orga;
+    var orga = req.decoded.orga;
     
     delete req.body.user.parcelles;
     delete req.body.user.parcellesToRem;
     delete req.body.user.orga;
 
-    if (req.body.user.orga)
-    {
-        req.body.user.orga = new require('mongodb').ObjectID(req.body.user.orga);
-    }
+    req.body.user.orga = new require('mongodb').ObjectID(orga);
     db.collection('users', function (err, collection) {
         var filters = { $or:[{email: { '$regex': req.body.user.email, $options: 'i' }}, {login: { '$regex': req.body.user.login, $options: 'i' } }]};
         if (req.body.user.email) {
