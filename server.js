@@ -156,6 +156,7 @@ app.post('/usersGroups/add/:id', cors(), bodyParser.json(), usersGroups.add);
 app.get('/products/get/:id', cors(), bodyParser.json(), products.get);
 app.get('/products/getAll/:idp/:nbr', cors(), bodyParser.json(), products.getAll);
 app.get('/products/getAllByLib/:idp/:nbr/:req', cors(), bodyParser.json(), products.getAllByLib);
+app.get('/products/getAllByLib/:idp/:nbr/:req/:actifs', cors(), bodyParser.json(), products.getAllByLib);
 app.delete('/products/delete/:id', cors(), bodyParser.json(), products.delete);
 app.post('/products/add/:id', cors(), bodyParser.json(), products.add);
 app.get('/products/getAllFromDouane/:level/:parent', cors(), bodyParser.json(), products.getAllFromDouane);
