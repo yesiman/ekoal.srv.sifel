@@ -26,27 +26,20 @@ exports.uploadDatas = function (req, res) {
                 case "bon":
                     nbBons++;
                     var tbon = lines[i];
-                    palettes = lines[i].palettes;
-                    updBon(
-                        lines[i]._id,
+                    //palettes = lines[i].palettes;
+                    updBonV2(
                         req.decoded._id,
                         req.decoded.orga,
-                        lines[i].destination,
-                        lines[i].producteur,
-                        lines[i].station,
-                        lines[i].noLta,
-                        lines[i].signatures,
-                        lines[i].remarques,
-                        lines[i].dateDoc
+                        tbon
                     )
                     .then(function(value) {
-                        for (var relipal = 0;relipal < palettes.length;relipal++)
-                        {
-                            updBonLine(value,tbon.producteur,tbon.dateDoc,tbon.station,palettes[relipal]);
-                        }
+                        //for (var relipal = 0;relipal < palettes.length;relipal++)
+                        //{
+                        //    updBonLine(value,tbon.producteur,tbon.dateDoc,tbon.station,palettes[relipal]);
+                        //}
                     }).catch(function(e) {
-                        console.log("err",e);
-                        success = false;
+                        //console.log("err",e);
+                        //success = false;
                     }).then(function(e) {
                     });
                     break;
@@ -54,27 +47,29 @@ exports.uploadDatas = function (req, res) {
             if (!success) {
                 res.send({success:false});break;
             }
-            if (i == lines.length-1)
-            {
-                if (nbBons > 0)
+            else {
+                if (i == lines.length-1)
                 {
-                    db.collection('orgas', function (err, collection) {
-                        collection.findOne({ _id: new require('mongodb').ObjectID(req.decoded.orga) }, function (err, item) {
-                            if (item) {
-                                var html = "Bonjour, <br/><br/>"
-                                    + " De nouveaux bons ont étés synchronisés"
-                                    + "A bientot";
-                                if (item.params)
-                                {
-                                    mailing.sendMail(item.params.notifs.bon_new,"Nouveaux bons",html);
+                    if (nbBons > 0)
+                    {
+                        db.collection('orgas', function (err, collection) {
+                            collection.findOne({ _id: new require('mongodb').ObjectID(req.decoded.orga) }, function (err, item) {
+                                if (item) {
+                                    var html = "Bonjour, <br/><br/>"
+                                        + " De nouveaux bons ont étés synchronisés"
+                                        + "A bientot";
+                                    if (item.params)
+                                    {
+                                        mailing.sendMail(item.params.notifs.bon_new,"Nouveaux bons",html);
+                                    }
                                 }
-                            }
-                            res.send({success:true});
-                        })
-                    });
-                }
-                else {
-                    res.send({success:true});
+                                res.send({success:true});
+                            })
+                        });
+                    }
+                    else {
+                        res.send({success:true});
+                    }
                 }
             }
         }
@@ -182,6 +177,12 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
         }  
     });
   })
+}
+function updBonV2(user,orga,bon) {
+    return new Promise(function (resolve, reject) {
+        console.log("thebon",bon);
+        resolve("ok");
+    });
 }
 function updBonLine(bonId,producteur,dateDoc,station,palette) {
     return new Promise(function (resolve, reject) {
