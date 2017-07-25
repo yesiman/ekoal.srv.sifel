@@ -21,12 +21,7 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            db.collection('bons_lines', function (err, collection) {
-                                collection.find({bon: new require('mongodb').ObjectID(ret._id)}).toArray(function (err, items) {
-                                    ret.palettes = items;
-                                    res.send(ret);
-                                })
-                            });
+                            res.send(ret);
                         })
                     });
                 })
