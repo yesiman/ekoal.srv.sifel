@@ -9,6 +9,7 @@ exports.sendMailRecover = function (req, res) {
                     + "Mot de passe : " + item.pass + "<br/><br/>"
                     + "A bientot";
                 mailing.sendMail(req.body.email,"Vos identifiants de connexion",html);
+                res.send({ success: true });
             }
             else {
                 res.send({ success: false });
@@ -27,7 +28,7 @@ exports.sendMail = function (to, subject,body) {
             html: body
         };
         mailgun.messages().send(data, function (error, body) {
-            res.send({ success: true });
+            //res.send({ success: true });
         });
     });
 };

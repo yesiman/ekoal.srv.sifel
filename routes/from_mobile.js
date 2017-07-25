@@ -180,7 +180,22 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
 }
 function updBonV2(user,orga,bon) {
     return new Promise(function (resolve, reject) {
+        bon.dateModif = shared.getReunionLocalDate();
+        bon.dateDoc = shared.getReunionLocalDate();
+        bon.user = new require('mongodb').ObjectID(bon.user);
+        bon.orga = new require('mongodb').ObjectID(bon.orga);
+        bon.producteur = new require('mongodb').ObjectID(bon.producteur);
+        bon.station = new require('mongodb').ObjectID(bon.station);
+        for (var relipal = 0;relipal < bon.palettes.length;relipal++)
+        {
+            bon.palettes[relipal].condit = new require('mongodb').ObjectID(bon.palettes[relipal].condit);
+            for (var reliprod = 0;reliprod < bon.palettes[relipal].produits.length;reliprod++)
+            {
+                bon.palettes[relipal].produits[reliprod].produit = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].produit);   
+            }
+        }
         console.log("thebon",bon);
+        console.log("thebonproduits",bon.palettes[relipal].produits);
         resolve("ok");
     });
 }
