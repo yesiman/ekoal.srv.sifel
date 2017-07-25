@@ -186,8 +186,8 @@ function updBonV2(user,orga,bon) {
             bon.dateModif = shared.getReunionLocalDate();
             console.log("bon",bon);
             bon.dateDoc = new Date(bon.dateDoc);
-            bon.user = new require('mongodb').ObjectID(bon.user);
-            bon.orga = new require('mongodb').ObjectID(bon.orga);
+            bon.user = new require('mongodb').ObjectID(user);
+            bon.orga = new require('mongodb').ObjectID(orga);
             bon.producteur = new require('mongodb').ObjectID(bon.producteur);
             bon.station = new require('mongodb').ObjectID(bon.station);
             for (var relipal = 0;relipal < bon.palettes.length;relipal++)
@@ -195,7 +195,7 @@ function updBonV2(user,orga,bon) {
                 bon.palettes[relipal].condit = new require('mongodb').ObjectID(bon.palettes[relipal].condit);
                 for (var reliprod = 0;reliprod < bon.palettes[relipal].produits.length;reliprod++)
                 {
-                    bon.palettes[relipal].produits[reliprod].produit = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod]._id);
+                    bon.palettes[relipal].produits[reliprod].produit = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].produit);
                     bon.palettes[relipal].produits[reliprod].categorie = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].categorie);   
                 }
             }
