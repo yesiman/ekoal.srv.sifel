@@ -202,8 +202,9 @@ function updBonV2(user,orga,bon) {
             if (id.startsWith('nu') == true)
             {  
                 ///ADD SIGN DATA
-                collection.insert( ins , function (err, saved) {
+                collection.insert( bon , function (err, saved) {
                         resolve(saved.insertedIds[0]);
+                        
                 });
             }
             else {
@@ -216,23 +217,15 @@ function updBonV2(user,orga,bon) {
                                 bon
                             }, 
                             { "upsert": true });
-                        db.collection('bons_signatures', function (err, collection) {
-                            collection.update(
-                                { bon: new require('mongodb').ObjectID(id) },
-                                {
-                                    signatures
-                                }, 
-                                { "upsert": true });
-                            resolve(id);
-                        });
                     }
+                    resolve("ok");
                 });    
             }  
         });
         
 
         
-        resolve("ok");
+        
     });
 }
 function updBonLine(bonId,producteur,dateDoc,station,palette) {
