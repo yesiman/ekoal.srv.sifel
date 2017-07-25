@@ -195,6 +195,7 @@ function updBonV2(user,orga,bon) {
             }
         }
         console.log("thebon",bon);
+        console.log("ARGH");
         console.log("thebonproduits",bon.palettes[relipal].produits);
         resolve("ok");
     });
