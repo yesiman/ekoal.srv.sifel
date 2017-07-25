@@ -32,8 +32,6 @@ exports.getAllByLib = function (req, res) {
     var ret = new Object();
     var filters;
 
-    console.log("req.params.actifs",req.params.actifs);
-
     if (req.decoded.type === 1)
     {
         filters = { orga:new require('mongodb').ObjectID(req.decoded.orga),lib: { '$regex': req.params.req, $options: 'i' }, public:true};
@@ -41,6 +39,12 @@ exports.getAllByLib = function (req, res) {
     else {
         filters = { orga:new require('mongodb').ObjectID(req.decoded.orga),lib: { '$regex': req.params.req, $options: 'i' }};
     }
+
+    if (req.params.actifs == "1")
+    {
+        filters["actif"] = true;
+    }
+
     db.collection('products', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
@@ -65,7 +69,6 @@ exports.getAllByLib = function (req, res) {
                                 }
                             }
                         }
-                        console.log("HHHH",ret);
                         res.send(ret);
                     });
                 });
