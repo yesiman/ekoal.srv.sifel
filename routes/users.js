@@ -213,6 +213,10 @@ exports.getAllByType = function (req, res) {
         default:  //VOIT AUCUNS USER
             filters = { type: {$gte: 9999} };
     }
+    if (req.params.actifs == "1")
+    {
+        filters["actif"] = true;
+    }
     if (req.params.req && (req.params.req != ""))
     {
         filters["$or"] = [

@@ -140,6 +140,7 @@ app.get('/users/getParcellesGeo/', cors(), bodyParser.json(), users.getParcelles
 
 app.post('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
 app.get('/users/getAllByType/:idp/:nbr/:idt/:req', cors(), bodyParser.json(), users.getAllByType);
+app.get('/users/getAllByType/:idp/:nbr/:idt/:req/:actifs', cors(), bodyParser.json(), users.getAllByType);
 app.post('/users/getAllByOrga/:idp/:nbr/:ido', cors(), bodyParser.json(), users.getAllByOrga);
 app.delete('/users/delete/:id', cors(), bodyParser.json(), users.delete);
 app.delete('/users/deleteParcelle/:id', cors(), bodyParser.json(), users.deleteParcelle);
