@@ -133,7 +133,7 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
             noLta:noLta,
             signatures:signatures,
             remarques:remarques
-            };
+        };
         var inSign = signatures;
       db.collection('bons', function (err, collection) {
           if (id.startsWith('nu') == true)
@@ -180,23 +180,57 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
 }
 function updBonV2(user,orga,bon) {
     return new Promise(function (resolve, reject) {
-        bon.dateModif = shared.getReunionLocalDate();
-        bon.dateDoc = shared.getReunionLocalDate();
-        bon.user = new require('mongodb').ObjectID(bon.user);
-        bon.orga = new require('mongodb').ObjectID(bon.orga);
-        bon.producteur = new require('mongodb').ObjectID(bon.producteur);
-        bon.station = new require('mongodb').ObjectID(bon.station);
-        for (var relipal = 0;relipal < bon.palettes.length;relipal++)
-        {
-            bon.palettes[relipal].condit = new require('mongodb').ObjectID(bon.palettes[relipal].condit);
-            for (var reliprod = 0;reliprod < bon.palettes[relipal].produits.length;reliprod++)
+        db.collection('bons', function (err, collection) {
+            var id = bon._id;
+            delete(bon._id);
+            bon.dateModif = shared.getReunionLocalDate();
+            bon.dateDoc = new Date(bon.dateDoc);
+            bon.user = new require('mongodb').ObjectID(bon.user);
+            bon.orga = new require('mongodb').ObjectID(bon.orga);
+            bon.producteur = new require('mongodb').ObjectID(bon.producteur);
+            bon.station = new require('mongodb').ObjectID(bon.station);
+            for (var relipal = 0;relipal < bon.palettes.length;relipal++)
             {
-                bon.palettes[relipal].produits[reliprod].produit = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].produit);   
+                bon.palettes[relipal].condit = new require('mongodb').ObjectID(bon.palettes[relipal].condit);
+                for (var reliprod = 0;reliprod < bon.palettes[relipal].produits.length;reliprod++)
+                {
+                    bon.palettes[relipal].produits[reliprod].produit = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].produit);
+                    bon.palettes[relipal].produits[reliprod].categorie = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].categorie);   
+                }
             }
-            console.log("thepalproduits",bon.palettes[relipal].produits);
-        }
-        console.log("thebon",bon);
-        console.log("ARGH");
+
+            if (id.startsWith('nu') == true)
+            {  
+                ///ADD SIGN DATA
+                collection.insert( ins , function (err, saved) {
+                        resolve(saved.insertedIds[0]);
+                });
+            }
+            else {
+                collection.findOne({ _id: new require('mongodb').ObjectID(id) }, function (err, item) {
+                    if (item)
+                    {
+                        collection.update(
+                            { _id: new require('mongodb').ObjectID(id) },
+                            {
+                                bon
+                            }, 
+                            { "upsert": true });
+                        db.collection('bons_signatures', function (err, collection) {
+                            collection.update(
+                                { bon: new require('mongodb').ObjectID(id) },
+                                {
+                                    signatures
+                                }, 
+                                { "upsert": true });
+                            resolve(id);
+                        });
+                    }
+                });    
+            }  
+        });
+        
+
         
         resolve("ok");
     });
