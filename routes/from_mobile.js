@@ -194,7 +194,7 @@ function updBonV2(user,orga,bon) {
                 bon.palettes[relipal].condit = new require('mongodb').ObjectID(bon.palettes[relipal].condit);
                 for (var reliprod = 0;reliprod < bon.palettes[relipal].produits.length;reliprod++)
                 {
-                    bon.palettes[relipal].produits[reliprod].produit = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].produit);
+                    bon.palettes[relipal].produits[reliprod].produit = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod]._id);
                     bon.palettes[relipal].produits[reliprod].categorie = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].categorie);   
                 }
             }
