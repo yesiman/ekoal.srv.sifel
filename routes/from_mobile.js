@@ -25,6 +25,7 @@ exports.uploadDatas = function (req, res) {
                     break;
                 case "bon":
                     nbBons++;
+                    var tbon = lines[i];
                     palettes = lines[i].palettes;
                     updBon(
                         lines[i]._id,
@@ -41,7 +42,7 @@ exports.uploadDatas = function (req, res) {
                     .then(function(value) {
                         for (var relipal = 0;relipal < palettes.length;relipal++)
                         {
-                            updBonLine(value,palettes[relipal]);
+                            updBonLine(value,tbon.producteur,tbon.dateDoc,tbon.station,palettes[relipal]);
                         }
                     }).catch(function(e) {
                         console.log("err",e);
@@ -145,11 +146,7 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
               ///ADD SIGN DATA
               collection.insert( ins , function (err, saved) {
                   inSign.bon = saved.insertedIds[0];
-                db.collection('bons_signatures', function (err, collection) {
-                    collection.insert( inSign , function (err, saved) {
-                        resolve(inSign.bon);
-                    });
-                });
+                    resolve(inSign.bon);
             });
           }
           else {
@@ -186,10 +183,13 @@ function updBon(id,user,orga,destination,producteur,station,noLta,signatures,rem
     });
   })
 }
-function updBonLine(bonId,palette) {
+function updBonLine(bonId,producteur,dateDoc,station,palette) {
     return new Promise(function (resolve, reject) {
         palette.bon = new require('mongodb').ObjectID(bonId);
         palette.condit = new require('mongodb').ObjectID(palette.condit);
+        palette.producteur = new require('mongodb').ObjectID(producteur);
+        palette.station = new require('mongodb').ObjectID(station);
+        palette.dateDoc = new Date(dateDoc);
         for (var reliprod = 0;reliprod < palette.produits.length;reliprod++)
         {
             delete(palette.produits[reliprod]._id);

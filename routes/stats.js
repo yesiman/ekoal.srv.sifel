@@ -276,7 +276,122 @@ exports.getDataFile = function (req, res) {
         res.send({ok:true});
     });
 };
+//
+//STATS PAR PRODUCTEURS
+exports.agreageByProducteur = function (req, res) {
+    getStdArrays(req.decoded,req.body,function(result)
+    {   
+        var obj_ids = result.produisIds;
+        var producteurs = result.producteurs;
+        //STEP 1 : get bons IDS in CRITS
+        db.collection('bons', function (err, collection) {
+            var query = {};
+            query["$match"] = {};
+            if (req.decoded.type == 1){
+                //filtre produits publiques
+            }
+            else {
+                query["$match"]["producteur"] = { "$in": producteurs };
+            }
+            query["$match"]["dateDoc"] = getDatesFilter(req.body);
+        });
+        db.collection('bons_lines', function (err, collection) {
+            var query = {};
+            query["$match"] = {};
+            query["$match"]["produit"] = { "$in": obj_ids };
+            if (req.decoded.type == 1){
+                //filtre produits publiques
+            }
+            else {
+                query["$match"]["producteur"] = { "$in": producteurs };
+            }
+            
+            query["$match"]["startAt"] = getDatesFilter(req.body);
+            var group = {};
+            var sort = {};
+            group["$group"] = {};
+            
+            group["$group"]["_id"] = {};
+            switch (req.body.dateFormat)
+            {
+                case "w":
+                    group["$group"]["_id"]["year"] = { $year: "$startAt" };
+                    group["$group"]["_id"]["week"] = "$semaine";
+                    sort["$sort"] = {  
+                        "_id.year": 1, 
+                        "_id.week": 1, 
+                        "_id.producteur" : 1 
+                    };
+                    break;
+                case "m":
+                    group["$group"]["_id"]["year"] = { $year: "$startAt" };
+                    group["$group"]["_id"]["month"] = "$mois";
+                    sort["$sort"] = {  
+                        "_id.year": 1, 
+                        "_id.month": 1, 
+                        "_id.producteur" : 1 
+                    };
+                    break;
+                case "d":
+                default:
+                    group["$group"]["_id"]["year"] = { $year: "$dateRec" };
+                    group["$group"]["_id"]["month"] = { $month: "$dateRec" };
+                    group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateRec" };
+                    sort["$sort"] = {  
+                        "_id.year": 1, 
+                        "_id.month": 1, 
+                        "_id.day": 1,
+                        "_id.producteur" : 1 
+                    };
+                    break;
+            }
+            group["$group"]["_id"]["producteur"] = "$producteur";
+            switch (req.body.unit.toString())
+            {
+                case "1":
+                    //group["$group"]["count"] = { $sum: "$qte.val" };
+                    group["$group"]["count"] = { $sum: 
+                        { $cond: { if: { $eq: [ "$qte.unit", 1] }, then: "$qte.val", else: { $multiply: [ "$qte.val", 1000 ] } } }
+                    };
+                    break;
+                case "2":
+                    group["$group"]["count"] = { $sum: 
+                        { $cond: { if: { $eq: [ "$qte.unit", 2] }, then: "$qte.val", else: { $divide: [ "$qte.val", 1000 ] }} }
+                    };
+                    break;
+            }
 
+            collection.aggregate(
+                query,
+                group,
+                sort,
+                function(err, summary) { 
+                    var prodsToGet = [];
+                    for (var i = 0;i < summary.length;i++)
+                    {
+                        var found = false;
+                        for (var ipg = 0;ipg < prodsToGet.length;ipg++)
+                        {
+                            if (prodsToGet[ipg].toString() == summary[i]._id.producteur.toString())
+                            {
+                                found = true;
+                            }
+                        }
+                        if (!found)
+                        {
+                            prodsToGet.push(new require('mongodb').ObjectID(summary[i]._id.producteur.toString()));
+                        }
+                    }
+                    db.collection('users', function (err, collection) {
+                        collection.find({_id:{$in:prodsToGet} }).toArray(function (err, items) {
+                            res.send({items:summary, producteurs:items });
+                        });
+                    });
+                }
+            );
+        });  
+    });    
+};
 //
 function getDatesFilter(body) {
     var beg = new Date(body.dateFrom);

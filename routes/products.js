@@ -34,7 +34,7 @@ exports.getAllByLib = function (req, res) {
 
     if (req.decoded.type === 1)
     {
-        filters = { orga:new require('mongodb').ObjectID(req.decoded.orga),lib: { '$regex': req.params.req, $options: 'i' }, public:true};
+        filters = { orga:new require('sngodb').ObjectID(req.decoded.orga),lib: { '$regex': req.params.req, $options: 'i' }, public:true};
     }
     else {
         filters = { orga:new require('mongodb').ObjectID(req.decoded.orga),lib: { '$regex': req.params.req, $options: 'i' }};
