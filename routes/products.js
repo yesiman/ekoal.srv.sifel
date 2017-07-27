@@ -21,9 +21,10 @@ exports.getAll = function (req, res) {
     };
     if (req.params.ts)
     {   
-        console.log("TS PRESENT", new Date(req.params.ts));
         var from = new Date(req.params.ts);
-        filters.dateModif = { $gte: new Date(from)};
+        console.log("TS PRESENT", req.params.ts);
+        console.log("TS DATE", from);
+        filters.dateModif = { $gte: from};
     }
     db.collection('products', function (err, collection) {
         collection.count(filters, function (err, count) {
