@@ -137,7 +137,7 @@ app.post('/users/getParcellesByProducteurs/:idp/:nbr', cors(), bodyParser.json()
 app.get('/users/getParcellesGeo/', cors(), bodyParser.json(), users.getParcellesGeo);
 
 //
-app.post('/users/getAll/:idp/:nbr/:timestamp', cors(), bodyParser.json(), users.getAll);
+app.post('/users/getAll/:idp/:nbr/:ts', cors(), bodyParser.json(), users.getAll);
 //
 app.post('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
 app.get('/users/getAllByType/:idp/:nbr/:idt/:req', cors(), bodyParser.json(), users.getAllByType);

@@ -178,6 +178,11 @@ exports.getAll = function (req, res) {
             {codeAdh: { '$regex': txtFilter, $options: 'i' }}
         ];
     }
+    if (req.params.ts)
+    {   
+        var from = new Date(Number(req.params.ts));
+        filters.dateModif = { $gte: from};
+    }
     db.collection('users', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
