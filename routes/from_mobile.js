@@ -91,6 +91,7 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
                 actif: true
             };
             console.log("insert",ins);
+            //TDO UPDATE 
       db.collection('parcelles', function (err, collection) {
           if (id.startsWith('nu') == true)
           {  
@@ -114,8 +115,19 @@ function updParcelle(id,surface,altitude,coordonnees,code,lib,producteur,user,or
                         }, 
                         { "upsert": true });
                 }
-            });    
+            });
         }  
+        db.collection('users', function (err, collection) {
+            collection.update(
+                    { _id: new require('mongodb').ObjectID(producteur) },
+                    {
+                        $set:{
+                            dateModif:shared.getReunionLocalDate()
+                        }
+                    }, 
+                    { "upsert": true });
+        });
+        resolve("ok");
     });
   })
 }
