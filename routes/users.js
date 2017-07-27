@@ -180,6 +180,7 @@ exports.getAll = function (req, res) {
     }
     if (req.params.ts)
     {   
+        console.log("TS",req.params.ts);
         var from = new Date(Number(req.params.ts));
         filters.dateModif = { $gte: from};
     }
