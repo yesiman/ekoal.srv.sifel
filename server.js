@@ -136,8 +136,9 @@ app.post('/users/getParcellesByProducteurs/:idp/:nbr', cors(), bodyParser.json()
 
 app.get('/users/getParcellesGeo/', cors(), bodyParser.json(), users.getParcellesGeo);
 
-
-
+//
+app.post('/users/getAll/:idp/:nbr/:timestamp', cors(), bodyParser.json(), users.getAll);
+//
 app.post('/users/getAll/:idp/:nbr', cors(), bodyParser.json(), users.getAll);
 app.get('/users/getAllByType/:idp/:nbr/:idt/:req', cors(), bodyParser.json(), users.getAllByType);
 app.get('/users/getAllByType/:idp/:nbr/:idt/:req/:actifs', cors(), bodyParser.json(), users.getAllByType);
@@ -156,6 +157,7 @@ app.post('/usersGroups/add/:id', cors(), bodyParser.json(), usersGroups.add);
 //PRODS
 app.get('/products/get/:id', cors(), bodyParser.json(), products.get);
 app.get('/products/getAll/:idp/:nbr', cors(), bodyParser.json(), products.getAll);
+app.get('/products/getAll/:idp/:nbr/:ts', cors(), bodyParser.json(), products.getAll);
 app.get('/products/getAllByLib/:idp/:nbr/:req', cors(), bodyParser.json(), products.getAllByLib);
 app.get('/products/getAllByLib/:idp/:nbr/:req/:actifs', cors(), bodyParser.json(), products.getAllByLib);
 app.delete('/products/delete/:id', cors(), bodyParser.json(), products.delete);

@@ -17,10 +17,10 @@ exports.uploadDatas = function (req, res) {
                     nbParcs++;
                     //SET MONGO GEO CORRECTLY "POLYGON"
                     updParcelle(lines[i]._id,lines[i].surface,lines[i].altitude,lines[i].coordonnees,lines[i].code,lines[i].lib,new require('mongodb').ObjectID(lines[i].producteur),new require('mongodb').ObjectID(req.decoded._id),new require('mongodb').ObjectID(req.decoded.orga))
-                    .then(function(value) {
-                    }).catch(function(e) {
-                        success = false;
-                    }).then(function(e) {
+                        .then(function(value) {
+                        }).catch(function(e) {
+                            success = false;
+                        }).then(function(e) {
                     });
                     break;
                 case "bon":
