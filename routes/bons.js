@@ -15,6 +15,7 @@ function getCat(cid) {
         db.collection('products_categs', function (err, collection) {
             collection.findOne({ _id: new require('mongodb').ObjectID(cid) }, 
                 function (err, item) {
+                    console.log(item);
                     resolve(item);
                 });
         });
