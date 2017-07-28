@@ -32,6 +32,7 @@ exports.get = function (req, res) {
                                             _id: new require('mongodb').ObjectID(prod.produit),
                                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                                             function (err, item) {
+                                                console.log(item);
                                                 prod.produit = item;
                                             });
                                     });
