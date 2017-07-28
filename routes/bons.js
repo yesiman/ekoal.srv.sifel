@@ -52,7 +52,7 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            console.log(getPalsDatas(ret.palettes)).then(function (data) {
+                            getPalsDatas(ret.palettes).then(function (data) {
                                 console.log(data);
                                 res.send(ret);
                             });                             ;
