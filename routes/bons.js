@@ -10,13 +10,41 @@ function getProd(pid) {
         });
     });
 }
-function getPalsDatas(pals) {
+function getCat(cid) {
+    return new Promise(function(resolve,reject) {
+        db.collection('products_categs', function (err, collection) {
+            collection.findOne({ _id: new require('mongodb').ObjectID(cid) }, 
+                function (err, item) {
+                    resolve(item);
+                });
+        });
+    });
+}
+function getPalsProductsDatas(pals) {
     return new Promise(function (resolve, reject) {
         var promises = [];
         pals.forEach(function(item,index){
             item.produits.forEach(function(item,index){
                 var promise = getProd(item.produit).then(function(data){
                     item.produit = data;
+                    return Q(item);
+                });
+                promises.push(promise);
+            });
+        });
+
+        Q.all(promises).then(function(data){
+            resolve(data);
+        });
+    });
+}
+function getPalsCategsDatas(pals) {
+    return new Promise(function (resolve, reject) {
+        var promises = [];
+        pals.forEach(function(item,index){
+            item.produits.forEach(function(item,index){
+                var promise = getCat(item.categorie).then(function(data){
+                    item.categorie = data;
                     return Q(item);
                 });
                 promises.push(promise);
@@ -52,8 +80,12 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            getPalsDatas(ret.palettes).then(function (data) {
-                                console.log(data);
+                            getPalsProductsDatas(ret.palettes).then(function (data) {
+                                ret.palettes = data;
+                                getPalsCategsDatas(ret.palettes).then(function (data) {
+                                    ret.palettes = data;
+                                    res.send(ret);
+                                });  
                                 res.send(ret);
                             });                             ;
                                 
