@@ -17,17 +17,17 @@ function getPalsDatas(pals) {
         item.produits.forEach(function(item,index){
             console.log("getPalsDatas.foreach");
             var promise = getProd(item.produit).then(function(data){
-                console.log(data);
                 item.produit = data;
-                return Q(true);
+                return Q(item);
             });
             promises.push(promise);
         });
     });
 
     Q.all(promises).then(function(data){
-        console.log(pals);
-        return data;
+        pals.produits = data;
+        console.lo(data);
+        return pals;
     });
 }
 
