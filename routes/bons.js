@@ -26,7 +26,7 @@ function getPalsDatas(pals) {
     });
 
     Q.all(promises).then(function(data){
-        console.log("getPalsDatas.then");
+        console.log(data);
         return data;
     });
 }
