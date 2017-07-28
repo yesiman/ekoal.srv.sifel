@@ -11,12 +11,14 @@ function getProd(pid) {
     });
 }
 function getCat(cid) {
-    console.log(cid);
+    
     return new Promise(function(resolve,reject) {
         db.collection('products_categs', function (err, collection) {
+            console.log("cid",cid);
             collection.findOne({ _id: new require('mongodb').ObjectID(cid) }, 
                 function (err, item) {
                     console.log(item);
+                    console.log(err);
                     resolve(item);
                 });
         });
