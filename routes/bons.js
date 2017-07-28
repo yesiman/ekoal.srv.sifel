@@ -38,9 +38,13 @@ exports.get = function (req, res) {
                                     pal.produits[reliprod] = prod;
                                 }
                                 ret.palettes[relipal] = pal;
+                                if (relipal == ret.palettes.length-1)
+                                {
+                                    console.log(ret);
+                                    res.send(ret);
+                                }
                             }
-                            console.log(JSON.stringify(ret));
-                            res.send(ret);
+                            
                         })
                     });
                 })
