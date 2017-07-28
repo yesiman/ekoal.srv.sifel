@@ -39,6 +39,7 @@ exports.get = function (req, res) {
                                 }
                                 ret.palettes[relipal] = pal;
                             }
+                            console.log(JSON.stringify(ret));
                             res.send(ret);
                         })
                     });
