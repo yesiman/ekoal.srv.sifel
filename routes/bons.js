@@ -11,11 +11,9 @@ function getProd(pid) {
     });
 }
 function getPalsDatas(pals) {
-    console.log("getPalsDatas");
     var promises = [];
     pals.forEach(function(item,index){
         item.produits.forEach(function(item,index){
-            console.log("getPalsDatas.foreach");
             var promise = getProd(item.produit).then(function(data){
                 item.produit = data;
                 return Q(item);
@@ -25,9 +23,7 @@ function getPalsDatas(pals) {
     });
 
     Q.all(promises).then(function(data){
-        pals.produits = data;
-        console.lo(data);
-        return pals;
+        return data;
     });
 }
 
@@ -54,9 +50,11 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            getPalsDatas(ret.palettes);
+                            getPalsDatas(ret.palettes).then(function (data) {
+                                console.lo(data);
                                 res.send(ret);
-
+                            });   
+                                
                             /*for(var relipal=0;relipal<ret.palettes.length;relipal++)
                             {
                                 var pal = ret.palettes[relipal];
