@@ -24,7 +24,7 @@ exports.get = function (req, res) {
                             for(var relipal=0;relipal<ret.palettes.length;relipal++)
                             {
                                 var pal = ret.palettes[relipal];
-                                for(var reliprod=0;reliprod<reliprod.length;reliprod++)
+                                for(var reliprod=0;reliprod<pal.produits.length;reliprod++)
                                 {
                                     var prod = pal.produits[reliprod];
                                     db.collection('produits', function (err, collection) {
