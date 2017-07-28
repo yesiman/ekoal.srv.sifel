@@ -82,8 +82,7 @@ exports.get = function (req, res) {
                                 getPalsCategsDatas(ret.palettes).then(function (data) {
                                     ret.palettes = data;
                                     res.send(ret);
-                                });  
-                                res.send(ret);
+                                });
                             });                             ;
                                 
                                 
