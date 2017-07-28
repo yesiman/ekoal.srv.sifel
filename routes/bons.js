@@ -17,8 +17,8 @@ function getCat(cid) {
             console.log("cid",cid);
             collection.findOne({ _id: new require('mongodb').ObjectID(cid) }, 
                 function (err, item) {
-                    console.log(item);
-                    console.log(err);
+                    console.log("ytem",item);
+                    console.log("ytemerr",err);
                     resolve(item);
                 });
         });
