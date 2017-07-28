@@ -21,7 +21,7 @@ function getPalsDatas(pals) {
             var promise = getProd().then(function(data){
                 console.log(data);
                 item.produit = data;
-                return true;
+                return Q(true);
             });
             promises.push(promise);
         });
