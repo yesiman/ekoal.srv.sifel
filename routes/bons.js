@@ -11,19 +11,21 @@ function getProd(pid) {
     });
 }
 function getPalsDatas(pals) {
-    var promises = [];
-    pals.forEach(function(item,index){
-        item.produits.forEach(function(item,index){
-            var promise = getProd(item.produit).then(function(data){
-                item.produit = data;
-                return Q(item);
+    return new Promise(function (resolve, reject) {
+        var promises = [];
+        pals.forEach(function(item,index){
+            item.produits.forEach(function(item,index){
+                var promise = getProd(item.produit).then(function(data){
+                    item.produit = data;
+                    return Q(item);
+                });
+                promises.push(promise);
             });
-            promises.push(promise);
         });
-    });
 
-    Q.all(promises).then(function(data){
-        return data;
+        Q.all(promises).then(function(data){
+            resolve(data);
+        });
     });
 }
 
@@ -50,8 +52,11 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            console.log(getPalsDatas(ret.palettes));
+                            console.log(getPalsDatas(ret.palettes)).then(function (data) {
+                                console.log(data);
                                 res.send(ret);
+                            });                             ;
+                                
                                 
                             /*for(var relipal=0;relipal<ret.palettes.length;relipal++)
                             {
