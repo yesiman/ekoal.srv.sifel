@@ -21,6 +21,18 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
+                            angular.forEach(ret.palettes, function(value) {
+                                angular.forEach(value.produits, function(value) {
+                                    db.collection('users', function (err, collection) {
+                                        collection.findOne({ 
+                                            _id: new require('mongodb').ObjectID(value.produit),
+                                            orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
+                                            function (err, item) {
+                                                value.produit = item;
+                                            });
+                                    });
+                                });
+                            });
                             res.send(ret);
                         })
                     });

@@ -172,12 +172,14 @@ app.post('/productsGroups/add/:id', cors(), bodyParser.json(), productsGroups.ad
 //CONDITS
 app.get('/productsCondits/get/:id', cors(), bodyParser.json(), productsCondits.get);
 app.get('/productsCondits/getAll/:idp/:nbr', cors(), bodyParser.json(), productsCondits.getAll);
+app.get('/productsCondits/getAll/:idp/:nbr/:ts', cors(), bodyParser.json(), productsCondits.getAll);
 app.delete('/productsCondits/delete/:id', cors(), bodyParser.json(), productsCondits.delete);
 app.post('/productsCondits/add/:id', cors(), bodyParser.json(), productsCondits.add);
 //END CONDITS
 //CALIBRS
 app.get('/productsCategs/get/:id', cors(), bodyParser.json(), productsCategs.get);
 app.get('/productsCategs/getAll/:idp/:nbr', cors(), bodyParser.json(), productsCategs.getAll);
+app.get('/productsCategs/getAll/:idp/:nbr/:ts', cors(), bodyParser.json(), productsCategs.getAll);
 app.delete('/productsCategs/delete/:id', cors(), bodyParser.json(), productsCategs.delete);
 app.post('/productsCategs/add/:id', cors(), bodyParser.json(), productsCategs.add);
 //END CALIBRS
@@ -191,12 +193,14 @@ app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //CLIENTS
 app.get('/clients/get/:id', cors(), bodyParser.json(), clientsR.get);
 app.get('/clients/getAll/:idp/:nbr', cors(), bodyParser.json(), clientsR.getAll);
+app.get('/clients/getAll/:idp/:nbr/:ts', cors(), bodyParser.json(), clientsR.getAll);
 app.delete('/clients/delete/:id', cors(), bodyParser.json(), clientsR.delete);
 app.post('/clients/add/:id', cors(), bodyParser.json(), clientsR.add);
 //END CLIENTS
 //STATIONS
 app.get('/stations/get/:id', cors(), bodyParser.json(), stations.get);
 app.get('/stations/getAll/:idp/:nbr', cors(), bodyParser.json(), stations.getAll);
+app.get('/stations/getAll/:idp/:nbr/:ts', cors(), bodyParser.json(), stations.getAll);
 app.delete('/stations/delete/:id', cors(), bodyParser.json(), stations.delete);
 app.post('/stations/add/:id', cors(), bodyParser.json(), stations.add);
 //END STATIONS
