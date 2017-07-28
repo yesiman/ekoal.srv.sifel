@@ -49,6 +49,7 @@ function getPalsCategsDatas(pals) {
         });
 
         Q.all(promises).then(function(data){
+            console.log(data);
             resolve(data);
         });
     });
