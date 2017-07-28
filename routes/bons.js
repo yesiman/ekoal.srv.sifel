@@ -31,10 +31,10 @@ function getPalsProductsDatas(pals) {
             item.produits.forEach(function(item,index){
                 var promise = getProd(item.produit).then(function(data){
                     item.produit = data;
-                    return Q(item);
                 });
                 promises.push(promise);
             });
+            return Q(item);
         });
 
         Q.all(promises).then(function(data){
