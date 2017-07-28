@@ -11,6 +11,7 @@ function getProd(pid) {
     });
 }
 function getCat(cid) {
+    console.log(cid);
     return new Promise(function(resolve,reject) {
         db.collection('products_categs', function (err, collection) {
             collection.findOne({ _id: new require('mongodb').ObjectID(cid) }, 
@@ -44,7 +45,7 @@ function getPalsCategsDatas(pals) {
         var promises = [];
         
         pals.forEach(function(item,index){
-            console.log(item.categorie);
+            
             var promise = getCat(item.categorie).then(function(data){
                 item.categorie = data;
                 return Q(item);
