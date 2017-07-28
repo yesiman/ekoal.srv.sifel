@@ -17,8 +17,6 @@ function getCat(cid) {
             console.log("cid",cid);
             collection.findOne({ _id: new require('mongodb').ObjectID(cid) }, 
                 function (err, item) {
-                    console.log("ytem",item);
-                    console.log("ytemerr",err);
                     resolve(item);
                 });
         });
@@ -26,19 +24,21 @@ function getCat(cid) {
 }
 function getPalsProductsDatas(pals) {
     return new Promise(function (resolve, reject) {
+        console.log("pals.bef",pals);
         var promises = [];
         pals.forEach(function(item,index){
             item.produits.forEach(function(item,index){
                 var promise = getProd(item.produit).then(function(data){
                     item.produit = data;
+                    return Q(item);
                 });
                 promises.push(promise);
             });
-            return Q(item);
+            
         });
 
         Q.all(promises).then(function(data){
-            console.log(data);
+            console.log("pals.aft",pals);
             resolve(data);
         });
     });
