@@ -42,12 +42,9 @@ function getPalsCategsDatas(pals) {
     return new Promise(function (resolve, reject) {
         var promises = [];
         pals.forEach(function(item,index){
-            item.produits.forEach(function(item,index){
-                var promise = getCat(item.categorie).then(function(data){
-                    item.categorie = data;
-                    return Q(item);
-                });
-                promises.push(promise);
+            var promise = getCat(item.categorie).then(function(data){
+                item.categorie = data;
+                return Q(item);
             });
         });
 
