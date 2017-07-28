@@ -1,3 +1,34 @@
+
+function getProd(pid) {
+    return new Promise(function(resolve,reject) {
+        db.collection('products', function (err, collection) {
+            collection.findOne({ 
+                _id: new require('mongodb').ObjectID(prod.produit),
+                orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
+                function (err, item) {
+                    resolve(item);
+                });
+        });
+    });
+}
+function getPalsDatas(pals) {
+    var promises = [];
+    pals.forEach(function(item,index){
+        item.produits.forEach(function(item,index){
+            var promise = getProd().then(function(data){
+                console.log(data);
+                item.produit = data;
+                return Q(true);
+            });
+            promises.push(promise);
+        });
+    });
+
+    Q.all(promises).then(function(data){
+        return pals;
+    });
+}
+
 exports.get = function (req, res) {
     var ret = {};
     //GET BON
@@ -21,7 +52,10 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            for(var relipal=0;relipal<ret.palettes.length;relipal++)
+                            getPalsDatas(ret.palettes);
+                                res.send(ret);
+
+                            /*for(var relipal=0;relipal<ret.palettes.length;relipal++)
                             {
                                 var pal = ret.palettes[relipal];
                                 for(var reliprod=0;reliprod<pal.produits.length;reliprod++)
@@ -44,7 +78,7 @@ exports.get = function (req, res) {
                                     console.log(ret);
                                     res.send(ret);
                                 }
-                            }
+                            }*/
                             
                         })
                     });
