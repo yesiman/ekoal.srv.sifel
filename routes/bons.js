@@ -42,7 +42,9 @@ function getPalsProductsDatas(pals) {
 function getPalsCategsDatas(pals) {
     return new Promise(function (resolve, reject) {
         var promises = [];
+        
         pals.forEach(function(item,index){
+            console.log(item.categorie);
             var promise = getCat(item.categorie).then(function(data){
                 item.categorie = data;
                 return Q(item);
@@ -81,10 +83,10 @@ exports.get = function (req, res) {
                             ret.producteur = item;
                             getPalsProductsDatas(ret.palettes).then(function (data) {
                                 ret.palettes = data;
-                                ///getPalsCategsDatas(ret.palettes).then(function (data) {
-                                  //  ret.palettes = data;
+                                getPalsCategsDatas(ret.palettes).then(function (data) {
+                                    ret.palettes = data;
                                     res.send(ret);
-                                //});
+                                });
                             });                             ;
                                 
                                 
