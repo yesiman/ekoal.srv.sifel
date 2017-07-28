@@ -3,9 +3,7 @@ var Q = require('q');
 function getProd(pid) {
     return new Promise(function(resolve,reject) {
         db.collection('products', function (err, collection) {
-            collection.findOne({ 
-                _id: new require('mongodb').ObjectID(prod.produit),
-                orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
+            collection.findOne({ _id: new require('mongodb').ObjectID(pid) }, 
                 function (err, item) {
                     resolve(item);
                 });
@@ -18,7 +16,7 @@ function getPalsDatas(pals) {
     pals.forEach(function(item,index){
         item.produits.forEach(function(item,index){
             console.log("getPalsDatas.foreach");
-            var promise = getProd().then(function(data){
+            var promise = getProd(item.produit).then(function(data){
                 console.log(data);
                 item.produit = data;
                 return Q(true);
