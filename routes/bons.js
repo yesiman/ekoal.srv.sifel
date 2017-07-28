@@ -38,7 +38,7 @@ function getPalsProductsDatas(pals) {
         });
 
         Q.all(promises).then(function(data){
-            console.log("pals.aft",pals);
+            console.log("pals.aft",data);
             resolve(data);
         });
     });
