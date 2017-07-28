@@ -27,10 +27,11 @@ function getPalsProductsDatas(pals) {
         console.log("pals.bef",pals);
         var promises = [];
         pals.forEach(function(item,index){
-            item.produits.forEach(function(item,index){
+            var p = item;
+            p.produits.forEach(function(item,index){
                 var promise = getProd(item.produit).then(function(data){
                     item.produit = data;
-                    return Q(item);
+                    return Q(p);
                 });
                 promises.push(promise);
             });
