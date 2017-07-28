@@ -35,8 +35,9 @@ exports.get = function (req, res) {
                                                 prod.produit = item;
                                             });
                                     });
-                                    
+                                    pal.produits[reliprod] = prod;
                                 }
+                                ret.palettes[relipal] = pal;
                             }
                             res.send(ret);
                         })
