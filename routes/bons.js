@@ -50,10 +50,8 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            getPalsDatas(ret.palettes).then(function (data) {
-                                console.lo(data);
+                            console.log(getPalsDatas(ret.palettes));
                                 res.send(ret);
-                            });   
                                 
                             /*for(var relipal=0;relipal<ret.palettes.length;relipal++)
                             {
