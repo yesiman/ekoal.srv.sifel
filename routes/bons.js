@@ -27,7 +27,7 @@ exports.get = function (req, res) {
                                 for(var reliprod=0;reliprod<pal.produits.length;reliprod++)
                                 {
                                     var prod = pal.produits[reliprod];
-                                    db.collection('produits', function (err, collection) {
+                                    db.collection('products', function (err, collection) {
                                         collection.findOne({ 
                                             _id: new require('mongodb').ObjectID(prod.produit),
                                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
