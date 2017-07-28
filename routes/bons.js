@@ -52,6 +52,7 @@ function getPalsCategsDatas(pals) {
                 item.categorie = data;
                 return Q(item);
             });
+            promises.push(promise);
         });
 
         Q.all(promises).then(function(data){
