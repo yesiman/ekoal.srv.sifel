@@ -1,3 +1,4 @@
+var Q = require('q');
 
 function getProd(pid) {
     return new Promise(function(resolve,reject) {
