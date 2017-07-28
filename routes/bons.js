@@ -12,9 +12,11 @@ function getProd(pid) {
     });
 }
 function getPalsDatas(pals) {
+    console.log("getPalsDatas");
     var promises = [];
     pals.forEach(function(item,index){
         item.produits.forEach(function(item,index){
+            console.log("getPalsDatas.foreach");
             var promise = getProd().then(function(data){
                 console.log(data);
                 item.produit = data;
@@ -25,7 +27,8 @@ function getPalsDatas(pals) {
     });
 
     Q.all(promises).then(function(data){
-        return pals;
+        console.log("getPalsDatas.then");
+        return data;
     });
 }
 
