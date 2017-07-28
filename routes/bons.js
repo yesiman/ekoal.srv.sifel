@@ -81,10 +81,10 @@ exports.get = function (req, res) {
                             ret.producteur = item;
                             getPalsProductsDatas(ret.palettes).then(function (data) {
                                 ret.palettes = data;
-                                getPalsCategsDatas(ret.palettes).then(function (data) {
-                                    ret.palettes = data;
+                                ///getPalsCategsDatas(ret.palettes).then(function (data) {
+                                  //  ret.palettes = data;
                                     res.send(ret);
-                                });
+                                //});
                             });                             ;
                                 
                                 
