@@ -38,6 +38,7 @@ function getPalsProductsDatas(pals) {
         });
 
         Q.all(promises).then(function(data){
+            console.log(data);
             resolve(data);
         });
     });
@@ -56,7 +57,7 @@ function getPalsCategsDatas(pals) {
         });
 
         Q.all(promises).then(function(data){
-            console.log(data);
+            
             resolve(data);
         });
     });
@@ -87,10 +88,10 @@ exports.get = function (req, res) {
                             ret.producteur = item;
                             getPalsProductsDatas(ret.palettes).then(function (data) {
                                 ret.palettes = data;
-                                getPalsCategsDatas(ret.palettes).then(function (data) {
-                                    ret.palettes = data;
+                                //getPalsCategsDatas(ret.palettes).then(function (data) {
+                                //    ret.palettes = data;
                                     res.send(ret);
-                                });
+                                //});
                             });                             ;
                                 
                                 
