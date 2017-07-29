@@ -1,5 +1,5 @@
 var Q = require('q');
-
+//
 function getProd(pid) {
     return new Promise(function(resolve,reject) {
         db.collection('products', function (err, collection) {
@@ -10,6 +10,7 @@ function getProd(pid) {
         });
     });
 }
+//
 function getCat(cid) {
     
     return new Promise(function(resolve,reject) {
@@ -22,6 +23,7 @@ function getCat(cid) {
         });
     });
 }
+//
 function getPalsProductsDatas(pals) {
     return new Promise(function (resolve, reject) {
         console.log("pals.bef",pals);
@@ -35,35 +37,32 @@ function getPalsProductsDatas(pals) {
                 });
                 promises.push(promise);
             });
-            
         });
-
         Q.all(promises).then(function(data){
-            console.log("pals.aft",data);
             resolve(data);
         });
     });
 }
+//
 function getPalsCategsDatas(pals) {
     return new Promise(function (resolve, reject) {
         var promises = [];
-        
         pals.forEach(function(item,index){
-            
-            var promise = getCat(item.categorie).then(function(data){
-                item.categorie = data;
-                return Q(item);
+            var p = item;
+            p.produits.forEach(function(item,index){
+                var promise = getCat(item.categorie).then(function(data){
+                    item.categorie = data;
+                    return Q(p);
+                });
+                promises.push(promise);
             });
-            promises.push(promise);
         });
-
         Q.all(promises).then(function(data){
-            
             resolve(data);
         });
     });
 }
-
+//
 exports.get = function (req, res) {
     var ret = {};
     //GET BON
@@ -128,6 +127,7 @@ exports.get = function (req, res) {
         })
     });
 };
+//
 exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
@@ -143,6 +143,7 @@ exports.getAll = function (req, res) {
         });
     });
 };
+//
 exports.delete = function (req, res) {
     db.collection('bons', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
@@ -151,6 +152,7 @@ exports.delete = function (req, res) {
         });
     });
 };
+//
 exports.add = function (req, res) {
     var pid = req.params.id;
     req.body.bon.dateModif = shared.getReunionLocalDate();
