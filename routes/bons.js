@@ -132,6 +132,7 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
     var filters = {orga:new require('mongodb').ObjectID(req.decoded.orga)};
+    console.log("body",body);
     db.collection('bons', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
