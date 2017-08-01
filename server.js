@@ -206,7 +206,7 @@ app.post('/stations/add/:id', cors(), bodyParser.json(), stations.add);
 //END STATIONS
 //BONS
 app.get('/bons/get/:id', cors(), bodyParser.json(), bons.get);
-app.get('/bons/getAll/:idp/:nbr', cors(), bodyParser.json(), bons.getAll);
+app.post('/bons/getAll/:idp/:nbr', cors(), bodyParser.json(), bons.getAll);
 app.delete('/bons/delete/:id', cors(), bodyParser.json(), bons.delete);
 app.post('/bons/add/:id', cors(), bodyParser.json(), bons.add);
 //END BONS
@@ -231,6 +231,8 @@ app.post('/stats/prevsByProd/', cors(), bodyParser.json(), stats.prevsByProducte
 app.post('/stats/prevsPlanifsLines/:idp/:nbr', cors(), bodyParser.json(), stats.prevsPlanifsLines);
 app.post('/stats/prevsPlanifsLinesApplyPercent', cors(), bodyParser.json(), stats.prevsPlanifsLinesApplyPercent);
 app.post('/stats/getDataFile/:numFile', cors(), bodyParser.json(), stats.getDataFile);
+//
+app.post('/stats/agreageByProducteur/', cors(), bodyParser.json(), stats.agreageByProducteur);
 //
 app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
 

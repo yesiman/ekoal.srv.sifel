@@ -12,7 +12,6 @@ function getProd(pid) {
 }
 //
 function getCat(cid) {
-    
     return new Promise(function(resolve,reject) {
         db.collection('products_categs', function (err, collection) {
             console.log("cid",cid);
