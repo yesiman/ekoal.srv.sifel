@@ -132,7 +132,7 @@ exports.getAll = function (req, res) {
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
     var filters = {orga:new require('mongodb').ObjectID(req.decoded.orga)};
-    if (req.body.lta && req.body.lta.length)
+    if (req.body.lta && (req.body.lta.length > 0))
     {   
         filters.lta = { '$regex': req.body.lta, $options: 'i' };
     }
