@@ -136,6 +136,7 @@ exports.getAll = function (req, res) {
     {   
         filters.lta = { '$regex': req.body.lta, $options: 'i' };
     }
+    console.log("req.body",req.body);
     console.log("filters",filters);
     db.collection('bons', function (err, collection) {
         collection.count(filters, function (err, count) {
