@@ -64,25 +64,35 @@ function getPalsProductsDatas(pals) {
 }
 //
 //
-function getBonsDatas(bons) {
+function getBonsProducteursDatas(bons) {
     return new Promise(function (resolve, reject) {
         var promises = [];
         bons.forEach(function(item,index){
             var p = item;
             var promise = getUser(item.producteur).then(function(data){
-                console.log("item.producteur",item.producteur);
                 item.producteur = data;
                 return Q(item);
-                /*getStation(item.station).then(function(data){
-                    console.log("item.station",item.station);
-                    item.station = data;
-                    return Q(item);
-                });*/
+                
             })
             promises.push(promise);
         });
         Q.all(promises).then(function(data){
-            console.log(data);
+            resolve(data);
+        });
+    });
+}
+function getBonsStationsDatas(bons) {
+    return new Promise(function (resolve, reject) {
+        var promises = [];
+        bons.forEach(function(item,index){
+            var p = item;
+            getStation(item.station).then(function(data){
+                item.station = data;
+                return Q(item);
+            });
+            promises.push(promise);
+        });
+        Q.all(promises).then(function(data){
             resolve(data);
         });
     });
@@ -185,9 +195,12 @@ exports.getAll = function (req, res) {
         collection.count(filters, function (err, count) {
             ret.count = count;
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
-                getBonsDatas(items).then(function (data) {
+                getBonsProducteursDatas(items).then(function (data) {
                     ret.items = data;
-                    res.send(ret);
+                    getBonsStationsDatas(items).then(function (data) {
+                        ret.items = data;
+                        res.send(ret);
+                    });  
                 });  
             });
         });
