@@ -69,13 +69,18 @@ function getBonsDatas(bons) {
         var promises = [];
         bons.forEach(function(item,index){
             var b = item;
-            var promise = getUser(item.producteur).then(function(data){
+            var p1 = getUser(item.producteur).then(function(data){
+                console.log(item.producteur,item.producteur);
                 item.producteur = data;
-            }).getStation(item.station).then(function(data){
-                item.station = data;
-                return Q(p);
+                return Q(bons);
             });
-            promises.push(promise);
+            var p2 = getStation(item.station).then(function(data){
+                console.log(item.station,item.station);
+                item.station = data;
+                return Q(bons);
+            });
+            promises.push(p1);
+            promises.push(p2);
         });
         Q.all(promises).then(function(data){
             console.log(data);
