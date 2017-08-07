@@ -183,30 +183,8 @@ exports.getAll = function (req, res) {
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
                 getBonsDatas(ret.items).then(function (data) {
                     ret.items = data;
+                    res.send(ret);
                 });  
-                
-
-
-                for (var i = 0;i < items.length;i++)
-                {
-                    var st = items[i];
-                    db.collection('stations', function (err, collection) {
-                        collection.findOne({ 
-                            _id: new require('mongodb').ObjectID(st.station)},
-                        function (err, item) {
-                            ret.items[i].station = item;
-                            db.collection('users', function (err, collection) {
-                                collection.findOne({ 
-                                    _id: new require('mongodb').ObjectID(st.producteur)},
-                                function (err, item) {
-                                    ret.items[i].station = item;
-                                })
-                            });
-                        })
-                    });
-                    ret.items[i] = st;
-                }
-                res.send(ret);
             });
         });
     });
