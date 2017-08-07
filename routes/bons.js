@@ -13,7 +13,7 @@ function getProd(pid) {
 function getUser(uid) {
     return new Promise(function(resolve,reject) {
         db.collection('users', function (err, collection) {
-            collection.findOne({ _id: new require('mongodb').ObjectID(pid) }, 
+            collection.findOne({ _id: new require('mongodb').ObjectID(uid) }, 
                 function (err, item) {
                     resolve(item);
                 });
@@ -23,7 +23,7 @@ function getUser(uid) {
 function getStation(sid) {
     return new Promise(function(resolve,reject) {
         db.collection('stations', function (err, collection) {
-            collection.findOne({ _id: new require('mongodb').ObjectID(pid) }, 
+            collection.findOne({ _id: new require('mongodb').ObjectID(sid) }, 
                 function (err, item) {
                     resolve(item);
                 });
@@ -78,6 +78,7 @@ function getBonsDatas(bons) {
             promises.push(promise);
         });
         Q.all(promises).then(function(data){
+            console.log(data);
             resolve(data);
         });
     });
