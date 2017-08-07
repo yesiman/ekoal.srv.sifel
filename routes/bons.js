@@ -76,6 +76,7 @@ function getBonsDatas(bons) {
                 item.station = data;
                 return Q(p);
             });
+            promises.push(promise);
         });
         Q.all(promises).then(function(data){
             resolve(data);
