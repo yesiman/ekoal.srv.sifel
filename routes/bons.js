@@ -136,13 +136,31 @@ exports.getAll = function (req, res) {
     {   
         filters.lta = { '$regex': req.body.lta, $options: 'i' };
     }
-    console.log("req.body",req.body);
-    console.log("filters",filters);
     db.collection('bons', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
+                for (var i = 0;i < items.length;i++)
+                {
+                    var st = items[i];
+                    db.collection('stations', function (err, collection) {
+                        collection.findOne({ 
+                            _id: new require('mongodb').ObjectID(st.station)},
+                        function (err, item) {
+                            ret.items[i].station = item;
+                            db.collection('users', function (err, collection) {
+                                collection.findOne({ 
+                                    _id: new require('mongodb').ObjectID(st.producteur)},
+                                function (err, item) {
+                                    ret.items[i].station = item;
+                                    ret.producteur;
+                                })
+                            });
+                        })
+                    });
+                    ret.items[i] = st;
+                }
                 res.send(ret);
             });
         });

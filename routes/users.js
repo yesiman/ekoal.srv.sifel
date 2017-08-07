@@ -287,7 +287,7 @@ exports.add = function (req, res) {
     req.body.user.dateModif = shared.getReunionLocalDate();
     var parcelles = req.body.user.parcelles;
     var parcellesToRem = req.body.user.parcellesToRem;
-    var orga = req.decoded.orga;
+    var orga = req.body.user.orga;
     
     delete req.body.user.parcelles;
     delete req.body.user.parcellesToRem;

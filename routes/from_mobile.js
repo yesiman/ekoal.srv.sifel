@@ -211,13 +211,14 @@ function updBonV2(user,orga,bon) {
                     bon.palettes[relipal].produits[reliprod].categorie = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].categorie);   
                 }
             }
-
             if (id.startsWith('nu') == true)
             {  
-                ///ADD SIGN DATA
-                collection.insert( bon , function (err, saved) {
+                collection.count({}, function (err, count) {
+                    //GENERATION NOUVEAU NUMERO DE BON
+                    bon.numBon = new Date().getFullYear() + "-" + (count+1);
+                    collection.insert( bon , function (err, saved) {
                         resolve(saved.insertedIds[0]);
-                        
+                    });
                 });
             }
             else {
