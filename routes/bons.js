@@ -72,11 +72,10 @@ function getBonsDatas(bons) {
             var promise = getUser(item.producteur).then(function(data){
                 console.log(item.producteur,item.producteur);
                 item.producteur = data;
-                
             }).getStation(item.station).then(function(data){
                 console.log(item.station,item.station);
                 item.station = data;
-                return Q(bons);
+                return Q(item);
             });
             promises.push(promise);
         });
