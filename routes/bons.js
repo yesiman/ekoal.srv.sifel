@@ -187,7 +187,7 @@ exports.getAll = function (req, res) {
         collection.count(filters, function (err, count) {
             ret.count = count;
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
-                getBonsDatas(ret.items).then(function (data) {
+                getBonsDatas(items).then(function (data) {
                     ret.items = data;
                     res.send(ret);
                 });  
