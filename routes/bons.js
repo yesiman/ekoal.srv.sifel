@@ -86,7 +86,7 @@ function getBonsStationsDatas(bons) {
         var promises = [];
         bons.forEach(function(item,index){
             var p = item;
-            getStation(item.station).then(function(data){
+            var promise = getStation(item.station).then(function(data){
                 item.station = data;
                 return Q(item);
             });
