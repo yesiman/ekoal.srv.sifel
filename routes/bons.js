@@ -66,7 +66,6 @@ function getPalsProductsDatas(pals) {
 //
 function getBonsDatas(bons) {
     return new Promise(function (resolve, reject) {
-        console.log("pals.bef",pals);
         var promises = [];
         bons.forEach(function(item,index){
             var b = item;
