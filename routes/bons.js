@@ -10,6 +10,26 @@ function getProd(pid) {
         });
     });
 }
+function getUser(uid) {
+    return new Promise(function(resolve,reject) {
+        db.collection('users', function (err, collection) {
+            collection.findOne({ _id: new require('mongodb').ObjectID(pid) }, 
+                function (err, item) {
+                    resolve(item);
+                });
+        });
+    });
+}
+function getStation(sid) {
+    return new Promise(function(resolve,reject) {
+        db.collection('stations', function (err, collection) {
+            collection.findOne({ _id: new require('mongodb').ObjectID(pid) }, 
+                function (err, item) {
+                    resolve(item);
+                });
+        });
+    });
+}
 //
 function getCat(cid) {
     return new Promise(function(resolve,reject) {
@@ -35,6 +55,26 @@ function getPalsProductsDatas(pals) {
                     return Q(p);
                 });
                 promises.push(promise);
+            });
+        });
+        Q.all(promises).then(function(data){
+            resolve(data);
+        });
+    });
+}
+//
+//
+function getBonsDatas(bons) {
+    return new Promise(function (resolve, reject) {
+        console.log("pals.bef",pals);
+        var promises = [];
+        bons.forEach(function(item,index){
+            var b = item;
+            var promise = getUser(item.producteur).then(function(data){
+                item.producteur = data;
+            }).getStation(item.station).then(function(data){
+                item.station = data;
+                return Q(p);
             });
         });
         Q.all(promises).then(function(data){
@@ -140,7 +180,12 @@ exports.getAll = function (req, res) {
         collection.count(filters, function (err, count) {
             ret.count = count;
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
-                ret.items = items;
+                getBonsDatas(ret.items).then(function (data) {
+                    ret.items = data;
+                });  
+                
+
+
                 for (var i = 0;i < items.length;i++)
                 {
                     var st = items[i];
@@ -154,7 +199,6 @@ exports.getAll = function (req, res) {
                                     _id: new require('mongodb').ObjectID(st.producteur)},
                                 function (err, item) {
                                     ret.items[i].station = item;
-                                    ret.producteur;
                                 })
                             });
                         })
