@@ -266,7 +266,7 @@ console.log("sort",sort);
                     console.log("err",err); 
                     
                     console.log("summary",summary); 
-                    return summary;
+                    res.send(summary);
                 }
             );
         });
