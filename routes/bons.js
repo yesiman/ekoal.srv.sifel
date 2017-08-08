@@ -202,6 +202,16 @@ exports.getAll = function (req, res) {
     end.setSeconds(59);
     filters.dateDoc = { $gte: new Date(beg),$lt: new Date(end)};
     //
+    console.log(req.body.producteurs);
+    var producteursIds = [];
+    for(var i=0;i<req.body.producteurs.length;i++)
+    {
+        if (!(producteursIds.indexOf(new require('mongodb').ObjectID(req.body.producteurs[i])) > -1))
+        {
+            producteursIds.push(new require('mongodb').ObjectID(req.body.producteurs[i]));
+        }
+    }
+    //
     db.collection('bons', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
