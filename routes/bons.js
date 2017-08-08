@@ -275,7 +275,23 @@ exports.getStatGlobal = function (req, res) {
                         sort,
                         function(err, summary) {
                             ret.byStations = summary;
-                            res.send(ret);
+                            group["$group"] = {};
+                            group["$group"]["_id"] = {};
+                            group["$group"]["_id"]["produit"] = "$palettes.produit";
+                            group["$group"]["count"] = { $sum: "$palettes.produit.poid"};
+                            sort["$sort"] = {  
+                                "_id.produit" : 1 
+                            };
+                            collection.aggregate(
+                                query,
+                                {"$unwind": "$palettes"},
+                                group,
+                                sort,
+                                function(err, summary) {
+                                    ret.byProduits = summary;
+                                    res.send(ret);
+                                }
+                            );
                         }
                     );
                 }
