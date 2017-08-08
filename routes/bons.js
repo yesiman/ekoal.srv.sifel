@@ -250,6 +250,7 @@ exports.getStatGlobal = function (req, res) {
             group["$group"] = {};
             group["$group"]["_id"] = {};
             group["$group"]["_id"]["producteur"] = "$producteur";
+            group["$group"]["count"] = { $sum: "$palettes.poidBrut"};
             sort["$sort"] = {  
                 "_id.producteur" : 1 
             };
