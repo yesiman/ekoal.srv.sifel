@@ -285,6 +285,7 @@ exports.getStatGlobal = function (req, res) {
                             collection.aggregate(
                                 query,
                                 {"$unwind": "$palettes"},
+                                {"$unwind": "$palettes.produits"},
                                 group,
                                 sort,
                                 function(err, summary) {
