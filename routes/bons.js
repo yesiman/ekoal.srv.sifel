@@ -192,11 +192,11 @@ exports.getAll = function (req, res) {
     {   
         filters.noLta = { '$regex': req.body.lta, $options: 'i' };
     }
-    var beg = new Date(body.dateFrom);
+    var beg = new Date(req.body.dateFrom);
     beg.setHours(0);
     beg.setMinutes(0);
     beg.setSeconds(0);
-    var end = new Date(body.dateTo);
+    var end = new Date(req.body.dateTo);
     end.setHours(23);
     end.setMinutes(59);
     end.setSeconds(59);
