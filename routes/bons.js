@@ -254,21 +254,30 @@ exports.getStatGlobal = function (req, res) {
             sort["$sort"] = {  
                 "_id.producteur" : 1 
             };
-            
-console.log("query",query);
-console.log("group",group);
-console.log("sort",sort);
-
             collection.aggregate(
                 query,
                 {"$unwind": "$palettes"},
                 group,
                 sort,
                 function(err, summary) {
-                    console.log("err",err); 
-                    
-                    console.log("summary",summary); 
-                    res.send(summary);
+                    ret.byProducteurs = summary;
+                    group["$group"] = {};
+                    group["$group"]["_id"] = {};
+                    group["$group"]["_id"]["station"] = "$station";
+                    group["$group"]["count"] = { $sum: "$palettes.poidBrut"};
+                    sort["$sort"] = {  
+                        "_id.station" : 1 
+                    };
+                    collection.aggregate(
+                        query,
+                        {"$unwind": "$palettes"},
+                        group,
+                        sort,
+                        function(err, summary) {
+                            ret.byStations = summary;
+                            res.send(summary);
+                        }
+                    );
                 }
             );
         });
