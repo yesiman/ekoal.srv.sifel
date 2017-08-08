@@ -199,7 +199,7 @@ function getFinalFilters(body,decoded,callback) {
     var producteursIds = [];
     for(var i=0;i<body.producteurs.length;i++)
     {
-        if (!(producteursIds.indexOf(new require('mongodb').ObjectID(body.producteurs[i])) > -1))
+        if (!(producteursIds.indexOf(body.producteurs[i]) > -1))
         {
             producteursIds.push(new require('mongodb').ObjectID(body.producteurs[i]));
         }
@@ -254,10 +254,14 @@ exports.getStatGlobal = function (req, res) {
                 "_id.producteur" : 1 
             };
             
+console.log("query",query);
+console.log("group",group);
+console.log("sort",sort);
+
             collection.aggregate(
                 query,
                 group,
-                sort,
+                ,
                 function(err, summary) {
                     console.log("err",err); 
                     
