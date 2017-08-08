@@ -315,52 +315,26 @@ exports.getStatProduits = function (req, res) {
             query["$match"]["dateDoc"] = result.dateDoc;
             group["$group"] = {};
             group["$group"]["_id"] = {};
-            group["$group"]["_id"]["producteur"] = "$producteur";
-            group["$group"]["count"] = { $sum: "$palettes.poidBrut"};
+            group["$group"]["_id"]["year"] = { $year: "$dateDoc" };
+            group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
+            group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
+            group["$group"]["_id"]["produit"] = "$palettes.produits.produit";
             sort["$sort"] = {  
-                "_id.producteur" : 1 
+                "_id.year": 1, 
+                "_id.month": 1, 
+                "_id.day": 1,
+                "_id.produit" : 1 
             };
+            group["$group"]["count"] = { $sum: "$palettes.produits.poid"};            
             collection.aggregate(
                 query,
                 {"$unwind": "$palettes"},
+                {"$unwind": "$palettes.produits"},
                 group,
                 sort,
                 function(err, summary) {
-                    ret.byProducteurs = summary;
-                    group["$group"] = {};
-                    group["$group"]["_id"] = {};
-                    group["$group"]["_id"]["station"] = "$station";
-                    group["$group"]["count"] = { $sum: "$palettes.poidBrut"};
-                    sort["$sort"] = {  
-                        "_id.station" : 1 
-                    };
-                    collection.aggregate(
-                        query,
-                        {"$unwind": "$palettes"},
-                        group,
-                        sort,
-                        function(err, summary) {
-                            ret.byStations = summary;
-                            group["$group"] = {};
-                            group["$group"]["_id"] = {};
-                            group["$group"]["_id"]["produit"] = "$palettes.produits.produit";
-                            group["$group"]["count"] = { $sum: "$palettes.produits.poid"};
-                            sort["$sort"] = {  
-                                "_id.produit" : 1 
-                            };
-                            collection.aggregate(
-                                query,
-                                {"$unwind": "$palettes"},
-                                {"$unwind": "$palettes.produits"},
-                                group,
-                                sort,
-                                function(err, summary) {
-                                    ret.byProduits = summary;
-                                    res.send(ret);
-                                }
-                            );
-                        }
-                    );
+                    ret.result = summary;
+                    res.send(ret);
                 }
             );
         });
