@@ -334,7 +334,20 @@ exports.getStatProduits = function (req, res) {
                 sort,
                 function(err, summary) {
                     ret.result = summary;
-                    res.send(ret);
+                    var produitsIds = [];
+                    for(var i=0;i<summary.length;i++)
+                    {
+                        if (!(produitsIds.indexOf(new require('mongodb').ObjectID(summary[i]._id.produit)) > -1))
+                        {
+                            produitsIds.push(new require('mongodb').ObjectID(summary[i]._id.produit));
+                        }
+                    }
+                    db.collection('products', function (err, collection) {
+                        collection.find({_id: {$in:produitsIds}}).toArray(function (err, items) {
+                            ret.produits = items;
+                            res.send(ret);
+                        });
+                    });
                 }
             );
         });
