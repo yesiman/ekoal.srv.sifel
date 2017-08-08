@@ -302,6 +302,72 @@ exports.getStatGlobal = function (req, res) {
     //
 };
 //
+exports.getStatProduits = function (req, res) {
+    var ret = new Object();
+    //
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        var query = {};
+        var group = {};
+        var sort = {};
+        db.collection('bons', function (err, collection) {
+            query["$match"] = {};
+            query["$match"]["dateDoc"] = result.dateDoc;
+            group["$group"] = {};
+            group["$group"]["_id"] = {};
+            group["$group"]["_id"]["producteur"] = "$producteur";
+            group["$group"]["count"] = { $sum: "$palettes.poidBrut"};
+            sort["$sort"] = {  
+                "_id.producteur" : 1 
+            };
+            collection.aggregate(
+                query,
+                {"$unwind": "$palettes"},
+                group,
+                sort,
+                function(err, summary) {
+                    ret.byProducteurs = summary;
+                    group["$group"] = {};
+                    group["$group"]["_id"] = {};
+                    group["$group"]["_id"]["station"] = "$station";
+                    group["$group"]["count"] = { $sum: "$palettes.poidBrut"};
+                    sort["$sort"] = {  
+                        "_id.station" : 1 
+                    };
+                    collection.aggregate(
+                        query,
+                        {"$unwind": "$palettes"},
+                        group,
+                        sort,
+                        function(err, summary) {
+                            ret.byStations = summary;
+                            group["$group"] = {};
+                            group["$group"]["_id"] = {};
+                            group["$group"]["_id"]["produit"] = "$palettes.produits.produit";
+                            group["$group"]["count"] = { $sum: "$palettes.produits.poid"};
+                            sort["$sort"] = {  
+                                "_id.produit" : 1 
+                            };
+                            collection.aggregate(
+                                query,
+                                {"$unwind": "$palettes"},
+                                {"$unwind": "$palettes.produits"},
+                                group,
+                                sort,
+                                function(err, summary) {
+                                    ret.byProduits = summary;
+                                    res.send(ret);
+                                }
+                            );
+                        }
+                    );
+                }
+            );
+        });
+    });
+    //
+};
+//
 exports.delete = function (req, res) {
     db.collection('bons', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
