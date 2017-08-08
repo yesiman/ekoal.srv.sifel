@@ -246,7 +246,7 @@ exports.getStatGlobal = function (req, res) {
         var sort = {};
         db.collection('bons', function (err, collection) {
             query["$match"] = {};
-            query["$dateDoc"] = result.dateDoc;
+            query["$match"]["$dateDoc"] = result.dateDoc;
             group["$group"] = {};
             group["$group"]["_id"] = {};
             group["$group"]["_id"]["producteur"] = "$producteur";
