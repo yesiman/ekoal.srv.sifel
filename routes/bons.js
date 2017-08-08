@@ -180,53 +180,60 @@ exports.get = function (req, res) {
     });
 };
 //
-exports.getAll = function (req, res) {
-    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
-    var limit = parseInt(req.params.nbr);
-    var ret = new Object();
-    //
-    var filters = {orga:new require('mongodb').ObjectID(req.decoded.orga)};
-    if (req.body.lta && (req.body.lta.length > 0))
+function getFinalFilters(body,decoded,callback) {
+    var filters = {orga:new require('mongodb').ObjectID(decoded.orga)};
+    if (body.lta && (body.lta.length > 0))
     {   
-        filters.noLta = { '$regex': req.body.lta, $options: 'i' };
+        filters.noLta = { '$regex': body.lta, $options: 'i' };
     }
-    var beg = new Date(req.body.dateFrom);
+    var beg = new Date(body.dateFrom);
     beg.setHours(0);
     beg.setMinutes(0);
     beg.setSeconds(0);
-    var end = new Date(req.body.dateTo);
+    var end = new Date(body.dateTo);
     end.setHours(23);
     end.setMinutes(59);
     end.setSeconds(59);
     filters.dateDoc = { $gte: new Date(beg),$lt: new Date(end)};
     //
     var producteursIds = [];
-    for(var i=0;i<req.body.producteurs.length;i++)
+    for(var i=0;i<body.producteurs.length;i++)
     {
-        if (!(producteursIds.indexOf(new require('mongodb').ObjectID(req.body.producteurs[i])) > -1))
+        if (!(producteursIds.indexOf(new require('mongodb').ObjectID(body.producteurs[i])) > -1))
         {
-            producteursIds.push(new require('mongodb').ObjectID(req.body.producteurs[i]));
+            producteursIds.push(new require('mongodb').ObjectID(body.producteurs[i]));
         }
     }
     if (producteursIds.length > 0)
     {
         filters.producteur = { $in: producteursIds};
     }
+    callback(filters);
+}
+//
+exports.getAll = function (req, res) {
+    var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
+    var limit = parseInt(req.params.nbr);
+    var ret = new Object();
     //
-    db.collection('bons', function (err, collection) {
-        collection.count(filters, function (err, count) {
-            ret.count = count;
-            collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
-                getBonsProducteursDatas(items).then(function (data) {
-                    ret.items = data;
-                    getBonsStationsDatas(items).then(function (data) {
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        db.collection('bons', function (err, collection) {
+            collection.count(result, function (err, count) {
+                ret.count = count;
+                collection.find(result).skip(skip).limit(limit).toArray(function (err, items) {
+                    getBonsProducteursDatas(items).then(function (data) {
                         ret.items = data;
-                        res.send(ret);
+                        getBonsStationsDatas(items).then(function (data) {
+                            ret.items = data;
+                            res.send(ret);
+                        });  
                     });  
-                });  
+                });
             });
         });
     });
+    //
 };
 //
 exports.delete = function (req, res) {
