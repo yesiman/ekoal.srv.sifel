@@ -278,7 +278,7 @@ exports.getStatGlobal = function (req, res) {
                             group["$group"] = {};
                             group["$group"]["_id"] = {};
                             group["$group"]["_id"]["produit"] = "$palettes.produits.produit";
-                            group["$group"]["count"] = { $sum: "$palettes.produits.produit.poid"};
+                            group["$group"]["count"] = { $sum: "$palettes.produits.poid"};
                             sort["$sort"] = {  
                                 "_id.produit" : 1 
                             };
