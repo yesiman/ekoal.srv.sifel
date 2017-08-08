@@ -186,11 +186,22 @@ exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
+    //
     var filters = {orga:new require('mongodb').ObjectID(req.decoded.orga)};
     if (req.body.lta && (req.body.lta.length > 0))
     {   
         filters.noLta = { '$regex': req.body.lta, $options: 'i' };
     }
+    var beg = new Date(body.dateFrom);
+    beg.setHours(0);
+    beg.setMinutes(0);
+    beg.setSeconds(0);
+    var end = new Date(body.dateTo);
+    end.setHours(23);
+    end.setMinutes(59);
+    end.setSeconds(59);
+    filters.dateDoc = { $gte: new Date(beg),$lt: new Date(end)};
+    //
     db.collection('bons', function (err, collection) {
         collection.count(filters, function (err, count) {
             ret.count = count;
