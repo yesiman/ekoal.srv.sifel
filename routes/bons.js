@@ -34,7 +34,6 @@ function getStation(sid) {
 function getCat(cid) {
     return new Promise(function(resolve,reject) {
         db.collection('products_categs', function (err, collection) {
-            console.log("cid",cid);
             collection.findOne({ _id: new require('mongodb').ObjectID(cid) }, 
                 function (err, item) {
                     resolve(item);
@@ -45,7 +44,6 @@ function getCat(cid) {
 //
 function getPalsProductsDatas(pals) {
     return new Promise(function (resolve, reject) {
-        console.log("pals.bef",pals);
         var promises = [];
         pals.forEach(function(item,index){
             var p = item;
@@ -202,7 +200,6 @@ exports.getAll = function (req, res) {
     end.setSeconds(59);
     filters.dateDoc = { $gte: new Date(beg),$lt: new Date(end)};
     //
-    console.log(req.body.producteurs);
     var producteursIds = [];
     for(var i=0;i<req.body.producteurs.length;i++)
     {
@@ -210,6 +207,10 @@ exports.getAll = function (req, res) {
         {
             producteursIds.push(new require('mongodb').ObjectID(req.body.producteurs[i]));
         }
+    }
+    if (producteursIds.length > 0)
+    {
+        filters.producteur = { $in: producteursIds};
     }
     //
     db.collection('bons', function (err, collection) {
