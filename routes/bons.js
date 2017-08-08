@@ -275,7 +275,7 @@ exports.getStatGlobal = function (req, res) {
                         sort,
                         function(err, summary) {
                             ret.byStations = summary;
-                            res.send(summary);
+                            res.send(ret);
                         }
                     );
                 }
