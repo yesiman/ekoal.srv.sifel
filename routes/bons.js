@@ -261,7 +261,7 @@ console.log("sort",sort);
             collection.aggregate(
                 query,
                 group,
-                ,
+                sort,
                 function(err, summary) {
                     console.log("err",err); 
                     
