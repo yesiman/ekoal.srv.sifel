@@ -261,7 +261,7 @@ console.log("sort",sort);
 
             collection.aggregate(
                 query,
-                {"$unwind": "$palettes",
+                {"$unwind": "$palettes"},
                 group,
                 sort,
                 function(err, summary) {
