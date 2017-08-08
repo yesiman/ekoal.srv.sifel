@@ -189,7 +189,7 @@ exports.getAll = function (req, res) {
     var filters = {orga:new require('mongodb').ObjectID(req.decoded.orga)};
     if (req.body.lta && (req.body.lta.length > 0))
     {   
-        filters.lta = { '$regex': req.body.lta, $options: 'i' };
+        filters.noLta = { '$regex': req.body.lta, $options: 'i' };
     }
     db.collection('bons', function (err, collection) {
         collection.count(filters, function (err, count) {
