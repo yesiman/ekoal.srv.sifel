@@ -259,6 +259,8 @@ exports.getStatGlobal = function (req, res) {
                 group,
                 sort,
                 function(err, summary) {
+                    console.log("err",err); 
+                    
                     console.log("summary",summary); 
                     return summary;
                 }
