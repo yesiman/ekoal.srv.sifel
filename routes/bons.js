@@ -354,6 +354,108 @@ exports.getStatProduits = function (req, res) {
     });
     //
 };
+exports.getStatProducteurs = function (req, res) {
+    var ret = new Object();
+    //
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        var query = {};
+        var group = {};
+        var sort = {};
+        db.collection('bons', function (err, collection) {
+            query["$match"] = {};
+            query["$match"]["dateDoc"] = result.dateDoc;
+            group["$group"] = {};
+            group["$group"]["_id"] = {};
+            group["$group"]["_id"]["year"] = { $year: "$dateDoc" };
+            group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
+            group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
+            group["$group"]["_id"]["producteur"] = "$producteur";
+            sort["$sort"] = {  
+                "_id.year": 1, 
+                "_id.month": 1, 
+                "_id.day": 1,
+                "_id.producteur" : 1 
+            };
+            group["$group"]["count"] = { $sum: "$palettes.poidBrut"};            
+            collection.aggregate(
+                query,
+                {"$unwind": "$palettes"},
+                group,
+                sort,
+                function(err, summary) {
+                    ret.result = summary;
+                    var producteursIds = [];
+                    for(var i=0;i<summary.length;i++)
+                    {
+                        if (!(producteursIds.indexOf(new require('mongodb').ObjectID(summary[i]._id.producteur)) > -1))
+                        {
+                            producteursIds.push(new require('mongodb').ObjectID(summary[i]._id.producteur));
+                        }
+                    }
+                    db.collection('users', function (err, collection) {
+                        collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
+                            ret.producteurs = items;
+                            res.send(ret);
+                        });
+                    });
+                }
+            );
+        });
+    });
+    //
+};
+exports.getStatStations = function (req, res) {
+    var ret = new Object();
+    //
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        var query = {};
+        var group = {};
+        var sort = {};
+        db.collection('bons', function (err, collection) {
+            query["$match"] = {};
+            query["$match"]["dateDoc"] = result.dateDoc;
+            group["$group"] = {};
+            group["$group"]["_id"] = {};
+            group["$group"]["_id"]["year"] = { $year: "$dateDoc" };
+            group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
+            group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
+            group["$group"]["_id"]["station"] = "$station";
+            sort["$sort"] = {  
+                "_id.year": 1, 
+                "_id.month": 1, 
+                "_id.day": 1,
+                "_id.station" : 1 
+            };
+            group["$group"]["count"] = { $sum: "$palettes.poidBrut"};            
+            collection.aggregate(
+                query,
+                {"$unwind": "$palettes"},
+                group,
+                sort,
+                function(err, summary) {
+                    ret.result = summary;
+                    var stationsIds = [];
+                    for(var i=0;i<summary.length;i++)
+                    {
+                        if (!(stationsIds.indexOf(new require('mongodb').ObjectID(summary[i]._id.station)) > -1))
+                        {
+                            stationsIds.push(new require('mongodb').ObjectID(summary[i]._id.station));
+                        }
+                    }
+                    db.collection('stations', function (err, collection) {
+                        collection.find({_id: {$in:stationsIds}}).toArray(function (err, items) {
+                            ret.stations = items;
+                            res.send(ret);
+                        });
+                    });
+                }
+            );
+        });
+    });
+    //
+};
 //
 exports.delete = function (req, res) {
     db.collection('bons', function (err, collection) {

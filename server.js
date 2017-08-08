@@ -209,6 +209,8 @@ app.get('/bons/get/:id', cors(), bodyParser.json(), bons.get);
 app.post('/bons/getAll/:idp/:nbr', cors(), bodyParser.json(), bons.getAll);
 app.post('/bons/getStatGlobal/', cors(), bodyParser.json(), bons.getStatGlobal);
 app.post('/bons/getStatProduits/', cors(), bodyParser.json(), bons.getStatProduits);
+app.post('/bons/getStatProducteurs/', cors(), bodyParser.json(), bons.getStatProducteurs);
+app.post('/bons/getStatStations/', cors(), bodyParser.json(), bons.getStatStations);
 app.delete('/bons/delete/:id', cors(), bodyParser.json(), bons.delete);
 app.post('/bons/add/:id', cors(), bodyParser.json(), bons.add);
 //END BONS
