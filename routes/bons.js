@@ -236,6 +236,38 @@ exports.getAll = function (req, res) {
     //
 };
 //
+exports.getStatGlobal = function (req, res) {
+    var ret = new Object();
+    //
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        var query = {};
+        var group = {};
+        var sort = {};
+        db.collection('bons', function (err, collection) {
+            query["$match"] = {};
+            query["$dateDoc"] = result.dateDoc;
+            group["$group"] = {};
+            group["$group"]["_id"] = {};
+            group["$group"]["_id"]["producteur"] = "$producteur";
+            sort["$sort"] = {  
+                "_id.producteur" : 1 
+            };
+            
+            collection.aggregate(
+                query,
+                group,
+                sort,
+                function(err, summary) {
+                    console.log("summary",summary); 
+                    return summary;
+                }
+            );
+        });
+    });
+    //
+};
+//
 exports.delete = function (req, res) {
     db.collection('bons', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },

@@ -207,6 +207,7 @@ app.post('/stations/add/:id', cors(), bodyParser.json(), stations.add);
 //BONS
 app.get('/bons/get/:id', cors(), bodyParser.json(), bons.get);
 app.post('/bons/getAll/:idp/:nbr', cors(), bodyParser.json(), bons.getAll);
+app.post('/bons/getStatGlobal/', cors(), bodyParser.json(), bons.getStatGlobal);
 app.delete('/bons/delete/:id', cors(), bodyParser.json(), bons.delete);
 app.post('/bons/add/:id', cors(), bodyParser.json(), bons.add);
 //END BONS
