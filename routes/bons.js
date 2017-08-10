@@ -115,7 +115,10 @@ function getPalsCategsDatas(pals) {
                     item.categorie = data;
                     return Q(p);
                 });
-                promises.push(promise);
+                if (index >= (p.produits.length- 1))
+                {
+                    promises.push(promise);
+                }
             });
         });
         Q.all(promises).then(function(data){
