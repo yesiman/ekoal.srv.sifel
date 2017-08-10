@@ -138,7 +138,7 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            console.log(ret.palettes);
+                            console.log("palettes",ret.palettes);
                             getPalsProductsDatas(ret.palettes).then(function (data) {
                                 ret.palettes = data;
                                 getPalsCategsDatas(ret.palettes).then(function (data) {
