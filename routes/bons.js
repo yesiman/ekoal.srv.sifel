@@ -264,7 +264,7 @@ exports.getStatGlobal = function (req, res) {
             group["$group"] = {};
             group["$group"]["_id"] = {};
             group["$group"]["_id"]["producteur"] = "$producteur";
-            group["$group"]["count"] = { $sum: "$palettes.poidBrut"};
+            group["$group"]["count"] = { $sum: "$palettes.poid"};
             sort["$sort"] = {  
                 "_id.producteur" : 1 
             };
@@ -278,7 +278,7 @@ exports.getStatGlobal = function (req, res) {
                     group["$group"] = {};
                     group["$group"]["_id"] = {};
                     group["$group"]["_id"]["station"] = "$station";
-                    group["$group"]["count"] = { $sum: "$palettes.poidBrut"};
+                    group["$group"]["count"] = { $sum: "$palettes.poid"};
                     sort["$sort"] = {  
                         "_id.station" : 1 
                     };
@@ -391,7 +391,7 @@ exports.getStatProducteurs = function (req, res) {
                 "_id.day": 1,
                 "_id.producteur" : 1 
             };
-            group["$group"]["count"] = { $sum: "$palettes.poidBrut"};            
+            group["$group"]["count"] = { $sum: "$palettes.poid"};            
             collection.aggregate(
                 query,
                 {"$unwind": "$palettes"},
@@ -442,7 +442,7 @@ exports.getStatStations = function (req, res) {
                 "_id.day": 1,
                 "_id.station" : 1 
             };
-            group["$group"]["count"] = { $sum: "$palettes.poidBrut"};            
+            group["$group"]["count"] = { $sum: "$palettes.poid"};            
             collection.aggregate(
                 query,
                 {"$unwind": "$palettes"},
