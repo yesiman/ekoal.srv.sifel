@@ -293,33 +293,64 @@ exports.getStatGlobal = function (req, res) {
                             sort["$sort"] = {  
                                 "_id.station" : 1 
                             };
-                            collection.aggregate(
-                                query,
-                                {"$unwind": "$palettes"},
-                                group,
-                                sort,
-                                function(err, summary) {
-                                    ret.byStations = summary;
-                                    group["$group"] = {};
-                                    group["$group"]["_id"] = {};
-                                    group["$group"]["_id"]["produit"] = "$palettes.produits.produit";
-                                    group["$group"]["count"] = { $sum: "$palettes.produits.poid"};
-                                    sort["$sort"] = {  
-                                        "_id.produit" : 1 
-                                    };
-                                    collection.aggregate(
-                                        query,
-                                        {"$unwind": "$palettes"},
-                                        {"$unwind": "$palettes.produits"},
-                                        group,
-                                        sort,
-                                        function(err, summary) {
-                                            ret.byProduits = summary;
-                                            res.send(ret);
-                                        }
-                                    );
-                                }
-                            );
+                            db.collection('bons', function (err, collection) {
+                                collection.aggregate(
+                                    query,
+                                    {"$unwind": "$palettes"},
+                                    group,
+                                    sort,
+                                    function(err, summary) {
+                                        db.collection('stations', function (err, collection) {
+                                            var ids = [];
+                                            for(var i=0;i<summary.length;i++)
+                                            {
+                                                if (!(ids.indexOf(new require('mongodb').ObjectID(summary[i]._id.station)) > -1))
+                                                {
+                                                    ids.push(new require('mongodb').ObjectID(summary[i]._id.station));
+                                                }
+                                            }
+                                            collection.find({_id: {$in:ids}}).toArray(function (err, items) {
+                                                ret.stations = items;
+                                                ret.byStations = summary;
+                                                group["$group"] = {};
+                                                group["$group"]["_id"] = {};
+                                                group["$group"]["_id"]["produit"] = "$palettes.produits.produit";
+                                                group["$group"]["count"] = { $sum: "$palettes.produits.poid"};
+                                                sort["$sort"] = {  
+                                                    "_id.produit" : 1 
+                                                };
+                                                db.collection('bons', function (err, collection) {
+                                                    collection.aggregate(
+                                                        query,
+                                                        {"$unwind": "$palettes"},
+                                                        {"$unwind": "$palettes.produits"},
+                                                        group,
+                                                        sort,
+                                                        function(err, summary) {
+
+                                                            db.collection('products', function (err, collection) {
+                                                                var ids = [];
+                                                                for(var i=0;i<summary.length;i++)
+                                                                {
+                                                                    if (!(ids.indexOf(new require('mongodb').ObjectID(summary[i]._id.produit)) > -1))
+                                                                    {
+                                                                        ids.push(new require('mongodb').ObjectID(summary[i]._id.produit));
+                                                                    }
+                                                                }
+                                                                collection.find({_id: {$in:ids}}).toArray(function (err, items) {
+                                                                    ret.produits = items;
+                                                                    ret.byProduits = summary;
+                                                                    res.send(ret);
+                                                                });
+                                                            });                                                            
+                                                        }
+                                                    );
+                                                });
+                                            });
+                                        });
+                                    }
+                                );
+                            });
                         });
                     });
                 }
