@@ -102,9 +102,12 @@ function getBonsStationsDatas(bons) {
 function getPalsCategsDatas(pals) {
     return new Promise(function (resolve, reject) {
         var promises = [];
+        console.log("getPalsCategsDatas.start");
         pals.forEach(function(item,index){
             var p = item;
+            console.log("pal",p.no);
             p.produits.forEach(function(item,index){
+                console.log("prod",p.no + "/" + item.produit);
                 var promise = getCat(item.categorie).then(function(data){
                     item.categorie = data;
                     return Q(p);
