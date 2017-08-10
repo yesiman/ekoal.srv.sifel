@@ -274,41 +274,54 @@ exports.getStatGlobal = function (req, res) {
                 group,
                 sort,
                 function(err, summary) {
-                    ret.byProducteurs = summary;
-                    group["$group"] = {};
-                    group["$group"]["_id"] = {};
-                    group["$group"]["_id"]["station"] = "$station";
-                    group["$group"]["count"] = { $sum: "$palettes.poid"};
-                    sort["$sort"] = {  
-                        "_id.station" : 1 
-                    };
-                    collection.aggregate(
-                        query,
-                        {"$unwind": "$palettes"},
-                        group,
-                        sort,
-                        function(err, summary) {
-                            ret.byStations = summary;
+                    db.collection('users', function (err, collection) {
+                        var producteursIds = [];
+                        for(var i=0;i<summary.length;i++)
+                        {
+                            if (!(producteursIds.indexOf(new require('mongodb').ObjectID(summary[i]._id.producteur)) > -1))
+                            {
+                                producteursIds.push(new require('mongodb').ObjectID(summary[i]._id.producteur));
+                            }
+                        }
+                        collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
+                            ret.producteurs = items;
+                            ret.byProducteurs = summary;
                             group["$group"] = {};
                             group["$group"]["_id"] = {};
-                            group["$group"]["_id"]["produit"] = "$palettes.produits.produit";
-                            group["$group"]["count"] = { $sum: "$palettes.produits.poid"};
+                            group["$group"]["_id"]["station"] = "$station";
+                            group["$group"]["count"] = { $sum: "$palettes.poid"};
                             sort["$sort"] = {  
-                                "_id.produit" : 1 
+                                "_id.station" : 1 
                             };
                             collection.aggregate(
                                 query,
                                 {"$unwind": "$palettes"},
-                                {"$unwind": "$palettes.produits"},
                                 group,
                                 sort,
                                 function(err, summary) {
-                                    ret.byProduits = summary;
-                                    res.send(ret);
+                                    ret.byStations = summary;
+                                    group["$group"] = {};
+                                    group["$group"]["_id"] = {};
+                                    group["$group"]["_id"]["produit"] = "$palettes.produits.produit";
+                                    group["$group"]["count"] = { $sum: "$palettes.produits.poid"};
+                                    sort["$sort"] = {  
+                                        "_id.produit" : 1 
+                                    };
+                                    collection.aggregate(
+                                        query,
+                                        {"$unwind": "$palettes"},
+                                        {"$unwind": "$palettes.produits"},
+                                        group,
+                                        sort,
+                                        function(err, summary) {
+                                            ret.byProduits = summary;
+                                            res.send(ret);
+                                        }
+                                    );
                                 }
                             );
-                        }
-                    );
+                        });
+                    });
                 }
             );
         });
