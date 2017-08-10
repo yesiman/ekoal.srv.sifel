@@ -48,9 +48,9 @@ function getPalsProductsDatas(pals) {
         console.log("getPalsProductsDatas.start");
         pals.forEach(function(item,index){
             var p = item;
-            console.log("pal",p._id);
+            console.log("pal",p.no);
             p.produits.forEach(function(item,index){
-                console.log("prod",p._id + "/" + item.produit);
+                console.log("prod",p.no + "/" + item.produit);
                 var promise = getProd(item.produit).then(function(data){
                     item.produit = data;
                     return Q(p);
