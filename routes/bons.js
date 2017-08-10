@@ -53,12 +53,12 @@ function getPalsProductsDatas(pals) {
                 console.log("prod",p.no + "/" + item.produit);
                 var promise = getProd(item.produit).then(function(data){
                     item.produit = data;
-                    if (index == p.produits.length)
-                    {
-                        return Q(item);
-                    }
+                    return Q(p);
                 });
-                promises.push(promise);
+                if (index == p.produits.length)
+                {
+                    promises.push(promise);
+                }
             });
         });
         Q.all(promises).then(function(data){
