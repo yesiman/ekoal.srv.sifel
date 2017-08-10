@@ -9,10 +9,18 @@ exports.getAll = function (req, res) {
     var skip = (parseInt(req.params.idp) - 1) * parseInt(req.params.nbr);
     var limit = parseInt(req.params.nbr);
     var ret = new Object();
+    var filters = {
+        orga:new require('mongodb').ObjectID(req.decoded.orga)
+    };
+    if (req.params.ts)
+    {   
+        var from = new Date(Number(req.params.ts));
+        filters.dateModif = { $gte: from};
+    }
     db.collection('clients', function (err, collection) {
-        collection.count({orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, count) {
+        collection.count(filters}, function (err, count) {
             ret.count = count;
-            collection.find({orga:new require('mongodb').ObjectID(req.decoded.orga)}).skip(skip).limit(limit).toArray(function (err, items) {
+            collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
                 res.send(ret);
             });
