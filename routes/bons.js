@@ -55,7 +55,7 @@ function getPalsProductsDatas(pals) {
                     item.produit = data;
                     return Q(p);
                 });
-                if (index == p.produits.length)
+                if (index >= (p.produits.length- 1))
                 {
                     promises.push(promise);
                 }
