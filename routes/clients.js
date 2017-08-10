@@ -18,7 +18,7 @@ exports.getAll = function (req, res) {
         filters.dateModif = { $gte: from};
     }
     db.collection('clients', function (err, collection) {
-        collection.count(filters}, function (err, count) {
+        collection.count(filters, function (err, count) {
             ret.count = count;
             collection.find(filters).skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
