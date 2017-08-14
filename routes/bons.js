@@ -528,6 +528,7 @@ exports.add = function (req, res) {
     var pid = req.params.id;
     var bon = req.body.bon;
     bon.dateModif = shared.getReunionLocalDate();
+    bon.dateDoc = new Date(bon.dateDoc);
     bon.user = new require('mongodb').ObjectID(req.decoded._id);
     bon.orga =  new require('mongodb').ObjectID(req.decoded.orga);
     bon.station = new require('mongodb').ObjectID(bon.station);
