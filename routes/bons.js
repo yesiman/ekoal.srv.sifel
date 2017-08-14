@@ -526,14 +526,27 @@ exports.delete = function (req, res) {
 //
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.bon.dateModif = shared.getReunionLocalDate();
-    req.body.bon.user = new require('mongodb').ObjectID(req.decoded._id);
-    req.body.bon.orga =  new require('mongodb').ObjectID(req.decoded.orga);
+    var bon = req.body.bon;
+    bon.dateModif = shared.getReunionLocalDate();
+    bon.user = new require('mongodb').ObjectID(req.decoded._id);
+    bon.orga =  new require('mongodb').ObjectID(req.decoded.orga);
+    bon.station = new require('mongodb').ObjectID(bon.station);
+    bon.client =  new require('mongodb').ObjectID(bon.client);
+    bon.producteur =  new require('mongodb').ObjectID(bon.producteur);
+    for (var relipal = 0;relipal < bon.palettes.length;relipal++)
+    {
+        bon.palettes[relipal].condit = new require('mongodb').ObjectID(bon.palettes[relipal].condit);
+        for (var reliprod = 0;reliprod < bon.palettes[relipal].produits.length;reliprod++)
+        {
+            bon.palettes[relipal].produits[reliprod].produit = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].produit);
+            bon.palettes[relipal].produits[reliprod].categorie = new require('mongodb').ObjectID(bon.palettes[relipal].produits[reliprod].categorie);   
+        }
+    }
     db.collection('bons', function (err, collection) {
         if (pid == "-1")
         {
-            req.body.bon.dateCreation = shared.getReunionLocalDate();
-            collection.insert( req.body.bon , function (err, saved) {
+            bon.dateCreation = shared.getReunionLocalDate();
+            collection.insert( bon , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
                 }
@@ -543,10 +556,10 @@ exports.add = function (req, res) {
             });
         }
         else {
-            delete req.body.bon._id;
+            delete bon._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
-                req.body.bon);
+                bon);
                 res.send(true);
         }      
     });
