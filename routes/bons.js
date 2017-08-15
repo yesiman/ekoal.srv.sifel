@@ -546,6 +546,7 @@ exports.add = function (req, res) {
     bon.station = new require('mongodb').ObjectID(bon.station);
     bon.client =  new require('mongodb').ObjectID(bon.client);
     bon.producteur =  new require('mongodb').ObjectID(bon.producteur);
+    console.log(bon.palettes);
     for (var relipal = 0;relipal < bon.palettes.length;relipal++)
     {
         bon.palettes[relipal].condit = new require('mongodb').ObjectID(bon.palettes[relipal].condit);
