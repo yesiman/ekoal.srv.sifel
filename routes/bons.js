@@ -200,6 +200,14 @@ function getFinalFilters(body,decoded,callback) {
     {   
         filters.noLta = { '$regex': body.lta, $options: 'i' };
     }
+    if (body.poducteurs && (body.poducteurs.length > 0))
+    {   
+        filters.producteur = { '$in': body.poducteurs };
+    }
+    if (body.stations && (body.stations.length > 0))
+    {   
+        filters.stations = { '$in': body.stations };
+    }
     var beg = new Date(body.dateFrom);
     beg.setHours(0);
     beg.setMinutes(0);
