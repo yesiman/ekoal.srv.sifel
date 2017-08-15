@@ -208,6 +208,10 @@ function getFinalFilters(body,decoded,callback) {
     {   
         filters.stations = { '$in': body.stations };
     }
+    if (body.clients && (body.clients.length > 0))
+    {   
+        filters.clients = { '$in': body.clients };
+    }
     var beg = new Date(body.dateFrom);
     beg.setHours(0);
     beg.setMinutes(0);
