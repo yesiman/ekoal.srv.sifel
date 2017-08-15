@@ -45,12 +45,10 @@ function getCat(cid) {
 function getPalsProductsDatas(pals) {
     return new Promise(function (resolve, reject) {
         var promises = [];
-        console.log("getPalsProductsDatas.start");
         pals.forEach(function(item,index){
             var p = item;
-            console.log("pal",p.no);
             p.produits.forEach(function(item,index){
-                console.log("prod",p.no + "/" + item.produit);
+                console.log("ITEM!!!",item);
                 var promise = getProd(item.produit).then(function(data){
                     item.produit = data;
                     return Q(p);
@@ -105,12 +103,9 @@ function getBonsStationsDatas(bons) {
 function getPalsCategsDatas(pals) {
     return new Promise(function (resolve, reject) {
         var promises = [];
-        console.log("getPalsCategsDatas.start");
         pals.forEach(function(item,index){
             var p = item;
-            console.log("pal",p.no);
             p.produits.forEach(function(item,index){
-                console.log("prod",p.no + "/" + item.produit);
                 var promise = getCat(item.categorie).then(function(data){
                     item.categorie = data;
                     return Q(p);
@@ -150,12 +145,11 @@ exports.get = function (req, res) {
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
                             ret.producteur = item;
-                            console.log("palettes",ret.palettes);
+                            
                             getPalsProductsDatas(ret.palettes).then(function (data) {
                                 ret.palettes = data;
                                 getPalsCategsDatas(ret.palettes).then(function (data) {
                                     ret.palettes = data;
-                                    
                                     res.send(ret);
                                 });
                             });                             ;
