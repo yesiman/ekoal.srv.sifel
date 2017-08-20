@@ -202,6 +202,7 @@ function updBonV2(user,orga,bon) {
             bon.orga = new require('mongodb').ObjectID(orga);
             bon.producteur = new require('mongodb').ObjectID(bon.producteur);
             bon.station = new require('mongodb').ObjectID(bon.station);
+            bon.client = new require('mongodb').ObjectID(bon.client);
             for (var relipal = 0;relipal < bon.palettes.length;relipal++)
             {
                 bon.palettes[relipal].condit = new require('mongodb').ObjectID(bon.palettes[relipal].condit);
