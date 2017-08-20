@@ -150,6 +150,7 @@ exports.get = function (req, res) {
                                     _id: new require('mongodb').ObjectID(ret.client),
                                     orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                                 function (err, item) {
+                                    console.log("client IS",item);
                                     ret.client = item;
                                     getPalsProductsDatas(ret.palettes).then(function (data) {
                                         ret.palettes = data;
