@@ -144,16 +144,21 @@ exports.get = function (req, res) {
                             _id: new require('mongodb').ObjectID(ret.producteur),
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
-                            ret.producteur = item;
-                            
-                            getPalsProductsDatas(ret.palettes).then(function (data) {
-                                ret.palettes = data;
-                                getPalsCategsDatas(ret.palettes).then(function (data) {
-                                    ret.palettes = data;
-                                    res.send(ret);
+                            db.collection('clients', function (err, collection) {
+                                collection.findOne({ 
+                                    _id: new require('mongodb').ObjectID(ret.client),
+                                    orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
+                                function (err, item) {
+                                    ret.client = item;
+                                    getPalsProductsDatas(ret.palettes).then(function (data) {
+                                        ret.palettes = data;
+                                        getPalsCategsDatas(ret.palettes).then(function (data) {
+                                            ret.palettes = data;
+                                            res.send(ret);
+                                        });
+                                    });                             ;
                                 });
-                            });                             ;
-                                
+                            });   
                                 
                             /*for(var relipal=0;relipal<ret.palettes.length;relipal++)
                             {
