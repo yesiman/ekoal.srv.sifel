@@ -144,6 +144,7 @@ exports.get = function (req, res) {
                             _id: new require('mongodb').ObjectID(ret.producteur),
                             orga:new require('mongodb').ObjectID(req.decoded.orga) }, 
                         function (err, item) {
+                            ret.producteur = item;
                             db.collection('clients', function (err, collection) {
                                 collection.findOne({ 
                                     _id: new require('mongodb').ObjectID(ret.client),
