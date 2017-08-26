@@ -239,22 +239,21 @@ function getFinalFilters(body,decoded,callback) {
         }
         filters.clients = { '$in': ids };
     }
-    var beg = new Date(body.dateFrom);
-    beg.setHours(0);
-    beg.setMinutes(0);
-    beg.setSeconds(0);
-    var end = new Date(body.dateTo);
-    end.setHours(23);
-    end.setMinutes(59);
-    end.setSeconds(59);
-    filters.dateDoc = { $gte: new Date(beg),$lt: new Date(end)};
+    if (body.dateFrom && body.dateTo)
+    {
+        var beg = new Date(body.dateFrom);
+        beg.setHours(0);
+        beg.setMinutes(0);
+        beg.setSeconds(0);
+        var end = new Date(body.dateTo);
+        end.setHours(23);
+        end.setMinutes(59);
+        end.setSeconds(59);
+        filters.dateDoc = { $gte: new Date(beg),$lt: new Date(end)};
+    }
+    
     //
     
-    
-    if (producteursIds.length > 0)
-    {
-        filters.producteur = { $in: producteursIds};
-    }
     callback(filters);
 }
 //
