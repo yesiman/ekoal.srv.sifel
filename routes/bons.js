@@ -198,21 +198,46 @@ exports.get = function (req, res) {
 //
 function getFinalFilters(body,decoded,callback) {
     var filters = {orga:new require('mongodb').ObjectID(decoded.orga)};
+    var ids = [];
     if (body.lta && (body.lta.length > 0))
     {   
         filters.noLta = { '$regex': body.lta, $options: 'i' };
     }
     if (body.poducteurs && (body.poducteurs.length > 0))
     {   
-        filters.producteur = { '$in': body.poducteurs };
+        ids = [];
+        for(var i=0;i<body.producteurs.length;i++)
+        {
+            if (!(ids.indexOf(body.producteurs[i]) > -1))
+            {
+                ids.push(new require('mongodb').ObjectID(body.producteurs[i]));
+            }
+        }
+        filters.producteur = { '$in': ids };
     }
     if (body.stations && (body.stations.length > 0))
     {   
-        filters.stations = { '$in': body.stations };
+        ids = [];
+        for(var i=0;i<body.stations.length;i++)
+        {
+            if (!(ids.indexOf(body.stations[i]) > -1))
+            {
+                ids.push(new require('mongodb').ObjectID(body.stations[i]));
+            }
+        }
+        filters.station = { '$in': ids };
     }
     if (body.clients && (body.clients.length > 0))
     {   
-        filters.clients = { '$in': body.clients };
+        ids = [];
+        for(var i=0;i<body.clients.length;i++)
+        {
+            if (!(ids.indexOf(body.clients[i]) > -1))
+            {
+                ids.push(new require('mongodb').ObjectID(body.clients[i]));
+            }
+        }
+        filters.clients = { '$in': ids };
     }
     var beg = new Date(body.dateFrom);
     beg.setHours(0);
@@ -224,14 +249,8 @@ function getFinalFilters(body,decoded,callback) {
     end.setSeconds(59);
     filters.dateDoc = { $gte: new Date(beg),$lt: new Date(end)};
     //
-    var producteursIds = [];
-    for(var i=0;i<body.producteurs.length;i++)
-    {
-        if (!(producteursIds.indexOf(body.producteurs[i]) > -1))
-        {
-            producteursIds.push(new require('mongodb').ObjectID(body.producteurs[i]));
-        }
-    }
+    
+    
     if (producteursIds.length > 0)
     {
         filters.producteur = { $in: producteursIds};
