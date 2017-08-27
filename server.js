@@ -192,10 +192,10 @@ app.delete('/orgas/delete/:id', cors(), bodyParser.json(), orgas.delete);
 app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END ORGAS
 //FACTURES
-app.get('/factures/get/:id', cors(), bodyParser.json(), facturation.get);
-app.get('/factures/getAll/:idp/:nbr', cors(), bodyParser.json(), facturation.getAll);
-app.delete('/factures/delete/:id', cors(), bodyParser.json(), facturation.delete);
-app.post('/factures/add/:id', cors(), bodyParser.json(), facturation.add);
+app.get('/facturation/get/:id', cors(), bodyParser.json(), facturation.get);
+app.get('/facturation/getAll/:idp/:nbr', cors(), bodyParser.json(), facturation.getAll);
+app.delete('/facturation/delete/:id', cors(), bodyParser.json(), facturation.delete);
+app.post('/facturation/add/:id', cors(), bodyParser.json(), facturation.add);
 //END FACTURES
 //CLIENTS
 app.get('/clients/get/:id', cors(), bodyParser.json(), clientsR.get);
