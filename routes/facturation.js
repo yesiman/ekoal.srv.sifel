@@ -30,13 +30,18 @@ exports.delete = function (req, res) {
 };
 exports.add = function (req, res) {
     var pid = req.params.id;
-    req.body.facture.dateModif = shared.getReunionLocalDate();
-    req.body.facture.user = new require('mongodb').ObjectID(req.decoded._id);
+    var facture = req.body.facture;
+    facture.dateModif = shared.getReunionLocalDate();
+    facture.user = new require('mongodb').ObjectID(req.decoded._id);
+    for(var i = 0;i < facture.bons.length;i++)
+    {
+        facture.bons[i] = new require('mongodb').ObjectID(facture.bons[i]);
+    }
     db.collection('factures', function (err, collection) {
         if (pid == "-1")
         {
-            req.body.facture.dateCreation = shared.getReunionLocalDate();
-            collection.insert( req.body.facture , function (err, saved) {
+            facture.dateCreation = shared.getReunionLocalDate();
+            collection.insert( facture , function (err, saved) {
                 if (err || !saved) {
                     res.send(false)
                 }
@@ -46,10 +51,10 @@ exports.add = function (req, res) {
             });
         }
         else {
-            delete req.body.facture._id;
+            delete facture._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
-                req.body.facture);
+                facture);
                 res.send(true);
         }      
     });
