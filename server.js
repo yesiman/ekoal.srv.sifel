@@ -15,6 +15,7 @@ var express = require('express'),
     bons = require('./routes/bons'),
     orgas = require('./routes/orgas'),
     clientsR = require('./routes/clients'),
+    facturation = require('./routes/facturation'),
     users = require('./routes/users'),
     usersGroups = require('./routes/users_groups'),
     planifs = require('./routes/planifs'),
@@ -190,6 +191,12 @@ app.get('/orgas/getAll/:idp/:nbr', cors(), bodyParser.json(), orgas.getAll);
 app.delete('/orgas/delete/:id', cors(), bodyParser.json(), orgas.delete);
 app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END ORGAS
+//FACTURES
+app.get('/factures/get/:id', cors(), bodyParser.json(), factures.get);
+app.get('/factures/getAll/:idp/:nbr', cors(), bodyParser.json(), factures.getAll);
+app.delete('/factures/delete/:id', cors(), bodyParser.json(), factures.delete);
+app.post('/factures/add/:id', cors(), bodyParser.json(), factures.add);
+//END FACTURES
 //CLIENTS
 app.get('/clients/get/:id', cors(), bodyParser.json(), clientsR.get);
 app.get('/clients/getAll/:idp/:nbr', cors(), bodyParser.json(), clientsR.getAll);
