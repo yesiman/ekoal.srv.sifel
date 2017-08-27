@@ -204,7 +204,7 @@ function getFinalFilters(body,decoded,callback) {
         filters.noLta = { '$regex': body.lta, $options: 'i' };
     }
     console.log(body.producteurs);
-    if (body.poducteurs && (body.poducteurs.length > 0))
+    if (body.producteurs && (body.producteurs.length > 0))
     {   
         ids = [];
         for(var i=0;i<body.producteurs.length;i++)
