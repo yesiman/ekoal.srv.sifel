@@ -203,6 +203,7 @@ function getFinalFilters(body,decoded,callback) {
     {   
         filters.noLta = { '$regex': body.lta, $options: 'i' };
     }
+    console.log(body.producteurs);
     if (body.poducteurs && (body.poducteurs.length > 0))
     {   
         ids = [];
@@ -237,7 +238,7 @@ function getFinalFilters(body,decoded,callback) {
                 ids.push(new require('mongodb').ObjectID(body.clients[i]));
             }
         }
-        filters.clients = { '$in': ids };
+        filters.client = { '$in': ids };
     }
     if (body.dateFrom && body.dateTo)
     {
