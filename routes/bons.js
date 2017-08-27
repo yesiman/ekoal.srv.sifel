@@ -253,7 +253,7 @@ function getFinalFilters(body,decoded,callback) {
     }
     
     //
-    
+    console.log("ffilters",filters);
     callback(filters);
 }
 //
