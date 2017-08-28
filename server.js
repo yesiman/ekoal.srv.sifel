@@ -193,7 +193,7 @@ app.post('/orgas/add/:id', cors(), bodyParser.json(), orgas.add);
 //END ORGAS
 //FACTURES
 app.get('/facturation/get/:id', cors(), bodyParser.json(), facturation.get);
-app.get('/facturation/getAll/:idp/:nbr', cors(), bodyParser.json(), facturation.getAll);
+app.post('/facturation/getAll/:idp/:nbr', cors(), bodyParser.json(), facturation.getAll);
 app.delete('/facturation/delete/:id', cors(), bodyParser.json(), facturation.delete);
 app.post('/facturation/add/:id', cors(), bodyParser.json(), facturation.add);
 //END FACTURES
