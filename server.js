@@ -201,6 +201,7 @@ app.post('/facturation/add/:id', cors(), bodyParser.json(), facturation.add);
 app.get('/clients/get/:id', cors(), bodyParser.json(), clientsR.get);
 app.get('/clients/getAll/:idp/:nbr', cors(), bodyParser.json(), clientsR.getAll);
 app.get('/clients/getAll/:idp/:nbr/:ts', cors(), bodyParser.json(), clientsR.getAll);
+app.get('/clients/getAll/:idp/:nbr/:ts/:req', cors(), bodyParser.json(), clientsR.getAll);
 app.delete('/clients/delete/:id', cors(), bodyParser.json(), clientsR.delete);
 app.post('/clients/add/:id', cors(), bodyParser.json(), clientsR.add);
 //END CLIENTS
