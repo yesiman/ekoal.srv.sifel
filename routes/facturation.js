@@ -13,6 +13,7 @@ exports.get = function (req, res) {
                 idSearch = facture.producteur;
                 colName = "users";
             }
+            console.log(idSearch);
             db.collection(colName, function (err, collection) {
                 collection.findOne({ _id: new require('mongodb').ObjectID(idSearch) }, function (err, item) {
                     if (facture.type == '0')
