@@ -11,12 +11,11 @@ exports.getAll = function (req, res) {
     var ret = new Object();
     var filters = {
         orga:new require('mongodb').ObjectID(req.decoded.orga)
-    };
+    }
     if (req.params.req)
     {
-        filters.name = { '$regex': req.params.req, $options: 'i' }}
+        filters.name = { '$regex': req.params.req, $options: 'i' };
     }
-    
     if (req.params.ts)
     {   
         var from = new Date(Number(req.params.ts));
