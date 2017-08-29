@@ -1,7 +1,30 @@
 exports.get = function (req, res) {
     db.collection('factures', function (err, collection) {
         collection.findOne({ _id: new require('mongodb').ObjectID(req.params.id) }, function (err, item) {
-            res.send(item);
+            var facture = item;
+            var colName;
+            var idSearch;
+            if (facture.type == '0')
+            {
+                idSearch = facture.client._id;
+                colName = "clients";
+            }
+            else {
+                idSearch = facture.producteur._id;
+                colName = "users";
+            }
+            db.collection(colName, function (err, collection) {
+                collection.findOne({ _id: new require('mongodb').ObjectID(idSearch) }, function (err, item) {
+                    if (facture.type == '0')
+                    {
+                        facture.client = item;
+                    }
+                    else {
+                        facture.producteur = item;
+                    }
+                    res.send(facture);
+                })
+            });
         })
     });
 };
@@ -65,11 +88,11 @@ exports.add = function (req, res) {
                 upd = {$set:{"facturation.client":true,multi:true}};
             }
             else {
-                upd = {$set:{"facturation.producteur":true,multi:true}};
+                upd = {$set:{"facturation.producteur":true}};
             }
             collection.update(
                 { _id: {$in:facture.bons} },
-                upd
+                upd, {multi:true}
                 );
                 res.send(true);
         });
