@@ -33,6 +33,13 @@ exports.add = function (req, res) {
     var facture = req.body.facture;
     facture.dateModif = shared.getReunionLocalDate();
     facture.user = new require('mongodb').ObjectID(req.decoded._id);
+    if (facture.type == '0')
+    {
+        facture.client = new require('mongodb').ObjectID(facture.client._id);
+    }
+    else {
+        facture.producteur = new require('mongodb').ObjectID(facture.producteur._id);
+    }
     for(var i = 0;i < facture.bons.length;i++)
     {
         facture.bons[i] = new require('mongodb').ObjectID(facture.bons[i]);
@@ -42,12 +49,6 @@ exports.add = function (req, res) {
         {
             facture.dateCreation = shared.getReunionLocalDate();
             collection.insert( facture , function (err, saved) {
-                if (err || !saved) {
-                    res.send(false)
-                }
-                else {
-                    res.send(true);
-                }
             });
         }
         else {
@@ -55,7 +56,24 @@ exports.add = function (req, res) {
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 facture);
+        }
+        //LOCK / UNLOCK BONS
+        db.collection('bons', function (err, collection) {
+            var upd;
+            if (facture.type == '0')
+            {
+                upd = {$set:{"facturation.client":true}};
+                facture.client = new require('mongodb').ObjectID(facture.client._id);
+            }
+            else {
+                upd = {$set:{"facturation.client":true}};
+                facture.producteur = new require('mongodb').ObjectID(facture.producteur._id);
+            }
+            collection.update(
+                { _id: {$in:facture.bons} },
+                upd
+                );
                 res.send(true);
-        }      
+        });
     });
 };
