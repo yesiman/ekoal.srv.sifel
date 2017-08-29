@@ -60,10 +60,10 @@ exports.add = function (req, res) {
     facture.user = new require('mongodb').ObjectID(req.decoded._id);
     if (facture.type == '0')
     {
-        facture.client = new require('mongodb').ObjectID(facture.client._id);
+        facture.client = new require('mongodb').ObjectID(facture.client);
     }
     else {
-        facture.producteur = new require('mongodb').ObjectID(facture.producteur._id);
+        facture.producteur = new require('mongodb').ObjectID(facture.producteur);
     }
     for(var i = 0;i < facture.bons.length;i++)
     {
