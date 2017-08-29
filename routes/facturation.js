@@ -62,10 +62,10 @@ exports.add = function (req, res) {
             var upd;
             if (facture.type == '0')
             {
-                upd = {$set:{"facturation.client":true}};
+                upd = {$set:{"facturation.client":true,multi:true}};
             }
             else {
-                upd = {$set:{"facturation.producteur":true}};
+                upd = {$set:{"facturation.producteur":true,multi:true}};
             }
             collection.update(
                 { _id: {$in:facture.bons} },
