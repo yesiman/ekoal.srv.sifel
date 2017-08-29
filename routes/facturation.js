@@ -63,11 +63,9 @@ exports.add = function (req, res) {
             if (facture.type == '0')
             {
                 upd = {$set:{"facturation.client":true}};
-                facture.client = new require('mongodb').ObjectID(facture.client._id);
             }
             else {
-                upd = {$set:{"facturation.client":true}};
-                facture.producteur = new require('mongodb').ObjectID(facture.producteur._id);
+                upd = {$set:{"facturation.producteur":true}};
             }
             collection.update(
                 { _id: {$in:facture.bons} },
