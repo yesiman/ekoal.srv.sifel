@@ -22,6 +22,7 @@ exports.get = function (req, res) {
                     else {
                         facture.producteur = item;
                     }
+                    console.log(item);
                     res.send(facture);
                 })
             });
