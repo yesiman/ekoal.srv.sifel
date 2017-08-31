@@ -56,18 +56,18 @@ exports.getAll = function (req, res) {
                             prodsIds.push(new require('mongodb').ObjectID(items[i].producteur));
                         }
                     }
-                    db.collection('clients', function (err, collection) {
-                        collection.find({_id:{$in:clisIds}}).skip(skip).limit(limit).toArray(function (err, items) {
-                            ret.clients = items;
-                            db.collection('users', function (err, collection) {
-                                collection.find({_id:{$in:prodsIds}}).skip(skip).limit(limit).toArray(function (err, items) {
-                                    ret.producteurs = items;
-                                    res.send(ret);
-                                });
+                }
+                db.collection('clients', function (err, collection) {
+                    collection.find({_id:{$in:clisIds}}).skip(skip).limit(limit).toArray(function (err, items) {
+                        ret.clients = items;
+                        db.collection('users', function (err, collection) {
+                            collection.find({_id:{$in:prodsIds}}).skip(skip).limit(limit).toArray(function (err, items) {
+                                ret.producteurs = items;
+                                res.send(ret);
                             });
                         });
                     });
-                }
+                });
             });
         });
     });
