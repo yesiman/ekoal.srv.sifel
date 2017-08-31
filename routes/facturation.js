@@ -43,11 +43,11 @@ exports.getAll = function (req, res) {
                 {
                     if (item[i].client)
                     {
-                        clisIds.push(new require('mongodb').ObjectID(item[i]));
+                        clisIds.push(new require('mongodb').ObjectID(items[i]));
                     }
                     if (item[i].producteur)
                     {
-                        prodsIds.push(new require('mongodb').ObjectID(item[i]));
+                        prodsIds.push(new require('mongodb').ObjectID(items[i]));
                     }
                     db.collection('clients', function (err, collection) {
                         collection.find({$in:clisIds}).skip(skip).limit(limit).toArray(function (err, items) {
