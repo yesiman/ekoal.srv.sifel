@@ -13,7 +13,6 @@ exports.get = function (req, res) {
                 idSearch = facture.producteur;
                 colName = "users";
             }
-            console.log(idSearch);
             db.collection(colName, function (err, collection) {
                 collection.findOne({ _id: new require('mongodb').ObjectID(idSearch) }, function (err, item) {
                     if (facture.type == '0')
@@ -22,9 +21,7 @@ exports.get = function (req, res) {
                     }
                     else {
                         facture.producteur = item;
-                    }
-                    console.log(item);
-                    res.send(facture);
+                    }res.send(facture);
                 })
             });
         })
@@ -40,7 +37,30 @@ exports.getAll = function (req, res) {
             ret.count = count;
             collection.find().skip(skip).limit(limit).toArray(function (err, items) {
                 ret.items = items;
-                res.send(ret);
+                var clisIds = [];
+                var prodsIds = [];
+                for (var i = 0;i < items.length;i++)
+                {
+                    if (item[i].client)
+                    {
+                        clisIds.push(new require('mongodb').ObjectID(item[i]));
+                    }
+                    if (item[i].producteur)
+                    {
+                        prodsIds.push(new require('mongodb').ObjectID(item[i]));
+                    }
+                    db.collection('clients', function (err, collection) {
+                        collection.find({$in:clisIds}).skip(skip).limit(limit).toArray(function (err, items) {
+                            ret.clients = items;
+                            db.collection('users', function (err, collection) {
+                                collection.find({$in:prodsIds}).skip(skip).limit(limit).toArray(function (err, items) {
+                                    ret.producteurs = items;
+                                    res.send(ret);
+                                });
+                            });
+                        });
+                    });
+                }
             });
         });
     });
