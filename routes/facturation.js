@@ -39,15 +39,22 @@ exports.getAll = function (req, res) {
                 ret.items = items;
                 var clisIds = [];
                 var prodsIds = [];
+                var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
                 for (var i = 0;i < items.length;i++)
                 {
                     if (items[i].client)
                     {
-                        clisIds.push(new require('mongodb').ObjectID(items[i].client));
+                        if (checkForHexRegExp.test(items[i].client))
+                        {
+                            clisIds.push(new require('mongodb').ObjectID(items[i].client));
+                        }
                     }
                     if (items[i].producteur)
                     {
-                        prodsIds.push(new require('mongodb').ObjectID(items[i].producteur));
+                        if (checkForHexRegExp.test(items[i].producteur))
+                        {
+                            prodsIds.push(new require('mongodb').ObjectID(items[i].producteur));
+                        }
                     }
                     db.collection('clients', function (err, collection) {
                         collection.find({_id:{$in:clisIds}}).skip(skip).limit(limit).toArray(function (err, items) {
