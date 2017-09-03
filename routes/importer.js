@@ -89,14 +89,14 @@ exports.rulesi = function (req, res) {
                             r.produit = new require('mongodb').ObjectID(item._id);
                             
                         console.log(r);
-                            collection.insert( r , function (err, saved) {
+                            /*collection.insert( r , function (err, saved) {
                                 if (err || !saved) {
                                     
                                 }
                                 else {
                                     
                                 }
-                            });
+                            });*/
                         });
                     }
                     else {
