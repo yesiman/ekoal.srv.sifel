@@ -55,6 +55,8 @@ exports.rulesi = function (req, res) {
                 rule.delAvR != "" && 
                 rule.sR != "")
         {
+            rule.delAvR = Math.ceil(rule.delAvR);
+            rule.sR = Math.ceil(rule.sR);
             rules.push(rule); 
         }
     }
@@ -65,7 +67,32 @@ exports.rulesi = function (req, res) {
                 collection.findOne({ codeProd:{$eq:rules[i].code},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                     if (item)
                     {   
-                        console.log(item);
+                        
+                        var weeks = [];
+                        var sumer = 0;
+                        var percent = parseFloat((100 / ins.nbWeek).toFixed(2));
+                        for(var i2 = 1;i2 <= ins.nbWeek;i2++)
+                        {
+                            if (i2== ins.nbWeek)
+                            {
+                                percent = parseFloat((100 - parseFloat(sumer.toFixed(2))).toFixed(2));
+                            }
+                            sumer += percent;
+                            weeks.push({week:i2,percent:percent});
+                        }
+                        
+                        var ins = {
+                            produit:new require('mongodb').ObjectID(item._id),
+                            delai:rules[i].delAvR,
+                            nbWeek:rules[i].sR,
+                            dateModif:shared.getReunionLocalDate(),
+                            user: ObjectId(req.decoded._id),
+                            weeks:weeks
+                        }
+
+                        
+
+                        console.log(ins);
                     }
                     else {
                     }
