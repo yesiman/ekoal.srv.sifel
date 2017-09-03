@@ -64,13 +64,14 @@ exports.rulesi = function (req, res) {
     {
         db.collection('products', function (err, collection) {
             for (var i = 0; i < rules.length; i++) {
+                var r = rules[i];
                 collection.findOne({ codeProd:{$eq:rules[i].code},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                     if (item)
                     {   
                         var ins = {
                             produit:new require('mongodb').ObjectID(item._id),
-                            delai:rules[i].delAvR,
-                            nbWeek:rules[i].sR,
+                            delai:r.delAvR,
+                            nbWeek:r.sR,
                             dateModif:shared.getReunionLocalDate(),
                             user: ObjectId(req.decoded._id)
                         }
