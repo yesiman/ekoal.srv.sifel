@@ -44,40 +44,16 @@ exports.rulesi = function (req, res) {
     var errors = [];
     for (var i = 0; i < lines.length; i++) {
         var line = lines[i].split(";");
-        var rule = {
-            code:line[0],
-            lib:line[3],
-            delai:line[4],
-            nbWeek:line[5],
-            dateModif:shared.getReunionLocalDate(),
-            user: new require('mongodb').ObjectId(req.decoded._id)
-                        
-        };
-        if (rule.code != "" && 
-                rule.lib != "" && 
-                rule.delai != "" && 
-                rule.nbWeek != "")
+        getProdIdRules(line,req.decoded.orga,req.decoded._id,function(result)
         {
-            rule.delai = Math.ceil(rule.delai);
-            rule.nbWeek = Math.ceil(rule.nbWeek);
-
-            var weeks = [];
-            var sumer = 0;
-            var percent = parseFloat((100 / rule.nbWeek).toFixed(2));
-            for(var i2 = 1;i2 <= rule.nbWeek;i2++)
+            if (result != "")
             {
-                if (i2== rule.nbWeek)
-                {
-                    percent = parseFloat((100 - parseFloat(sumer.toFixed(2))).toFixed(2));
-                }
-                sumer += percent;
-                weeks.push({week:i2,percent:percent});
+                console.log(result);
             }
-            rule.weeks = weeks;
-            rules.push(rule); 
-        }
+        });
+        
     }
-    if (errors.length == 0)
+    /*if (errors.length == 0)
     {
         db.collection('products', function (err, collection) {
             for (var i = 0; i < rules.length; i++) {
@@ -89,14 +65,14 @@ exports.rulesi = function (req, res) {
                             r.produit = new require('mongodb').ObjectID(item._id);
                             
                         console.log(r);
-                            /*collection.insert( r , function (err, saved) {
+                            collection.insert( r , function (err, saved) {
                                 if (err || !saved) {
                                     
                                 }
                                 else {
                                     
                                 }
-                            });*/
+                            });
                         });
                     }
                     else {
@@ -106,9 +82,9 @@ exports.rulesi = function (req, res) {
             res.send({success:true});
         });
     }
-    else {
-        res.send({success:false,errors:errors});
-    }
+    else {*/
+        res.send({success:true});
+    //}
 }
 exports.producteurs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
@@ -262,6 +238,58 @@ function getProdId(line, user, orga, callback) {
         });
     });
 }
+
+function getProdIdRules(line, orga, user, callback) {
+    console.log(line);
+    if (line[0].toString().trim() == "") {callback("");}
+    db.collection('products', function (err, collection) {
+        collection.findOne({ codeProd:{$eq:line[0].toString().trim()},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
+            if (item)
+            {   
+                var rule = {
+                    produit:item._id,
+                    lib:line[3],
+                    delai:line[4],
+                    nbWeek:line[5],
+                    dateModif:shared.getReunionLocalDate(),
+                    user: new require('mongodb').ObjectId(user)         
+                };
+                if (rule.code != "" && 
+                        rule.lib != "" && 
+                        rule.delai != "" && 
+                        rule.nbWeek != "")
+                {
+                    rule.delai = Math.ceil(rule.delai);
+                    rule.nbWeek = Math.ceil(rule.nbWeek);
+
+                    var weeks = [];
+                    var sumer = 0;
+                    var percent = parseFloat((100 / rule.nbWeek).toFixed(2));
+                    for(var i2 = 1;i2 <= rule.nbWeek;i2++)
+                    {
+                        if (i2== rule.nbWeek)
+                        {
+                            percent = parseFloat((100 - parseFloat(sumer.toFixed(2))).toFixed(2));
+                        }
+                        sumer += percent;
+                        weeks.push({week:i2,percent:percent});
+                    }
+                    rule.weeks = weeks;
+                    callback(rule);
+                }
+               else {
+                   callback("");
+               }
+
+                
+            }
+            else {
+                callback("");
+            }
+        });
+    });
+}
+
 function getUserId(line, orga, callback) {
     console.log(line);
     if (line[0].toString().trim() == "") {callback("");}
