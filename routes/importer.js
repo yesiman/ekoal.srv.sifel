@@ -62,7 +62,7 @@ exports.rulesi = function (req, res) {
     {
         db.collection('products', function (err, collection) {
             for (var i = 0; i < rules.length; i++) {
-                collection.findOne({ codeProd:{$eq:rules[i].code},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
+                collection.findOne({ codeProd:{$eq:rules[i].code},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                     if (item)
                     {   
                         console.log(item);
