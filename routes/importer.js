@@ -47,16 +47,33 @@ exports.rulesi = function (req, res) {
         var rule = {
             code:line[0],
             lib:line[3],
-            delAvR:line[4],
-            sR:line[5],
+            delai:line[4],
+            nbWeek:line[5],
+            dateModif:shared.getReunionLocalDate(),
+            user: new require('mongodb').ObjectId(req.decoded._id)
+                        
         };
         if (rule.code != "" && 
                 rule.lib != "" && 
-                rule.delAvR != "" && 
-                rule.sR != "")
+                rule.delai != "" && 
+                rule.nbWeek != "")
         {
-            rule.delAvR = Math.ceil(rule.delAvR);
-            rule.sR = Math.ceil(rule.sR);
+            rule.delai = Math.ceil(rule.delai);
+            rule.nbWeek = Math.ceil(rule.nbWeek);
+
+            var weeks = [];
+            var sumer = 0;
+            var percent = parseFloat((100 / rule.nbWeek).toFixed(2));
+            for(var i2 = 1;i2 <= rule.nbWeek;i2++)
+            {
+                if (i2== rule.nbWeek)
+                {
+                    percent = parseFloat((100 - parseFloat(sumer.toFixed(2))).toFixed(2));
+                }
+                sumer += percent;
+                weeks.push({week:i2,percent:percent});
+            }
+            rule.weeks = weeks;
             rules.push(rule); 
         }
     }
@@ -68,31 +85,11 @@ exports.rulesi = function (req, res) {
                 collection.findOne({ codeProd:{$eq:rules[i].code},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                     if (item)
                     {   
-                        var ins = {
-                            produit:new require('mongodb').ObjectID(item._id),
-                            delai:r.delAvR,
-                            nbWeek:r.sR,
-                            dateModif:shared.getReunionLocalDate(),
-                            user: new require('mongodb').ObjectId(req.decoded._id)
-                        }
-
-                        var weeks = [];
-                        var sumer = 0;
-                        var percent = parseFloat((100 / ins.nbWeek).toFixed(2));
-                        for(var i2 = 1;i2 <= ins.nbWeek;i2++)
-                        {
-                            if (i2== ins.nbWeek)
-                            {
-                                percent = parseFloat((100 - parseFloat(sumer.toFixed(2))).toFixed(2));
-                            }
-                            sumer += percent;
-                            weeks.push({week:i2,percent:percent});
-                        }
-                        
-                        ins.weeks = weeks;
-
                         db.collection('products_rules', function (err, collection) {
-                            collection.insert( ins , function (err, saved) {
+                            r.produit = new require('mongodb').ObjectID(item._id);
+                            
+                        console.log(r);
+                            collection.insert( r , function (err, saved) {
                                 if (err || !saved) {
                                     
                                 }
@@ -101,7 +98,6 @@ exports.rulesi = function (req, res) {
                                 }
                             });
                         });
-                        console.log(ins);
                     }
                     else {
                     }
