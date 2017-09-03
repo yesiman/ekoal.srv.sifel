@@ -55,7 +55,7 @@ exports.rulesi = function (req, res) {
                 rule.delAvR != "" && 
                 rule.sR != "")
         {
-            rules.push(produit); 
+            rules.push(rule); 
         }
     }
     if (errors.length == 0)
