@@ -38,7 +38,7 @@ exports.produits = function (req, res) {
         res.send({success:false,errors:errors});
     }
 }
-exports.rules = function (req, res) {
+exports.rulesi = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var rules = [];
     var errors = [];
