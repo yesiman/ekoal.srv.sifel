@@ -38,6 +38,46 @@ exports.produits = function (req, res) {
         res.send({success:false,errors:errors});
     }
 }
+exports.rules = function (req, res) {
+    var lines = req.files[0].buffer.toString().split("\n");
+    var rules = [];
+    var errors = [];
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].split(";");
+        var rule = {
+            code:line[0],
+            lib:line[3],
+            delAvR:line[4],
+            sR:line[5],
+        };
+        if (rule.code != "" && 
+                rule.lib != "" && 
+                rule.delAvR != "" && 
+                rule.sR != "")
+        {
+            rules.push(produit); 
+        }
+    }
+    if (errors.length == 0)
+    {
+        db.collection('products', function (err, collection) {
+            for (var i = 0; i < rules.length; i++) {
+                collection.findOne({ codeProd:{$eq:rules[i].code},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
+                    if (item)
+                    {   
+                        console.log(item);
+                    }
+                    else {
+                    }
+                });
+            }
+            res.send({success:true});
+        });
+    }
+    else {
+        res.send({success:false,errors:errors});
+    }
+}
 exports.producteurs = function (req, res) {
     var lines = req.files[0].buffer.toString().split("\n");
     var users = [];
@@ -176,12 +216,10 @@ exports.parcelles = function (req, res) {
 function getProdId(line, user, orga, callback) {
     if (line[0].toString().trim() == "") {callback("");}
     db.collection('products', function (err, collection) {
-        console.log(line[0]);
         collection.findOne({ codeProd:{$eq:line[0]},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
             if (item)
             {   
                 getObjectifMonthsv2(line,item._id,user,function(result){
-                    console.log(result);
                     callback(result);
                 });
                 
@@ -241,7 +279,6 @@ function getObjectifMonthsv2(line,prd,usr,callback){
         callback(objectif);
     });
 }
-
 function getObjectifMonths(callback) {
     var months = [
         {id:1,lib:"Janvier",weeks:[]},
