@@ -48,10 +48,20 @@ exports.rulesi = function (req, res) {
         {
             if (result != "")
             {
-                console.log(result);
+                db.collection('products_rules', function (err, collection) {
+                    collection.insert( result , function (err, saved) {
+                        if (err || !saved) {
+                            
+                        }
+                        else {
+                            
+                        }
+                    });
+                });
             }
         });
     }
+    res.send({success:true});
     /*if (errors.length == 0)
     {
         db.collection('products', function (err, collection) {
@@ -82,7 +92,7 @@ exports.rulesi = function (req, res) {
         });
     }
     else {*/
-        res.send({success:true});
+        
     //}
 }
 exports.producteurs = function (req, res) {
@@ -246,7 +256,7 @@ function getProdIdRules(line, orga, user, callback) {
             if (item)
             {   
 
-                
+
                 var rule = {
                     produit:item._id,
                     lib:line[3],
