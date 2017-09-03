@@ -91,6 +91,16 @@ exports.rulesi = function (req, res) {
                         
                         ins.weeks = weeks;
 
+                        db.collection('rules', function (err, collection) {
+                            collection.insert( ins , function (err, saved) {
+                                if (err || !saved) {
+                                    
+                                }
+                                else {
+                                    
+                                }
+                            });
+                        });
                         console.log(ins);
                     }
                     else {
