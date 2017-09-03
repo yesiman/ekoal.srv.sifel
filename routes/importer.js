@@ -51,7 +51,6 @@ exports.rulesi = function (req, res) {
                 console.log(result);
             }
         });
-        
     }
     /*if (errors.length == 0)
     {
@@ -246,6 +245,8 @@ function getProdIdRules(line, orga, user, callback) {
         collection.findOne({ codeProd:{$eq:line[0].toString().trim()},orga:new require('mongodb').ObjectID(orga)}, function (err, item) {
             if (item)
             {   
+
+                
                 var rule = {
                     produit:item._id,
                     lib:line[3],
