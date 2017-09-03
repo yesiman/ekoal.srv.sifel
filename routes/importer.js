@@ -91,7 +91,7 @@ exports.rulesi = function (req, res) {
                         
                         ins.weeks = weeks;
 
-                        db.collection('rules', function (err, collection) {
+                        db.collection('products_rules', function (err, collection) {
                             collection.insert( ins , function (err, saved) {
                                 if (err || !saved) {
                                     
