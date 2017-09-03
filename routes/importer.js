@@ -73,7 +73,7 @@ exports.rulesi = function (req, res) {
                             delai:r.delAvR,
                             nbWeek:r.sR,
                             dateModif:shared.getReunionLocalDate(),
-                            user: ObjectId(req.decoded._id)
+                            user: new require('mongodb').ObjectId(req.decoded._id)
                         }
 
                         var weeks = [];
