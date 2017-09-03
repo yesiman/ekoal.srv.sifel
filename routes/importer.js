@@ -67,7 +67,14 @@ exports.rulesi = function (req, res) {
                 collection.findOne({ codeProd:{$eq:rules[i].code},orga:new require('mongodb').ObjectID(req.decoded.orga)}, function (err, item) {
                     if (item)
                     {   
-                        
+                        var ins = {
+                            produit:new require('mongodb').ObjectID(item._id),
+                            delai:rules[i].delAvR,
+                            nbWeek:rules[i].sR,
+                            dateModif:shared.getReunionLocalDate(),
+                            user: ObjectId(req.decoded._id)
+                        }
+
                         var weeks = [];
                         var sumer = 0;
                         var percent = parseFloat((100 / ins.nbWeek).toFixed(2));
@@ -81,16 +88,7 @@ exports.rulesi = function (req, res) {
                             weeks.push({week:i2,percent:percent});
                         }
                         
-                        var ins = {
-                            produit:new require('mongodb').ObjectID(item._id),
-                            delai:rules[i].delAvR,
-                            nbWeek:rules[i].sR,
-                            dateModif:shared.getReunionLocalDate(),
-                            user: ObjectId(req.decoded._id),
-                            weeks:weeks
-                        }
-
-                        
+                        ins.weeks = weeks;
 
                         console.log(ins);
                     }
