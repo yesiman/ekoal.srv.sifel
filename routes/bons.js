@@ -283,12 +283,16 @@ exports.getAll = function (req, res) {
                                     var tp = tb.palettes[relipal];
                                     for (var reliprod = 0;reliprod < tp.produits.length;reliprod++)
                                     {
-                                        ap[tp.produits[reliprod].produit] = true;
+                                        ap.push(new require('mongodb').ObjectID(tp.produits[reliprod].produit));
                                     }
                                 }
                             }
-                            console.log(ap);
-                            res.send(ret);
+                            db.collection('products', function (err, collection) {
+                                collection.find({_id:{$in:ap}}).toArray(function (err, items) {
+                                    ret.produits = items;
+                                    res.send(ret);
+                                });
+                            });
                         });  
                     });  
                 });
