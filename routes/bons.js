@@ -654,9 +654,10 @@ exports.getLc = function (req, res) {
                     var pal = bon.palettes[ip];
                     ret += bon.producteur + ";";
                     ret += pal.no + ";";
-                    for(var iprod = 0;iprod < prodAdded.length;iprod++)
+                    var inc = 0;
+                    for(var iprod in prodAdded)
                     {
-                        if(prodAdded[iprod] == (prod.produit + prod.calibre))
+                        if(iprod == (prod.produit + prod.calibre))
                         {
                             ret += prod.colisNb;
                         }
