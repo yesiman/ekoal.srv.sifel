@@ -273,6 +273,21 @@ exports.getAll = function (req, res) {
                         ret.items = data;
                         getBonsStationsDatas(items).then(function (data) {
                             ret.items = data;
+                            var ap = [];
+                            //STOCK TOUS LES CODES PRODUITS
+                            for (var relibon = 0;relibon < ret.items.length;relibon++)
+                            {
+                                var tb = ret.items[relibon];
+                                for (var relipal = 0;relipal < tb.palettes.length;relipal++)
+                                {
+                                    var tp = tb.palettes[relipal];
+                                    for (var reliprod = 0;reliprod < tp.produits.length;reliprod++)
+                                    {
+                                        ap[tp.produits[reliprod].produit] = true;
+                                    }
+                                }
+                            }
+                            console.log(ap);
                             res.send(ret);
                         });  
                     });  

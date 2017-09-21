@@ -252,13 +252,15 @@ app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwil
 app.post('/importer/clients/', cors(), bodyParser.json(), upload, importer.clients);
 
 app.post('/importer/rulesi/', cors(), bodyParser.json(), upload, importer.rulesi);
-
+//
 app.post('/importer/produits/', cors(), bodyParser.json(), upload, importer.produits);
 app.post('/importer/producteurs/', cors(), bodyParser.json(), upload, importer.producteurs);
 app.post('/importer/objectifs/', cors(), bodyParser.json(), upload, importer.objectifs);
 app.post('/importer/parcelles/', cors(), bodyParser.json(), upload, importer.parcelles);
 //
 app.post('/frommobile/uploadDatas/', cors(), bodyParser.json(), fromMobile.uploadDatas);
+app.post('/frommobile/uploadBon/', cors(), bodyParser.json(), fromMobile.uploadBon);
+app.post('/frommobile/uploadParc/', cors(), bodyParser.json(), fromMobile.uploadParc);
 //END.ROUTES
 
 Date.prototype.getWeek = function() { 

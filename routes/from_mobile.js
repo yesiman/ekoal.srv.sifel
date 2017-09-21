@@ -1,4 +1,29 @@
 //
+exports.uploadBon = function (req, res) {
+    var bon = req.body.data;
+    updBonV2(
+        req.decoded._id,
+        req.decoded.orga,
+        bon
+    )
+    .then(function(value) {
+        res.send({success:true}); 
+    }).catch(function(e) {
+        res.send({success:false}); 
+    }).then(function(e) {
+    });
+}
+exports.uploadParc = function (req, res) {
+    var parc = req.body.data;
+    updParcelle(parc._id,parc.surface,parc.altitude,parc.coordonnees,parc.code,parc.lib,new require('mongodb').ObjectID(parc.producteur),new require('mongodb').ObjectID(req.decoded._id),new require('mongodb').ObjectID(req.decoded.orga))
+    .then(function(value) {
+        res.send({success:true});
+    }).catch(function(e) {
+        res.send({success:false}); 
+    }).then(function(e) {
+        
+    });
+}
 exports.uploadDatas = function (req, res) {
     var lines = req.body.lines;
     var success = true;
