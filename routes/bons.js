@@ -627,7 +627,7 @@ exports.getLc = function (req, res) {
     }
     db.collection('bons', function (err, collection) {
         collection.find({_id:{$in:bs}}).toArray(function (err, items) {
-            var ret = "";
+            var ret = "Producteur;Palette;Produit;P. Brut;P. Net;";
             for(var ib = 0;ib < items.length;ib++)
             {
                 var bon = items[ib];
@@ -639,6 +639,8 @@ exports.getLc = function (req, res) {
                         var prod = pal.produits[iprod];
                         ret += bon.producteur + ";";
                         ret += pal.no + ";";
+                        ret += prod.produit + ";";
+                        ret += (pal.poid + pal.tare) + ";";
                         ret += pal.poid + ";";
                     }
                 }
