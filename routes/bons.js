@@ -627,9 +627,26 @@ exports.getLc = function (req, res) {
     }
     db.collection('bons', function (err, collection) {
         collection.find({_id:{$in:bs}}).toArray(function (err, items) {
-            console.log(items);
+            var ret = "";
+            for(var ib = 0;ib < items.length;ip++)
+            {
+                var bon = items[ib];
+                for(var ip = 0;ip < bon.palettes.length;ip++)
+                {
+                    var pal = bon.palettes[ip];
+                    for(var iprod = 0;iprod < pal.produits.length;iprod++)
+                    {
+                        var prod = bon.produits[iprod];
+                        ret += bon.producteur + ";";
+                        ret += pal.no + ";";
+                        ret += pal.poid + ";";
+                    }
+                }
+            }
+
+
             res.set('Content-Type', 'application/octet-stream');
-            res.send("a;b;c;d");
+            res.send({content:ret});
         });
     });
 }
