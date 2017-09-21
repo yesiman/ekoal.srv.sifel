@@ -620,7 +620,16 @@ exports.add = function (req, res) {
 };
 
 exports.getLc = function (req, res) {
-    console.log(req.body.bons);
-    res.set('Content-Type', 'application/octet-stream');
-    res.send("a;b;c;d");
+    var bs = [];
+    for(var i = 0;i < req.body.bons.length;i++)
+    {
+        bs.push(new require('mongodb').ObjectID(req.body.bons[i]));
+    }
+    db.collection('bons', function (err, collection) {
+        collection.find({_id:{$in:bs}}).toArray(function (err, items) {
+            console.log(items);
+            res.set('Content-Type', 'application/octet-stream');
+            res.send("a;b;c;d");
+        });
+    });
 }
