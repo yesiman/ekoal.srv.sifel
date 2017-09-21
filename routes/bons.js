@@ -659,7 +659,7 @@ exports.getLc = function (req, res) {
                     {
                         if(iprod == (prod.produit + prod.calibre))
                         {
-                            ret += prod.colisNb;
+                            ret += prod.nbColis;
                         }
                         ret += ";";
                     }
