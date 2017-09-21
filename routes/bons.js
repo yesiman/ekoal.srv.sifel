@@ -638,8 +638,8 @@ exports.getLc = function (req, res) {
                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                     {
                         var prod = pal.produits[iprod];
-                        if (!(prodAdded[prod.produit + prod.calibre] == true)) {
-                            prodAdded[prod.produit + prod.calibre] = true;
+                        if (!(prodAdded[prod.produit + prod.calibre] == (prod.produit + prod.calibre))) {
+                            prodAdded[prod.produit + prod.calibre] = (prod.produit + prod.calibre);
                             ret += prod.produit + "-" + prod.calibre + ";";
                         }
                     }
@@ -654,12 +654,11 @@ exports.getLc = function (req, res) {
                     var pal = bon.palettes[ip];
                     ret += bon.producteur + ";";
                     ret += pal.no + ";";
-                    var inc = 0;
-                    for(var iprod in prodAdded)
+                    for(var iprod = 0;iprod < prodAdded.length;iprod++)
                     {
-                        if(iprod == (prod.produit + prod.calibre))
+                        if(prodAdded[iprod] == (prod.produit + prod.calibre))
                         {
-                            ret += prod.nbColis;
+                            ret += prod.colisNb;
                         }
                         ret += ";";
                     }
