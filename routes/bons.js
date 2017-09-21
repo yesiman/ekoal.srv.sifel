@@ -641,7 +641,7 @@ exports.getLc = function (req, res) {
                         ret += pal.no + ";";
                         ret += prod.produit + ";";
                         ret += (pal.poid + pal.tare) + ";";
-                        ret += pal.poid + ";";
+                        ret += pal.poid + ";\n";
                     }
                 }
             }
