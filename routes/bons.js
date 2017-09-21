@@ -620,6 +620,7 @@ exports.add = function (req, res) {
 };
 
 exports.getLc = function (req, res) {
+    console.log(req.body.bons);
     res.set('Content-Type', 'application/octet-stream');
     res.send("a;b;c;d");
 }
