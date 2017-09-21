@@ -636,7 +636,7 @@ exports.getLc = function (req, res) {
                     var pal = bon.palettes[ip];
                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                     {
-                        var prod = bon.produits[iprod];
+                        var prod = pal.produits[iprod];
                         ret += bon.producteur + ";";
                         ret += pal.no + ";";
                         ret += pal.poid + ";";
