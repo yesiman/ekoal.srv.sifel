@@ -627,7 +627,8 @@ exports.getLc = function (req, res) {
     }
     db.collection('bons', function (err, collection) {
         collection.find({_id:{$in:bs}}).toArray(function (err, items) {
-            var ret = "Producteur;Palette;Produit;P. Brut;P. Net;";
+            var prodAdded = [];
+            var ret = "Producteur;Palette;"
             for(var ib = 0;ib < items.length;ib++)
             {
                 var bon = items[ib];
@@ -636,13 +637,32 @@ exports.getLc = function (req, res) {
                     var pal = bon.palettes[ip];
                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                     {
-                        var prod = pal.produits[iprod];
-                        ret += bon.producteur + ";";
-                        ret += pal.no + ";";
-                        ret += prod.produit + ";";
-                        ret += (pal.poid + pal.tare) + ";";
-                        ret += pal.poid + ";\n";
+                        if (!(prodAdded[prod.produit + prod.calibre] == true)) {
+                            prodAdded[prod.produit + prod.calibre] = true;
+                            ret += prod.produit + "-" + prod.calibre + ";";
+                        }
                     }
+                }
+            }
+            ret += "P. Brut;P. Net;\n";
+            for(var ib = 0;ib < items.length;ib++)
+            {
+                var bon = items[ib];
+                for(var ip = 0;ip < bon.palettes.length;ip++)
+                {
+                    var pal = bon.palettes[ip];
+                    ret += bon.producteur + ";";
+                    ret += pal.no + ";";
+                    for(var iprod = 0;iprod < prodAdded.length;iprod++)
+                    {
+                        if(prodAdded[iprod] == (prod.produit + prod.calibre))
+                        {
+                            ret += prod.colisNb;
+                        }
+                        ret += ";";
+                    }
+                    ret += (pal.poid + pal.tare) + ";";
+                    ret += pal.poid + ";\n";
                 }
             }
 
