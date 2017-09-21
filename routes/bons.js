@@ -628,7 +628,7 @@ exports.getLc = function (req, res) {
     db.collection('bons', function (err, collection) {
         collection.find({_id:{$in:bs}}).toArray(function (err, items) {
             var ret = "";
-            for(var ib = 0;ib < items.length;ip++)
+            for(var ib = 0;ib < items.length;ib++)
             {
                 var bon = items[ib];
                 for(var ip = 0;ip < bon.palettes.length;ip++)
