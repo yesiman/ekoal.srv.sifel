@@ -222,6 +222,7 @@ app.post('/bons/getStatProducteurs/', cors(), bodyParser.json(), bons.getStatPro
 app.post('/bons/getStatStations/', cors(), bodyParser.json(), bons.getStatStations);
 app.delete('/bons/delete/:id', cors(), bodyParser.json(), bons.delete);
 app.post('/bons/add/:id', cors(), bodyParser.json(), bons.add);
+app.post('/bons/getLc', cors(), bodyParser.json(), bons.getLc);
 //END BONS
 //PLANIFS
 app.get('/planifs/get/:id', cors(), bodyParser.json(), planifs.get);
@@ -248,11 +249,9 @@ app.post('/stats/getDataFile/:numFile', cors(), bodyParser.json(), stats.getData
 app.post('/stats/agreageByProducteur/', cors(), bodyParser.json(), stats.agreageByProducteur);
 //
 app.post('/messaging/testTwilio/', cors(), bodyParser.json(), messaging.testTwilio);
-
-app.post('/importer/clients/', cors(), bodyParser.json(), upload, importer.clients);
-
-app.post('/importer/rulesi/', cors(), bodyParser.json(), upload, importer.rulesi);
 //
+app.post('/importer/clients/', cors(), bodyParser.json(), upload, importer.clients);
+app.post('/importer/rulesi/', cors(), bodyParser.json(), upload, importer.rulesi);
 app.post('/importer/produits/', cors(), bodyParser.json(), upload, importer.produits);
 app.post('/importer/producteurs/', cors(), bodyParser.json(), upload, importer.producteurs);
 app.post('/importer/objectifs/', cors(), bodyParser.json(), upload, importer.objectifs);

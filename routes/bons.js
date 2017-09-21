@@ -618,3 +618,8 @@ exports.add = function (req, res) {
         }      
     });
 };
+
+exports.getLc = function (req, res) {
+    res.set('Content-Type', 'application/octet-stream');
+    res.send("a;b;c;d");
+}
