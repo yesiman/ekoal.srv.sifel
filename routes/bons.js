@@ -637,6 +637,7 @@ exports.getLc = function (req, res) {
                     var pal = bon.palettes[ip];
                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                     {
+                        var prod = pal.produits[iprod];
                         if (!(prodAdded[prod.produit + prod.calibre] == true)) {
                             prodAdded[prod.produit + prod.calibre] = true;
                             ret += prod.produit + "-" + prod.calibre + ";";
