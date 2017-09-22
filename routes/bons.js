@@ -659,39 +659,70 @@ exports.getLc = function (req, res) {
                     }
                 }
             }
-            //HEADERS
-            var ret = "Producteur;Palette;"
+            //GET Px IDs DATAS
+            var produitsIds = [];
+            var producteursIds = [];
+            for(var ipa = 0;ipa < producteursAdded.length;ipa++)
+            {
+                producteursIds.push(new require('mongodb').ObjectID(producteursAdded[ipa]));
+            }
             for(var ipa = 0;ipa < produitsAdded.length;ipa++)
             {
-                ret += produitsAdded[ipa] + ";";
+                produitsIds.push(new require('mongodb').ObjectID(produitsAdded[ipa]));
             }
-            ret += "P. Brut;P. Net;\n";
-            //BODY
-            for(var ib = 0;ib < items.length;ib++)
-            {
-                var bon = items[ib];
-                for(var ip = 0;ip < bon.palettes.length;ip++)
-                {
-                    var pal = bon.palettes[ip];
-                    ret += bon.producteur + ";";
-                    ret += pal.no + ";";
-                    for(var iprod = 0;iprod < pal.produits.length;iprod++)
-                    {
-                        var prod = pal.produits[iprod];
-                        for(var ipa = 0;ipa < produitsAdded.length;ipa++)
-                        {
-                            if((produitsAdded[ipa] == prod.produit + "/" + prod.calibre))
+
+            db.collection('users', function (err, collection) {
+                collection.find({_id:{$in:producteursIds}}).toArray(function (err, items) {
+                    var producteursLit = items;
+                    db.collection('products', function (err, collection) {
+                        collection.find({_id:{$in:produitsIds}}).toArray(function (err, items) {
+                            var produitsList = items;
+                            //HEADERS
+                            var ret = "Producteur;Palette;"
+                            for(var ipa = 0;ipa < produitsAdded.length;ipa++)
                             {
-                                ret += prod.colisNb + ";";
+                                for(var ipl = 0;ipl < produitsList.length;ipl++)
+                                {
+                                    if(produitsAdded[ipa].startsWith(produitsList[ipl]._id + "/"))
+                                    {
+                                        ret += produitsList[ipl].lib + " - " + produitsAdded[ipa].replace(produitsList[ipl]._id + "/","") + ";";
+                                    }
+                                }
                             }
-                            ret += ";";
-                        }
-                        
-                    }
-                    ret += (pal.poid + pal.tare) + ";";
-                    ret += pal.poid + ";\n";
-                }
-            }
+                            ret += "P. Brut;P. Net;\n";
+                            //BODY
+                            for(var ib = 0;ib < items.length;ib++)
+                            {
+                                var bon = items[ib];
+                                for(var ip = 0;ip < bon.palettes.length;ip++)
+                                {
+                                    var pal = bon.palettes[ip];
+                                    
+                                    ret += bon.producteur + ";";
+                                    ret += pal.no + ";";
+                                    for(var iprod = 0;iprod < pal.produits.length;iprod++)
+                                    {
+                                        var prod = pal.produits[iprod];
+                                        for(var ipa = 0;ipa < produitsAdded.length;ipa++)
+                                        {
+                                            if((produitsAdded[ipa] == prod.produit + "/" + prod.calibre))
+                                            {
+                                                ret += prod.colisNb;
+                                            }
+                                            ret += ";";
+                                        }
+                                        
+                                    }
+                                    ret += (pal.poid + pal.tare) + ";";
+                                    ret += pal.poid + ";\n";
+                                }
+                            }
+                        });
+                    });
+                });
+            });
+
+            
 
 
             res.set('Content-Type', 'application/octet-stream');
