@@ -96,11 +96,13 @@ exports.add = function (req, res) {
     {
         facture.bons[i] = new require('mongodb').ObjectID(facture.bons[i]);
     }
+    var fid = facture._id;
     db.collection('factures', function (err, collection) {
         if (pid == "-1")
         {
             facture.dateCreation = shared.getReunionLocalDate();
             collection.insert( facture , function (err, saved) {
+                fid = saved.insertedIds[0];
             });
         }
         else {
@@ -114,10 +116,10 @@ exports.add = function (req, res) {
             var upd;
             if (facture.type == '0')
             {
-                upd = {$set:{"facturation.client":true,multi:true}};
+                upd = {$set:{"facturation.client":fid,multi:true}};
             }
             else {
-                upd = {$set:{"facturation.producteur":true}};
+                upd = {$set:{"facturation.producteur":fid,multi:true}};
             }
             collection.update(
                 { _id: {$in:facture.bons} },

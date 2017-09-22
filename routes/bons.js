@@ -711,10 +711,8 @@ exports.getLc = function (req, res) {
                                             {
                                                 ret += prod.colisNb + ";";
                                             }
-                                            else {
-                                                ret += ";";
-                                            }
                                         }
+                                        ret += ";";
                                         
                                     }
                                     ret += (pal.poid + pal.tare) + ";";
