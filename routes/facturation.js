@@ -98,6 +98,7 @@ exports.add = function (req, res) {
         facture.bons[i] = new require('mongodb').ObjectID(facture.bons[i]);
     }
     var fid = facture._id;
+    console.log(facture.bons);
     db.collection('factures', function (err, collection) {
         if (pid == "-1")
         {
