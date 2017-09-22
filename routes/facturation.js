@@ -73,6 +73,7 @@ exports.getAll = function (req, res) {
     });
 };
 exports.delete = function (req, res) {
+    //todo SUPPRIMER LIENS VERS BONS
     db.collection('factures', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
@@ -103,6 +104,21 @@ exports.add = function (req, res) {
             facture.dateCreation = shared.getReunionLocalDate();
             collection.insert( facture , function (err, saved) {
                 fid = saved.insertedIds[0];
+                db.collection('bons', function (err, collection) {
+                    var upd;
+                    if (facture.type == '0')
+                    {
+                        upd = {$set:{"facturation.client":fid,multi:true}};
+                    }
+                    else {
+                        upd = {$set:{"facturation.producteur":fid,multi:true}};
+                    }
+                    collection.update(
+                        { _id: {$in:facture.bons} },
+                        upd, {multi:true}
+                        );
+                        res.send(true);
+                });
             });
         }
         else {
@@ -110,22 +126,23 @@ exports.add = function (req, res) {
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
                 facture);
+            db.collection('bons', function (err, collection) {
+                    var upd;
+                    if (facture.type == '0')
+                    {
+                        upd = {$set:{"facturation.client":fid,multi:true}};
+                    }
+                    else {
+                        upd = {$set:{"facturation.producteur":fid,multi:true}};
+                    }
+                    collection.update(
+                        { _id: {$in:facture.bons} },
+                        upd, {multi:true}
+                        );
+                        res.send(true);
+                });
         }
         //LOCK / UNLOCK BONS
-        db.collection('bons', function (err, collection) {
-            var upd;
-            if (facture.type == '0')
-            {
-                upd = {$set:{"facturation.client":fid,multi:true}};
-            }
-            else {
-                upd = {$set:{"facturation.producteur":fid,multi:true}};
-            }
-            collection.update(
-                { _id: {$in:facture.bons} },
-                upd, {multi:true}
-                );
-                res.send(true);
-        });
+        
     });
 };
