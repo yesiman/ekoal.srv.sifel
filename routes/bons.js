@@ -711,6 +711,8 @@ exports.getLc = function (req, res) {
                                     ret += pal.poid + ";\n";
                                 }
                             }
+                            res.set('Content-Type', 'application/octet-stream');
+                            res.send({content:ret});
                         });
                     });
                 });
@@ -719,8 +721,7 @@ exports.getLc = function (req, res) {
             
 
 
-            res.set('Content-Type', 'application/octet-stream');
-            res.send({content:ret});
+            
         });
     });
 }
