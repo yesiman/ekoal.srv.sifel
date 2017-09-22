@@ -695,7 +695,8 @@ exports.getLc = function (req, res) {
                                     var pal = bon.palettes[ip];
                                     for(var ipl = 0;ipl < producteursList.length;ipl++)
                                     {
-                                        if(producteursList[ipl]._id == bon.producteur)
+                                        //console.log(producteursList[ipl]._id.toString-), bon.producteur);
+                                        if(producteursList[ipl]._id.toString() == bon.producteur.toString())
                                         {
                                             ret += producteursList[ipl].codeAdh + ";";
                                         }
