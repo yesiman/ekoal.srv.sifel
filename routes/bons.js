@@ -658,6 +658,8 @@ exports.getLc = function (req, res) {
             var ret = "Producteur;Palette;"
             for(var ipa = 0;ipa < produitsAdded.length;ipa++)
             {
+                console.log("klm");
+                console.log(produitsAdded[ipa]);
                 ret += produitsAdded[ipa] + ";";
             }
             ret += "P. Brut;P. Net;\n";
