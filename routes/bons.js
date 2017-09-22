@@ -633,7 +633,6 @@ exports.getLc = function (req, res) {
             //AGREG PRODUCTEURS
             var produitsAdded = [];
             var producteursAdded = [];
-            var ret = "Producteur;Palette;"
             for(var ib = 0;ib < items.length;ib++)
             {
                 var bon = items[ib];
@@ -648,13 +647,19 @@ exports.getLc = function (req, res) {
                         var prod = pal.produits[iprod];
                         if (!(produitsAdded[prod.produit + "/" + prod.calibre] == (prod.produit + "/" + prod.calibre))) {
                             produitsAdded[prod.produit + "/" + prod.calibre] = prod.produit + "/" + prod.calibre;
-                            ret += prod.produit + "-" + prod.calibre + ";";
                         }
                         
                     }
                 }
             }
+            //HEADERS
+            var ret = "Producteur;Palette;"
+            for(var ipa = 0;ipa < produitsAdded.length;ipa++)
+            {
+                ret += produitsAdded[ipa] + ";";
+            }
             ret += "P. Brut;P. Net;\n";
+            //BODY
             for(var ib = 0;ib < items.length;ib++)
             {
                 var bon = items[ib];
