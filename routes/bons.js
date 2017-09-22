@@ -633,11 +633,14 @@ exports.getLc = function (req, res) {
             //AGREG PRODUCTEURS
             var produitsAdded = [];
             var producteursAdded = [];
+            var produitsIds = [];
+            var producteursIds = [];
             for(var ib = 0;ib < items.length;ib++)
             {
                 var bon = items[ib];
                 if (!(producteursAdded[bon.producteur] == bon.producteur)) {
                     producteursAdded[bon.producteur] = bon.producteur;
+                    producteursIds.push(new require('mongodb').ObjectID(bon.producteur));
                 }
                 for(var ip = 0;ip < bon.palettes.length;ip++)
                 {
@@ -655,22 +658,13 @@ exports.getLc = function (req, res) {
                         if (!found)
                         {
                             produitsAdded.push(prod.produit + "/" + prod.calibre);
+                            produitsIds.push(new require('mongodb').ObjectID(prod.produit));
                         }
                     }
                 }
             }
             //GET Px IDs DATAS
-            var produitsIds = [];
-            var producteursIds = [];
-            for(var ipa = 0;ipa < producteursAdded.length;ipa++)
-            {
-                producteursIds.push(new require('mongodb').ObjectID(producteursAdded[ipa]));
-            }
-            for(var ipa = 0;ipa < produitsAdded.length;ipa++)
-            {
-                produitsIds.push(new require('mongodb').ObjectID(produitsAdded[ipa]));
-            }
-
+            
             db.collection('users', function (err, collection) {
                 collection.find({_id:{$in:producteursIds}}).toArray(function (err, items) {
                     var producteursLit = items;
