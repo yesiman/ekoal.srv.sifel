@@ -625,23 +625,33 @@ exports.getLc = function (req, res) {
     {
         bs.push(new require('mongodb').ObjectID(req.body.bons[i]));
     }
+    
+    
     db.collection('bons', function (err, collection) {
         collection.find({_id:{$in:bs}}).toArray(function (err, items) {
-            var prodAdded = [];
+            //AGREG PRODUITS
+            //AGREG PRODUCTEURS
+            var produitsAdded = [];
+            var producteursAdded = [];
             var ret = "Producteur;Palette;"
             for(var ib = 0;ib < items.length;ib++)
             {
                 var bon = items[ib];
+                if (!(producteursAdded[bon.producteur] == bon.producteur)) {
+                    producteursAdded[bon.producteur] = bon.producteur;
+                }
                 for(var ip = 0;ip < bon.palettes.length;ip++)
                 {
                     var pal = bon.palettes[ip];
                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                     {
                         var prod = pal.produits[iprod];
-                        if (!(prodAdded[prod.produit + prod.calibre] == (prod.produit + prod.calibre))) {
-                            prodAdded[prod.produit + prod.calibre] = (prod.produit + prod.calibre);
+                        if (!(produitsAdded[prod.produit + prod.calibre].produit == prod.produit) && 
+                            !(produitsAdded[prod.produit + prod.calibre].calibre == prod.calibre)) {
+                            produitsAdded[prod.produit + prod.calibre] = {prod:prod.produit,calibre:prod.calibre};
                             ret += prod.produit + "-" + prod.calibre + ";";
                         }
+                        
                     }
                 }
             }
@@ -657,14 +667,16 @@ exports.getLc = function (req, res) {
                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                     {
                         var prod = pal.produits[iprod];
-                        for(var ipa = 0;ipa < prodAdded.length;ipa++)
+                        for(var ipa = 0;ipa < produitsAdded.length;ipa++)
                         {
-                            if(prodAdded[ipa] == (prod.produit + prod.calibre))
+                            if((produitsAdded[ipa].produit == prod.produit) && 
+                            (produitsAdded[ipa].calibre == prod.calibre))
                             {
                                 ret += prod.colisNb;
                             }
+                            ret += ";";
                         }
-                        ret += ";";
+                        
                     }
                     ret += (pal.poid + pal.tare) + ";";
                     ret += pal.poid + ";\n";
