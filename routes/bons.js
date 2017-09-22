@@ -653,6 +653,8 @@ exports.getLc = function (req, res) {
                 }
             }
             //HEADERS
+            console.log("produitsAdded",produitsAdded);
+            console.log("producteursAdded",producteursAdded);
             var ret = "Producteur;Palette;"
             for(var ipa = 0;ipa < produitsAdded.length;ipa++)
             {
