@@ -704,6 +704,9 @@ exports.getLc = function (req, res) {
                                             {
                                                 ret += prod.colisNb + ";";
                                             }
+                                            else {
+                                                ret += ";";
+                                            }
                                         }
                                         
                                     }
