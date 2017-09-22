@@ -631,6 +631,7 @@ exports.getLc = function (req, res) {
         collection.find({_id:{$in:bs}}).toArray(function (err, items) {
             //AGREG PRODUITS
             //AGREG PRODUCTEURS
+            var bons = items;
             var produitsAdded = [];
             var producteursAdded = [];
             var produitsIds = [];
@@ -685,9 +686,9 @@ exports.getLc = function (req, res) {
                             }
                             ret += "P. Brut;P. Net;\n";
                             //BODY
-                            for(var ib = 0;ib < items.length;ib++)
+                            for(var ib = 0;ib < bons.length;ib++)
                             {
-                                var bon = items[ib];
+                                var bon = bons[ib];
                                 for(var ip = 0;ip < bon.palettes.length;ip++)
                                 {
                                     var pal = bon.palettes[ip];
