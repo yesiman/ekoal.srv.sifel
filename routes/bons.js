@@ -646,10 +646,8 @@ exports.getLc = function (req, res) {
                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                     {
                         var prod = pal.produits[iprod];
-                        if (produitsAdded[prod.produit + prod.calibre] && 
-                            !(produitsAdded[prod.produit + prod.calibre].produit == prod.produit) && 
-                            !(produitsAdded[prod.produit + prod.calibre].calibre == prod.calibre)) {
-                            produitsAdded[prod.produit + prod.calibre] = {prod:prod.produit,calibre:prod.calibre};
+                        if (!(produitsAdded[prod.produit + "/" + prod.calibre] == (prod.produit + "/" + prod.calibre))) {
+                            produitsAdded[prod.produit + "/" + prod.calibre] = prod.produit + "/" + prod.calibre;
                             ret += prod.produit + "-" + prod.calibre + ";";
                         }
                         
@@ -670,10 +668,9 @@ exports.getLc = function (req, res) {
                         var prod = pal.produits[iprod];
                         for(var ipa = 0;ipa < produitsAdded.length;ipa++)
                         {
-                            if((produitsAdded[ipa].produit == prod.produit) && 
-                            (produitsAdded[ipa].calibre == prod.calibre))
+                            if((produitsAdded[ipa] == prod.produit + "/" + prod.calibre))
                             {
-                                ret += prod.colisNb;
+                                ret += prod.colisNb + ";";
                             }
                             ret += ";";
                         }
