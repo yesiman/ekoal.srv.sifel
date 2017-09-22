@@ -93,6 +93,7 @@ exports.add = function (req, res) {
     else {
         facture.producteur = new require('mongodb').ObjectID(facture.producteur);
     }
+    console.log(facture.bons);
     for(var i = 0;i < facture.bons.length;i++)
     {
         facture.bons[i] = new require('mongodb').ObjectID(facture.bons[i]);
