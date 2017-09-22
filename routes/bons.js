@@ -702,9 +702,8 @@ exports.getLc = function (req, res) {
                                         {
                                             if((produitsAdded[ipa] == prod.produit + "/" + prod.calibre))
                                             {
-                                                ret += prod.colisNb;
+                                                ret += prod.colisNb + ";";
                                             }
-                                            ret += ";";
                                         }
                                         
                                     }
