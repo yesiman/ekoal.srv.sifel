@@ -685,6 +685,7 @@ exports.getLc = function (req, res) {
                                 }
                             }
                             ret += "P. Brut;P. Net;\n";
+                            console.log(producteursList);
                             //BODY
                             for(var ib = 0;ib < bons.length;ib++)
                             {
