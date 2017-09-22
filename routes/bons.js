@@ -215,7 +215,12 @@ function getFinalFilters(body,decoded,callback) {
             }
         }
         filters.producteur = { '$in': ids };
+        if (body.noLock)
+        {
+            filters.facturation.producteur = { '$exists': false };    
+        }
     }
+
     if (body.stations && (body.stations.length > 0))
     {   
         ids = [];
@@ -239,6 +244,10 @@ function getFinalFilters(body,decoded,callback) {
             }
         }
         filters.client = { '$in': ids };
+        if (body.noLock)
+        {
+            filters.facturation.client = { '$exists': false };    
+        }
     }
     if (body.dateFrom && body.dateTo)
     {
