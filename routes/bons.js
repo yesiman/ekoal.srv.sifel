@@ -646,7 +646,8 @@ exports.getLc = function (req, res) {
                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                     {
                         var prod = pal.produits[iprod];
-                        if (!(produitsAdded[prod.produit + prod.calibre].produit == prod.produit) && 
+                        if (produitsAdded[prod.produit + prod.calibre] && 
+                            !(produitsAdded[prod.produit + prod.calibre].produit == prod.produit) && 
                             !(produitsAdded[prod.produit + prod.calibre].calibre == prod.calibre)) {
                             produitsAdded[prod.produit + prod.calibre] = {prod:prod.produit,calibre:prod.calibre};
                             ret += prod.produit + "-" + prod.calibre + ";";
