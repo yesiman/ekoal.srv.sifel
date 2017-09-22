@@ -645,21 +645,24 @@ exports.getLc = function (req, res) {
                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                     {
                         var prod = pal.produits[iprod];
-                        if (!(produitsAdded[prod.produit + "/" + prod.calibre] == (prod.produit + "/" + prod.calibre))) {
-                            produitsAdded[prod.produit + "/" + prod.calibre] = prod.produit + "/" + prod.calibre;
+                        var found = false;
+                        for(var ipa = 0;ipa < produitsAdded.length;ipa++)
+                        {
+                            if (produitsAdded[ipa] == (prod.produit + "/" + prod.calibre)){
+                                found = true;
+                            }
                         }
-                        
+                        if (!found)
+                        {
+                            produitsAdded.push(prod.produit + "/" + prod.calibre);
+                        }
                     }
                 }
             }
             //HEADERS
-            console.log("produitsAdded",produitsAdded.length);
-            console.log("producteursAdded",producteursAdded);
             var ret = "Producteur;Palette;"
             for(var ipa = 0;ipa < produitsAdded.length;ipa++)
             {
-                console.log("klm");
-                console.log(produitsAdded[ipa]);
                 ret += produitsAdded[ipa] + ";";
             }
             ret += "P. Brut;P. Net;\n";
