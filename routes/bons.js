@@ -668,7 +668,7 @@ exports.getLc = function (req, res) {
             
             db.collection('users', function (err, collection) {
                 collection.find({_id:{$in:producteursIds}}).toArray(function (err, items) {
-                    var producteursLit = items;
+                    var producteursList = items;
                     db.collection('products', function (err, collection) {
                         collection.find({_id:{$in:produitsIds}}).toArray(function (err, items) {
                             var produitsList = items;
@@ -692,8 +692,13 @@ exports.getLc = function (req, res) {
                                 for(var ip = 0;ip < bon.palettes.length;ip++)
                                 {
                                     var pal = bon.palettes[ip];
-                                    
-                                    ret += bon.producteur + ";";
+                                    for(var ipl = 0;ipl < producteursList.length;ipl++)
+                                    {
+                                        if(producteursList[ipl]._id == bon.producteur)
+                                        {
+                                            ret += producteursList[ipl].codeAdh + ";";
+                                        }
+                                    }
                                     ret += pal.no + ";";
                                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                                     {
