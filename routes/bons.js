@@ -246,8 +246,8 @@ function getFinalFilters(body,decoded,callback) {
         filters.client = { '$in': ids };
         if (body.noLock)
         {
-            filters.facturation = {};
-            filters.facturation.client = { $exists: false };
+            filters.facturation = { '$exists': false };
+            //filters.facturation.client = { $exists: false };
         }
     }
     if (body.dateFrom && body.dateTo)
