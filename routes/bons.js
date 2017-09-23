@@ -217,7 +217,7 @@ function getFinalFilters(body,decoded,callback) {
         filters.producteur = { '$in': ids };
         if (body.noLock)
         {
-            filters.facturation = {"$elemMatch":{ producteur:{ '$exists': false }}};
+            filters.facturation = {$elemMatch:{ producteur:{ $exists: false }}};
         }
     }
 
@@ -246,7 +246,7 @@ function getFinalFilters(body,decoded,callback) {
         filters.client = { '$in': ids };
         if (body.noLock)
         {
-            filters.facturation = {"$elemMatch":{ client:{ '$exists': false }}};    
+            filters.facturation = {$elemMatch:{ client:{ $exists: false }}};
         }
     }
     if (body.dateFrom && body.dateTo)
