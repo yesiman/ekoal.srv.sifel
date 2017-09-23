@@ -202,14 +202,14 @@ function getFinalFilters(body,decoded,callback) {
     var filters = { 
         orga:new require('mongodb').ObjectID(decoded.orga),
     };
-    if (prodMode)
+    if (prodMode && body.noLock)
     {
         filters = { 
             orga:new require('mongodb').ObjectID(decoded.orga),
             'facturation.producteur':{'$exists':false}
         };
     }
-    if (clientMode)
+    if (clientMode && body.noLock)
     {
         filters = { 
             orga:new require('mongodb').ObjectID(decoded.orga),
@@ -233,10 +233,6 @@ function getFinalFilters(body,decoded,callback) {
             }
         }
         filters.producteur = { '$in': ids };
-        if (body.noLock)
-        {
-            filters.facturation = {$elemMatch:{ producteur:{ $exists: false }}};
-        }
     }
 
     if (body.stations && (body.stations.length > 0))
@@ -262,13 +258,6 @@ function getFinalFilters(body,decoded,callback) {
             }
         }
         filters.client = { '$in': ids };
-        if (body.noLock)
-        {
-            filters["facturation"] = {};
-            filters["facturation"]["client"] = { '$exists': false };
-            //filters.facturation = { 'client' : { '$exists': false }};
-            //filters.facturation.client = { $exists: false };
-        }
     }
     if (body.dateFrom && body.dateTo)
     {
