@@ -203,7 +203,7 @@ function getFinalFilters(body,decoded,callback) {
     {   
         filters.noLta = { '$regex': body.lta, $options: 'i' };
     }
-    console.log(body.producteurs);
+    //console.log(body.producteurs);
     if (body.producteurs && (body.producteurs.length > 0))
     {   
         ids = [];
@@ -246,7 +246,8 @@ function getFinalFilters(body,decoded,callback) {
         filters.client = { '$in': ids };
         if (body.noLock)
         {
-            filters.facturation = {$elemMatch:{ client:{ $exists: false }}};
+            filters.facturation = {};
+            filters.facturation.client = { $exists: false };
         }
     }
     if (body.dateFrom && body.dateTo)
