@@ -197,14 +197,32 @@ exports.get = function (req, res) {
 };
 //
 function getFinalFilters(body,decoded,callback) {
-    var filters = {orga:new require('mongodb').ObjectID(decoded.orga)};
+    var prodMode = (body.producteurs && (body.producteurs.length > 0));
+    var clientMode = (body.clients && (body.clients.length > 0));
+    var filters = { 
+        orga:new require('mongodb').ObjectID(decoded.orga),
+    };
+    if (prodMode)
+    {
+        filters = { 
+            orga:new require('mongodb').ObjectID(decoded.orga),
+            'facturation.producteur':{'$exists':false}
+        };
+    }
+    if (clientMode)
+    {
+        filters = { 
+            orga:new require('mongodb').ObjectID(decoded.orga),
+            'facturation.client':{'$exists':false}
+        };
+    }
     var ids = [];
     if (body.lta && (body.lta.length > 0))
     {   
         filters.noLta = { '$regex': body.lta, $options: 'i' };
     }
     //console.log(body.producteurs);
-    if (body.producteurs && (body.producteurs.length > 0))
+    if (prodMode)
     {   
         ids = [];
         for(var i=0;i<body.producteurs.length;i++)
@@ -233,7 +251,7 @@ function getFinalFilters(body,decoded,callback) {
         }
         filters.station = { '$in': ids };
     }
-    if (body.clients && (body.clients.length > 0))
+    if (clientMode)
     {   
         ids = [];
         for(var i=0;i<body.clients.length;i++)
