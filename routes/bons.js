@@ -706,7 +706,7 @@ exports.getLc = function (req, res) {
                             for(var ib = 0;ib < bons.length;ib++)
                             {
                                 var bon = bons[ib];
-                                var amid = [produitsAdded.length];
+                                var amid = [];
                                 for(var ip = 0;ip < bon.palettes.length;ip++)
                                 {
                                     var pal = bon.palettes[ip];
@@ -733,7 +733,7 @@ exports.getLc = function (req, res) {
                                                     amid[ipa] += prod.colisNb;
                                                 }
                                                 else {
-                                                    amid[ipa] = prod.colisNb;
+                                                    amid[ipa].push(prod.colisNb);
                                                 }
                                                 //ret += prod.colisNb + ";";
                                             }
