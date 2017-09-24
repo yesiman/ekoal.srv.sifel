@@ -710,7 +710,7 @@ exports.getLc = function (req, res) {
                                 for(var ip = 0;ip < bon.palettes.length;ip++)
                                 {
                                     var amid = [];
-                                    var pal = bon.no + ";" + bon.palettes[ip];
+                                    var pal = bon.palettes[ip];
                                     //GET PRODUCTEUR
                                     for(var ipl = 0;ipl < producteursList.length;ipl++)
                                     {
@@ -720,7 +720,7 @@ exports.getLc = function (req, res) {
                                             ret += producteursList[ipl].codeAdh + ";";
                                         }
                                     }
-                                    ret += pal.no + ";";
+                                    ret += bon.numBon + ";" + pal.no + ";";
                                     //GET PRODUIT
 
                                     for (var inte = 0;inte < produitsAdded.length;inte++)
