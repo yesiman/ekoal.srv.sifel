@@ -706,9 +706,10 @@ exports.getLc = function (req, res) {
                             for(var ib = 0;ib < bons.length;ib++)
                             {
                                 var bon = bons[ib];
-                                var amid = [];
+                                
                                 for(var ip = 0;ip < bon.palettes.length;ip++)
                                 {
+                                    var amid = [];
                                     var pal = bon.palettes[ip];
                                     //GET PRODUCTEUR
                                     for(var ipl = 0;ipl < producteursList.length;ipl++)
