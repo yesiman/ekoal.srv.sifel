@@ -640,16 +640,14 @@ exports.add = function (req, res) {
 
 exports.getLc = function (req, res) {
     var bs = [];
+    //BONS FILTERS
     for(var i = 0;i < req.body.bons.length;i++)
     {
         bs.push(new require('mongodb').ObjectID(req.body.bons[i]));
     }
-    
-    
     db.collection('bons', function (err, collection) {
         collection.find({_id:{$in:bs}}).toArray(function (err, items) {
-            //AGREG PRODUITS
-            //AGREG PRODUCTEURS
+            //AGREG PRODUITS & PRODUCTEURS
             var bons = items;
             var produitsAdded = [];
             var producteursAdded = [];
@@ -684,7 +682,6 @@ exports.getLc = function (req, res) {
                 }
             }
             //GET Px IDs DATAS
-            
             db.collection('users', function (err, collection) {
                 collection.find({_id:{$in:producteursIds}}).toArray(function (err, items) {
                     var producteursList = items;
@@ -704,14 +701,15 @@ exports.getLc = function (req, res) {
                                 }
                             }
                             ret += "P. Brut;P. Net;\n";
-                            console.log(producteursList);
                             //BODY
+                            var amid = [produitsAdded.length];
                             for(var ib = 0;ib < bons.length;ib++)
                             {
                                 var bon = bons[ib];
                                 for(var ip = 0;ip < bon.palettes.length;ip++)
                                 {
                                     var pal = bon.palettes[ip];
+                                    //GET PRODUCTEUR
                                     for(var ipl = 0;ipl < producteursList.length;ipl++)
                                     {
                                         //console.log(producteursList[ipl]._id.toString-), bon.producteur);
@@ -721,6 +719,7 @@ exports.getLc = function (req, res) {
                                         }
                                     }
                                     ret += pal.no + ";";
+                                    //GET PRODUIT
                                     for(var iprod = 0;iprod < pal.produits.length;iprod++)
                                     {
                                         var prod = pal.produits[iprod];
@@ -728,12 +727,24 @@ exports.getLc = function (req, res) {
                                         {
                                             if((produitsAdded[ipa] == prod.produit + "/" + prod.calibre))
                                             {
-                                                ret += prod.colisNb + ";";
+                                                if (amid[ipa].length > 0)
+                                                {
+                                                    amid[ipa] += prod.colisNb;
+                                                }
+                                                else {
+                                                    amid[ipa] = prod.colisNb;
+                                                }
+                                                //ret += prod.colisNb + ";";
                                             }
                                         }
-                                        ret += ";";
-                                        
+                                        //ret += ";";   
                                     }
+
+                                    for(var iamid = 0;iamid < amid.length;iamid++)
+                                    {
+                                        ret += amid[iamid] + ";";
+                                    }
+
                                     ret += (pal.poid + pal.tare) + ";";
                                     ret += pal.poid + ";\n";
                                 }
