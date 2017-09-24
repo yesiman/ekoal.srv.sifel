@@ -733,7 +733,7 @@ exports.getLc = function (req, res) {
                                                     amid[ipa] += prod.colisNb;
                                                 }
                                                 else {
-                                                    amid[ipa].push(prod.colisNb);
+                                                    amid.push(prod.colisNb);
                                                 }
                                                 //ret += prod.colisNb + ";";
                                             }
