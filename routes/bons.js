@@ -206,14 +206,14 @@ function getFinalFilters(body,decoded,callback) {
     {
         filters = { 
             orga:new require('mongodb').ObjectID(decoded.orga),
-            'facturation.producteur':{'$exists':false}
+            'facturation.producteur':new require('mongodb').ObjectID(body.noLock)
         };
     }
     if (clientMode && body.noLock)
     {
         filters = { 
             orga:new require('mongodb').ObjectID(decoded.orga),
-            'facturation.client':{'$exists':false}
+            'facturation.client':new require('mongodb').ObjectID(body.noLock)
         };
     }
     var ids = [];
@@ -711,6 +711,7 @@ exports.getLc = function (req, res) {
                                 {
                                     var amid = [];
                                     var pal = bon.palettes[ip];
+                                    ret += bon.numBon + ";"
                                     //GET PRODUCTEUR
                                     for(var ipl = 0;ipl < producteursList.length;ipl++)
                                     {
@@ -720,7 +721,7 @@ exports.getLc = function (req, res) {
                                             ret += producteursList[ipl].codeAdh + ";";
                                         }
                                     }
-                                    ret += bon.numBon + ";" + pal.no + ";";
+                                    ret += pal.no + ";";
                                     //GET PRODUIT
 
                                     for (var inte = 0;inte < produitsAdded.length;inte++)
