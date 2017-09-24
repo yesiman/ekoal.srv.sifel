@@ -702,10 +702,11 @@ exports.getLc = function (req, res) {
                             }
                             ret += "P. Brut;P. Net;\n";
                             //BODY
-                            var amid = [produitsAdded.length];
+                            
                             for(var ib = 0;ib < bons.length;ib++)
                             {
                                 var bon = bons[ib];
+                                var amid = [produitsAdded.length];
                                 for(var ip = 0;ip < bon.palettes.length;ip++)
                                 {
                                     var pal = bon.palettes[ip];
