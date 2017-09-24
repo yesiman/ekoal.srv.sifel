@@ -689,7 +689,7 @@ exports.getLc = function (req, res) {
                         collection.find({_id:{$in:produitsIds}}).toArray(function (err, items) {
                             var produitsList = items;
                             //HEADERS
-                            var ret = "Producteur;Palette;"
+                            var ret = "Bon;Producteur;Palette;"
                             for(var ipa = 0;ipa < produitsAdded.length;ipa++)
                             {
                                 for(var ipl = 0;ipl < produitsList.length;ipl++)
@@ -710,7 +710,7 @@ exports.getLc = function (req, res) {
                                 for(var ip = 0;ip < bon.palettes.length;ip++)
                                 {
                                     var amid = [];
-                                    var pal = bon.palettes[ip];
+                                    var pal = bon.no + ";" + bon.palettes[ip];
                                     //GET PRODUCTEUR
                                     for(var ipl = 0;ipl < producteursList.length;ipl++)
                                     {
