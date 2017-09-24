@@ -727,11 +727,13 @@ exports.getLc = function (req, res) {
                                         var prod = pal.produits[iprod];
                                         for(var ipa = 0;ipa < produitsAdded.length;ipa++)
                                         {
-                                            amid.push(0)
+                                            if (amid.length < ipa)
+                                            {
+                                                amid.push(0)
+                                            }
                                             if((produitsAdded[ipa] == prod.produit + "/" + prod.calibre))
                                             {
                                                 amid[ipa] += prod.colisNb;
-                                                
                                                 //ret += prod.colisNb + ";";
                                             }
                                         }
