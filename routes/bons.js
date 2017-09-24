@@ -727,7 +727,7 @@ exports.getLc = function (req, res) {
                                         {
                                             if((produitsAdded[ipa] == prod.produit + "/" + prod.calibre))
                                             {
-                                                if (amid[ipa].length > 0)
+                                                if (amid[ipa])
                                                 {
                                                     amid[ipa] += prod.colisNb;
                                                 }
