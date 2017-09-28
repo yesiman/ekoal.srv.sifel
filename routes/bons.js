@@ -633,7 +633,7 @@ exports.getStatProduitsExp = function (req, res) {
                                 ret += items[i].lib + ";";
                                 for(var i2=0;i2<datas.length;i2++)
                                 {
-                                    ret +=  data[i2].count;
+                                    ret +=  datas[i2].count;
                                 }
                                 ret +=  "/n";
                             }
