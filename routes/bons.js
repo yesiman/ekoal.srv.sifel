@@ -633,14 +633,147 @@ exports.getStatProduitsExp = function (req, res) {
                                 ret += items[i].lib + ";";
                                 for(var i2=0;i2<datas.length;i2++)
                                 {
-                                    ret +=  datas[i2].count;
+                                    if(datas[i2]._id.produit == items[i]._id)
+                                    {
+                                        ret +=  datas[i2].count;
+                                    }
+                                    
                                 }
-                                ret +=  "/n";
+                                ret +=  "\n";
                             }
 
                             res.set('Content-Type', 'application/octet-stream');
                             res.send({content:ret});
 
+                        });
+                    });
+                }
+            );
+        });
+    });
+    //
+};
+exports.getStatProducteursExp = function (req, res) {
+    var ret = "";
+    //
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        var query = {};
+        var group = {};
+        var sort = {};
+        db.collection('bons', function (err, collection) {
+            query["$match"] = {};
+            query["$match"]["dateDoc"] = result.dateDoc;
+            group["$group"] = {};
+            group["$group"]["_id"] = {};
+            group["$group"]["_id"]["year"] = { $year: "$dateDoc" };
+            group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
+            group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
+            group["$group"]["_id"]["producteur"] = "$producteur";
+            sort["$sort"] = {  
+                "_id.year": 1, 
+                "_id.month": 1, 
+                "_id.day": 1,
+                "_id.producteur" : 1 
+            };
+            group["$group"]["count"] = { $sum: "$palettes.poid"};            
+            collection.aggregate(
+                query,
+                {"$unwind": "$palettes"},
+                group,
+                sort,
+                function(err, summary) {
+                    var datas = summary;
+                    var producteursIds = [];
+                    for(var i=0;i<summary.length;i++)
+                    {
+                        if (!(producteursIds.indexOf(new require('mongodb').ObjectID(summary[i]._id.producteur)) > -1))
+                        {
+                            producteursIds.push(new require('mongodb').ObjectID(summary[i]._id.producteur));
+                        }
+                    }
+                    db.collection('users', function (err, collection) {
+                        collection.find({_id: {$in:producteursIds}}).toArray(function (err, items) {
+                            for(var i=0;i<items.length;i++)
+                            {
+                                ret += items[i].name + " " + items[i].surn + ";";
+                                for(var i2=0;i2<datas.length;i2++)
+                                {
+                                    if(datas[i2]._id.producteur == items[i]._id)
+                                    {
+                                        ret +=  datas[i2].count;
+                                    }
+                                    
+                                }
+                                ret +=  "\n";
+                            }
+
+                            res.set('Content-Type', 'application/octet-stream');
+                            res.send({content:ret});
+                        });
+                    });
+                }
+            );
+        });
+    });
+    //
+};
+exports.getStatStations = function (req, res) {
+    var ret = "";
+    //
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        var query = {};
+        var group = {};
+        var sort = {};
+        db.collection('bons', function (err, collection) {
+            query["$match"] = {};
+            query["$match"]["dateDoc"] = result.dateDoc;
+            group["$group"] = {};
+            group["$group"]["_id"] = {};
+            group["$group"]["_id"]["year"] = { $year: "$dateDoc" };
+            group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
+            group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
+            group["$group"]["_id"]["station"] = "$station";
+            sort["$sort"] = {  
+                "_id.year": 1, 
+                "_id.month": 1, 
+                "_id.day": 1,
+                "_id.station" : 1 
+            };
+            group["$group"]["count"] = { $sum: "$palettes.poid"};            
+            collection.aggregate(
+                query,
+                {"$unwind": "$palettes"},
+                group,
+                sort,
+                function(err, summary) {
+                    var datas = summary;
+                    var stationsIds = [];
+                    for(var i=0;i<summary.length;i++)
+                    {
+                        if (!(stationsIds.indexOf(new require('mongodb').ObjectID(summary[i]._id.station)) > -1))
+                        {
+                            stationsIds.push(new require('mongodb').ObjectID(summary[i]._id.station));
+                        }
+                    }
+                    db.collection('stations', function (err, collection) {
+                        collection.find({_id: {$in:stationsIds}}).toArray(function (err, items) {
+                            for(var i=0;i<items.length;i++)
+                            {
+                                ret += items[i].lib + ";";
+                                for(var i2=0;i2<datas.length;i2++)
+                                {
+                                    if(datas[i2]._id.station == items[i]._id)
+                                    {
+                                        ret +=  datas[i2].count;
+                                    }   
+                                }
+                                ret +=  "\n";
+                            }
+
+                            res.set('Content-Type', 'application/octet-stream');
+                            res.send({content:ret});
                         });
                     });
                 }
