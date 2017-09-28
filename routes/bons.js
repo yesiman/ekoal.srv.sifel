@@ -718,7 +718,7 @@ exports.getStatProducteursExp = function (req, res) {
     });
     //
 };
-exports.getStatStations = function (req, res) {
+exports.getStatStationsExp = function (req, res) {
     var ret = "";
     //
     getFinalFilters(req.body,req.decoded,function(result)
