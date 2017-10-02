@@ -93,9 +93,6 @@ exports.delete = function (req, res) {
                     res.send(true);
             });
             
-            
-            
-            res.send(result);
         });
     });
 };
