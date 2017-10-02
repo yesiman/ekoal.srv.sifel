@@ -80,15 +80,15 @@ exports.delete = function (req, res) {
             db.collection('bons', function (err, collection) {
                 var upd;
                 collection.update(
-                    {  },
-                    {$pull:{"facturation.client":new require('mongodb').ObjectID(req.params.id)}}, 
-                    {multi:true}
-                    );
-                collection.update(
-                    {  },
-                    {$pull:{"facturation.producteur":new require('mongodb').ObjectID(req.params.id)}}, 
-                    {multi:true}
-                    );
+                        { "facturation.client":new require('mongodb').ObjectID(req.params.id) },
+                        { $set:{"facturation.client":-1}}, 
+                        {multi:true}
+                        );
+                    collection.update(
+                        { "facturation.producteur":new require('mongodb').ObjectID(req.params.id) },
+                        { $set:{"facturation.producteur":-1}},
+                         {multi:true}
+                        );
                     res.send(true);
             });
             
@@ -154,14 +154,14 @@ exports.add = function (req, res) {
                     }
                     collection.update(
                         { "facturation.client":new require('mongodb').ObjectID(req.params.id) },
-                        { "facturation.client":-1}, 
+                        { $set:{"facturation.client":-1}}, 
                         {multi:true}
                         );
                     collection.update(
                         { "facturation.producteur":new require('mongodb').ObjectID(req.params.id) },
-                        { "facturation.producteur":-1}, {multi:true}
+                        { $set:{"facturation.producteur":-1}},
+                         {multi:true}
                         );
-                        res.send(true);
                     collection.update(
                         { _id: {$in:facture.bons} },
                         upd, {multi:true}
