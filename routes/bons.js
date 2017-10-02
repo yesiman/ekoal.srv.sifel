@@ -202,18 +202,20 @@ function getFinalFilters(body,decoded,callback) {
     var filters = { 
         orga:new require('mongodb').ObjectID(decoded.orga),
     };
-    if (prodMode && body.noLock)
+    if (prodMode)
     {
         filters = { 
             orga:new require('mongodb').ObjectID(decoded.orga),
-            'facturation.producteur':new require('mongodb').ObjectID(body.noLock)
+            'facturation.producteur':
+            (body.noLock?new require('mongodb').ObjectID(body.noLock):{$exists:false})
         };
     }
     if (clientMode && body.noLock)
     {
         filters = { 
             orga:new require('mongodb').ObjectID(decoded.orga),
-            'facturation.client':new require('mongodb').ObjectID(body.noLock)
+            'facturation.client':
+            (body.noLock?new require('mongodb').ObjectID(body.noLock):{$exists:false})
         };
     }
     var ids = [];
