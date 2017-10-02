@@ -635,14 +635,13 @@ exports.getStatProduitsExp = function (req, res) {
                                 {
                                     if(datas[i2]._id.produit.toString() == items[i]._id.toString())
                                     {
-                                        ret += (parseFloat(ret) + parseFloat(datas[i2].count));
+                                        ret += parseFloat(datas[i2].count);
                                     }
                                     
                                 }
                                 ret += "\n";
                             }
-
-                            res.set('Content-Type', 'application/octet-stream');
+                            res.set('Content-Type', 'application/octet-stream;charset=utf-8;');
                             res.send({content:ret});
 
                         });
@@ -701,14 +700,14 @@ exports.getStatProducteursExp = function (req, res) {
                                 {
                                     if(datas[i2]._id.producteur.toString() == items[i]._id.toString())
                                     {
-                                       ret += (parseFloat(ret) + parseFloat(datas[i2].count));
+                                       ret += parseFloat(datas[i2].count);
                                     }
                                     
                                 }
                                 ret +=  "\n";
                             }
 
-                            res.set('Content-Type', 'application/octet-stream');
+                            res.set('Content-Type', 'application/octet-stream;charset=utf-8;');
                             res.send({content:ret});
                         });
                     });
@@ -766,13 +765,13 @@ exports.getStatStationsExp = function (req, res) {
                                 {
                                     if(datas[i2]._id.station.toString() == items[i]._id.toString())
                                     {
-                                       ret += (parseFloat(ret) + parseFloat(datas[i2].count));
+                                       ret += parseFloat(datas[i2].count);
                                     }   
                                 }
                                 ret +=  "\n";
                             }
 
-                            res.set('Content-Type', 'application/octet-stream');
+                            res.set('Content-Type', 'application/octet-stream;charset=utf-8;');
                             res.send({content:ret});
                         });
                     });
