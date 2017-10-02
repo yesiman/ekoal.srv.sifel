@@ -166,7 +166,7 @@ exports.add = function (req, res) {
                     }
                     collection.update(
                         {
-                            "facturation.client": new require('mongodb').ObjectID(req.params.id)
+                            "facturation.client": new require('mongodb').ObjectID(fid)
                          },
                         {
                             $unset:{
@@ -177,7 +177,7 @@ exports.add = function (req, res) {
                         );
                     collection.update(
                        {
-                            "facturation.producteur": new require('mongodb').ObjectID(req.params.id)
+                            "facturation.producteur": new require('mongodb').ObjectID(fid)
                          },
                         {
                             $unset:{
