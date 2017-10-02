@@ -79,15 +79,14 @@ exports.delete = function (req, res) {
         function (err, result) {
             db.collection('bons', function (err, collection) {
                 var upd;
-                
                 collection.update(
-                    { "facturation.client": new require('mongodb').ObjectID(req.params.id) },
-                    {$set:{"facturation.client":null,multi:true}}, 
+                    {  },
+                    {$pull:{"facturation.client":new require('mongodb').ObjectID(req.params.id)}}, 
                     {multi:true}
                     );
                 collection.update(
-                    { "facturation.producteur": new require('mongodb').ObjectID(req.params.id) },
-                    {$set:{"facturation.producteur":null,multi:true}}, 
+                    {  },
+                    {$pull:{"facturation.producteur":new require('mongodb').ObjectID(req.params.id)}}, 
                     {multi:true}
                     );
                     res.send(true);
@@ -140,16 +139,16 @@ exports.add = function (req, res) {
         }
         else {
             collection.update(
-                { "facturation.client": pid },
-                {$set:{"facturation.client":null,multi:true}}, 
-                {multi:true}
-                );
-            collection.update(
-                { "facturation.producteur": pid },
-                {$set:{"facturation.producteur":null,multi:true}}, 
-                {multi:true}
-                );
-                res.send(true);
+                    {  },
+                    {$pull:{"facturation.client":new require('mongodb').ObjectID(req.params.id)}}, 
+                    {multi:true}
+                    );
+                collection.update(
+                    {  },
+                    {$pull:{"facturation.producteur":new require('mongodb').ObjectID(req.params.id)}}, 
+                    {multi:true}
+                    );
+                    res.send(true);
             delete facture._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
