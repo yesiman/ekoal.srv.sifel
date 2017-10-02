@@ -79,20 +79,14 @@ exports.delete = function (req, res) {
         function (err, result) {
             db.collection('bons', function (err, collection) {
                 var upd;
-                if (facture.type == '0')
-                {
-                    upd = {$set:{"facturation.client":fid,multi:true}};
-                }
-                else {
-                    upd = {$set:{"facturation.producteur":fid,multi:true}};
-                }
+                
                 collection.update(
-                    { "facturation.client": req.params.id },
+                    { "facturation.client": new require('mongodb').ObjectID(req.params.id) },
                     {$set:{"facturation.client":null,multi:true}}, 
                     {multi:true}
                     );
                 collection.update(
-                    { "facturation.producteur": req.params.id },
+                    { "facturation.producteur": new require('mongodb').ObjectID(req.params.id) },
                     {$set:{"facturation.producteur":null,multi:true}}, 
                     {multi:true}
                     );
