@@ -635,11 +635,11 @@ exports.getStatProduitsExp = function (req, res) {
                                 {
                                     if(datas[i2]._id.produit.toString() == items[i]._id.toString())
                                     {
-                                        ret =  parseFloat(ret) + datas[i2].count;
+                                        ret += (parseFloat(ret) + parseFloat(datas[i2].count));
                                     }
                                     
                                 }
-                                ret +=  "\n";
+                                ret += "\n";
                             }
 
                             res.set('Content-Type', 'application/octet-stream');
@@ -701,7 +701,7 @@ exports.getStatProducteursExp = function (req, res) {
                                 {
                                     if(datas[i2]._id.producteur.toString() == items[i]._id.toString())
                                     {
-                                        ret =  parseFloat(ret) + datas[i2].count;
+                                       ret += (parseFloat(ret) + parseFloat(datas[i2].count));
                                     }
                                     
                                 }
@@ -766,7 +766,7 @@ exports.getStatStationsExp = function (req, res) {
                                 {
                                     if(datas[i2]._id.station.toString() == items[i]._id.toString())
                                     {
-                                        ret =  parseFloat(ret) + datas[i2].count;
+                                       ret += (parseFloat(ret) + parseFloat(datas[i2].count));
                                     }   
                                 }
                                 ret +=  "\n";
