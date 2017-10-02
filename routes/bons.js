@@ -631,15 +631,16 @@ exports.getStatProduitsExp = function (req, res) {
                             for(var i=0;i<items.length;i++)
                             {
                                 ret += items[i].lib + ";";
+                                var sum = 0;
                                 for(var i2=0;i2<datas.length;i2++)
                                 {
                                     if(datas[i2]._id.produit.toString() == items[i]._id.toString())
                                     {
-                                        ret += datas[i2].count;
+                                        sum += datas[i2].count;
                                     }
                                     
                                 }
-                                ret += "\n";
+                                ret += sum + "\n";
                             }
                             res.set('Content-Type', 'application/octet-stream;');
                             res.send({content:ret});
@@ -696,15 +697,16 @@ exports.getStatProducteursExp = function (req, res) {
                             for(var i=0;i<items.length;i++)
                             {
                                 ret += items[i].name + " " + items[i].surn + ";";
+                                var sum = 0;
                                 for(var i2=0;i2<datas.length;i2++)
                                 {
                                     if(datas[i2]._id.producteur.toString() == items[i]._id.toString())
                                     {
-                                       ret += datas[i2].count;
+                                       sum += datas[i2].count;
                                     }
                                     
                                 }
-                                ret +=  "\n";
+                                ret +=  sum.toString() + "\n";
                             }
 
                             res.set('Content-Type', 'application/octet-stream;');
@@ -761,14 +763,15 @@ exports.getStatStationsExp = function (req, res) {
                             for(var i=0;i<items.length;i++)
                             {
                                 ret += items[i].lib + ";";
+                                var sum = 0;
                                 for(var i2=0;i2<datas.length;i2++)
                                 {
                                     if(datas[i2]._id.station.toString() == items[i]._id.toString())
                                     {
-                                       ret += datas[i2].count;
+                                       sum += datas[i2].count;
                                     }   
                                 }
-                                ret +=  "\n";
+                                ret +=  sum + "\n";
                             }
 
                             res.set('Content-Type', 'application/octet-stream;');
