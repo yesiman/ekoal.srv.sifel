@@ -642,7 +642,7 @@ exports.getStatProduitsExp = function (req, res) {
                                 }
                                 ret += sum + "\n";
                             }
-                            res.set('Content-Type', 'application/octet-stream;');
+                            res.set('Content-Type', 'application/octet-stream');
                             res.send({content:ret});
 
                         });
@@ -709,7 +709,7 @@ exports.getStatProducteursExp = function (req, res) {
                                 ret +=  sum.toString() + "\n";
                             }
 
-                            res.set('Content-Type', 'application/octet-stream;');
+                            res.set('Content-Type', 'application/octet-stream');
                             res.send({content:ret});
                         });
                     });
@@ -774,7 +774,7 @@ exports.getStatStationsExp = function (req, res) {
                                 ret +=  sum + "\n";
                             }
 
-                            res.set('Content-Type', 'application/octet-stream;');
+                            res.set('Content-Type', 'application/octet-stream');
                             res.send({content:ret});
                         });
                     });
