@@ -165,14 +165,26 @@ exports.add = function (req, res) {
                         upd = {$set:{"facturation.producteur":fid}};
                     }
                     collection.update(
-                        { "facturation.client":new require('mongodb').ObjectID(req.params.id) },
-                        { $set:{"facturation.client":null}}, 
+                        {
+                            "facturation.client": new require('mongodb').ObjectID(req.params.id)
+                         },
+                        {
+                            $unset:{
+                                "facturation.client": ""
+                            }
+                        },
                         {multi:true}
                         );
                     collection.update(
-                        { "facturation.producteur":new require('mongodb').ObjectID(req.params.id) },
-                        { $set:{"facturation.producteur":null}},
-                         {multi:true}
+                       {
+                            "facturation.producteur": new require('mongodb').ObjectID(req.params.id)
+                         },
+                        {
+                            $unset:{
+                                "facturation.producteur": ""
+                            }
+                        },
+                        {multi:true}
                         );
                     collection.update(
                         { _id: {$in:facture.bons} },
