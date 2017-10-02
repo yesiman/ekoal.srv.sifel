@@ -124,10 +124,10 @@ exports.add = function (req, res) {
                     var upd;
                     if (facture.type == '0')
                     {
-                        upd = {$set:{"facturation.client":fid,multi:true}};
+                        upd = {$set:{"facturation.client":new require('mongodb').ObjectID(fid),multi:true}};
                     }
                     else {
-                        upd = {$set:{"facturation.producteur":fid,multi:true}};
+                        upd = {$set:{"facturation.producteur":new require('mongodb').ObjectID(fid),multi:true}};
                     }
                     collection.update(
                         { _id: {$in:facture.bons} },
@@ -138,17 +138,7 @@ exports.add = function (req, res) {
             });
         }
         else {
-            collection.update(
-                    {  },
-                    {$pull:{"facturation.client":new require('mongodb').ObjectID(req.params.id)}}, 
-                    {multi:true}
-                    );
-                collection.update(
-                    {  },
-                    {$pull:{"facturation.producteur":new require('mongodb').ObjectID(req.params.id)}}, 
-                    {multi:true}
-                    );
-                    res.send(true);
+            
             delete facture._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
@@ -162,6 +152,17 @@ exports.add = function (req, res) {
                     else {
                         upd = {$set:{"facturation.producteur":fid,multi:true}};
                     }
+                    collection.update(
+                        {  },
+                        {$pull:{"facturation.client":new require('mongodb').ObjectID(req.params.id)}}, 
+                        {multi:true}
+                        );
+                    collection.update(
+                        {  },
+                        {$pull:{"facturation.producteur":new require('mongodb').ObjectID(req.params.id)}}, 
+                        {multi:true}
+                        );
+                        res.send(true);
                     collection.update(
                         { _id: {$in:facture.bons} },
                         upd, {multi:true}
