@@ -641,7 +641,7 @@ exports.getStatProduitsExp = function (req, res) {
                                 }
                                 ret += "\n";
                             }
-                            res.set('Content-Type', 'application/octet-stream;charset=utf-8;');
+                            res.set('Content-Type', 'application/octet-stream;');
                             res.send({content:ret});
 
                         });
@@ -707,7 +707,7 @@ exports.getStatProducteursExp = function (req, res) {
                                 ret +=  "\n";
                             }
 
-                            res.set('Content-Type', 'application/octet-stream;charset=utf-8;');
+                            res.set('Content-Type', 'application/octet-stream;');
                             res.send({content:ret});
                         });
                     });
@@ -771,7 +771,7 @@ exports.getStatStationsExp = function (req, res) {
                                 ret +=  "\n";
                             }
 
-                            res.set('Content-Type', 'application/octet-stream;charset=utf-8;');
+                            res.set('Content-Type', 'application/octet-stream;');
                             res.send({content:ret});
                         });
                     });
