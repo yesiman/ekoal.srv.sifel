@@ -633,7 +633,7 @@ exports.getStatProduitsExp = function (req, res) {
                                 ret += items[i].lib + ";";
                                 for(var i2=0;i2<datas.length;i2++)
                                 {
-                                    if(datas[i2]._id.produit == items[i]._id)
+                                    if(datas[i2]._id.produit.toString() == items[i]._id.toString())
                                     {
                                         ret +=  datas[i2].count;
                                     }
