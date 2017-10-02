@@ -80,26 +80,26 @@ exports.delete = function (req, res) {
             db.collection('bons', function (err, collection) {
                 var upd;
                 collection.update(
-                        { },
                         {
-                            facturation: {
-                                $pull:{
-                                    client: {client:new require('mongodb').ObjectID(req.params.id)}
-                                }
+                            "facturation.client": new require('mongodb').ObjectID(req.params.id)
+                         },
+                        {
+                            $unset:{
+                                "facturation.client": ""
                             }
                         },
-                        { $set:{"facturation.client":null}}, 
                         {multi:true}
                         );
                     collection.update(
-                        {  },
+                       {
+                            "facturation.producteur": new require('mongodb').ObjectID(req.params.id)
+                         },
                         {
-                            facturation: {
-                                $pull:{
-                                    producteur: {client:new require('mongodb').ObjectID(req.params.id)}
-                                }
+                            $unset:{
+                                "facturation.producteur": ""
                             }
-                        },{multi:true}
+                        },
+                        {multi:true}
                         );
                     res.send(true);
             });
