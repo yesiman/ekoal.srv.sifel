@@ -77,6 +77,30 @@ exports.delete = function (req, res) {
     db.collection('factures', function (err, collection) {
     collection.remove({ _id: new require('mongodb').ObjectID(req.params.id) },
         function (err, result) {
+            db.collection('bons', function (err, collection) {
+                var upd;
+                if (facture.type == '0')
+                {
+                    upd = {$set:{"facturation.client":fid,multi:true}};
+                }
+                else {
+                    upd = {$set:{"facturation.producteur":fid,multi:true}};
+                }
+                collection.update(
+                    { "facturation.client": req.params.id },
+                    {$set:{"facturation.client":null,multi:true}}, 
+                    {multi:true}
+                    );
+                collection.update(
+                    { "facturation.producteur": req.params.id },
+                    {$set:{"facturation.producteur":null,multi:true}}, 
+                    {multi:true}
+                    );
+                    res.send(true);
+            });
+            
+            
+            
             res.send(result);
         });
     });
@@ -124,6 +148,17 @@ exports.add = function (req, res) {
             });
         }
         else {
+            collection.update(
+                { "facturation.client": pid },
+                {$set:{"facturation.client":null,multi:true}}, 
+                {multi:true}
+                );
+            collection.update(
+                { "facturation.producteur": pid },
+                {$set:{"facturation.producteur":null,multi:true}}, 
+                {multi:true}
+                );
+                res.send(true);
             delete facture._id;
             collection.update(
                 { _id: new require('mongodb').ObjectID(pid) },
