@@ -210,7 +210,7 @@ function getFinalFilters(body,decoded,callback) {
             (body.noLock?new require('mongodb').ObjectID(body.noLock):{$exists:false})
         };
     }
-    if (clientMode && body.noLock)
+    if (clientMode)
     {
         filters = { 
             orga:new require('mongodb').ObjectID(decoded.orga),
