@@ -81,12 +81,12 @@ exports.delete = function (req, res) {
                 var upd;
                 collection.update(
                         { "facturation.client":new require('mongodb').ObjectID(req.params.id) },
-                        { $set:{"facturation.client":-1}}, 
+                        { $set:{"facturation.client":null}}, 
                         {multi:true}
                         );
                     collection.update(
                         { "facturation.producteur":new require('mongodb').ObjectID(req.params.id) },
-                        { $set:{"facturation.producteur":-1}},
+                        { $set:{"facturation.producteur":null}},
                          {multi:true}
                         );
                     res.send(true);
@@ -154,12 +154,12 @@ exports.add = function (req, res) {
                     }
                     collection.update(
                         { "facturation.client":new require('mongodb').ObjectID(req.params.id) },
-                        { $set:{"facturation.client":-1}}, 
+                        { $set:{"facturation.client":null}}, 
                         {multi:true}
                         );
                     collection.update(
                         { "facturation.producteur":new require('mongodb').ObjectID(req.params.id) },
-                        { $set:{"facturation.producteur":-1}},
+                        { $set:{"facturation.producteur":null}},
                          {multi:true}
                         );
                     collection.update(
