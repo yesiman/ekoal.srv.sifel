@@ -429,7 +429,7 @@ exports.getStatGlobal = function (req, res) {
                                                                             group,
                                                                             sort,
                                                                             function(err, summary) {
-                                                                                db.collection('users', function (err, collection) {
+                                                                                db.collection('clients', function (err, collection) {
                                                                                     var clientsIds = [];
                                                                                     for(var i=0;i<summary.length;i++)
                                                                                     {
