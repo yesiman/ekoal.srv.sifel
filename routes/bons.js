@@ -838,9 +838,9 @@ exports.getStatClientsExp = function (req, res) {
                     var clientsIds = [];
                     for(var i=0;i<summary.length;i++)
                     {
-                        if (!(client.indexOf(new require('mongodb').ObjectID(summary[i]._id.client)) > -1))
+                        if (!(clientsIds.indexOf(new require('mongodb').ObjectID(summary[i]._id.client)) > -1))
                         {
-                            client.push(new require('mongodb').ObjectID(summary[i]._id.client));
+                            clientsIds.push(new require('mongodb').ObjectID(summary[i]._id.client));
                         }
                     }
                     db.collection('clients', function (err, collection) {
