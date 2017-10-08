@@ -223,7 +223,7 @@ app.post('/bons/getStatClients/', cors(), bodyParser.json(), bons.getStatClients
 app.post('/bons/getStatStations/', cors(), bodyParser.json(), bons.getStatStations);
 //
 app.post('/bons/getStatProduitsExp/', cors(), bodyParser.json(), bons.getStatProduitsExp);
-app.post('/bons/getStatProducteursExp/', cors(), bodyParser.json(), bons.getStatProducteursExp);
+app.post('/bons/getStatStationsExp/', cors(), bodyParser.json(), bons.getStatStationsExp);
 app.post('/bons/getStatProducteursExp/', cors(), bodyParser.json(), bons.getStatProducteursExp);
 app.post('/bons/getStatClientsExp/', cors(), bodyParser.json(), bons.getStatClientsExp);
 //
