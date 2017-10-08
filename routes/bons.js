@@ -536,6 +536,57 @@ exports.getStatProducteurs = function (req, res) {
     });
     //
 };
+exports.getStatClients = function (req, res) {
+    var ret = new Object();
+    //
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        var query = {};
+        var group = {};
+        var sort = {};
+        db.collection('bons', function (err, collection) {
+            query["$match"] = {};
+            query["$match"]["dateDoc"] = result.dateDoc;
+            group["$group"] = {};
+            group["$group"]["_id"] = {};
+            group["$group"]["_id"]["year"] = { $year: "$dateDoc" };
+            group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
+            group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
+            group["$group"]["_id"]["client"] = "$client";
+            sort["$sort"] = {  
+                "_id.year": 1, 
+                "_id.month": 1, 
+                "_id.day": 1,
+                "_id.client" : 1 
+            };
+            group["$group"]["count"] = { $sum: "$palettes.poid"};            
+            collection.aggregate(
+                query,
+                {"$unwind": "$palettes"},
+                group,
+                sort,
+                function(err, summary) {
+                    ret.result = summary;
+                    var clientsIds = [];
+                    for(var i=0;i<summary.length;i++)
+                    {
+                        if (!(clientsIds.indexOf(new require('mongodb').ObjectID(summary[i]._id.client)) > -1))
+                        {
+                            clientsIds.push(new require('mongodb').ObjectID(summary[i]._id.client));
+                        }
+                    }
+                    db.collection('clients', function (err, collection) {
+                        collection.find({_id: {$in:clientsIds}}).toArray(function (err, items) {
+                            ret.clients = items;
+                            res.send(ret);
+                        });
+                    });
+                }
+            );
+        });
+    });
+    //
+};
 exports.getStatStations = function (req, res) {
     var ret = new Object();
     //
@@ -703,6 +754,72 @@ exports.getStatProducteursExp = function (req, res) {
                                 for(var i2=0;i2<datas.length;i2++)
                                 {
                                     if(datas[i2]._id.producteur.toString() == items[i]._id.toString())
+                                    {
+                                       sum += datas[i2].count;
+                                    }
+                                    
+                                }
+                                ret +=  sum.toString() + "\n";
+                            }
+
+                            res.set('Content-Type', 'application/octet-stream');
+                            res.send({content:ret});
+                        });
+                    });
+                }
+            );
+        });
+    });
+    //
+};
+exports.getStatClientsExp = function (req, res) {
+    var ret = "";
+    //
+    getFinalFilters(req.body,req.decoded,function(result)
+    {
+        var query = {};
+        var group = {};
+        var sort = {};
+        db.collection('bons', function (err, collection) {
+            query["$match"] = {};
+            query["$match"]["dateDoc"] = result.dateDoc;
+            group["$group"] = {};
+            group["$group"]["_id"] = {};
+            group["$group"]["_id"]["year"] = { $year: "$dateDoc" };
+            group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
+            group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
+            group["$group"]["_id"]["client"] = "$client";
+            sort["$sort"] = {  
+                "_id.year": 1, 
+                "_id.month": 1, 
+                "_id.day": 1,
+                "_id.client" : 1 
+            };
+            group["$group"]["count"] = { $sum: "$palettes.poid"};            
+            collection.aggregate(
+                query,
+                {"$unwind": "$palettes"},
+                group,
+                sort,
+                function(err, summary) {
+                    var datas = summary;
+                    var clientsIds = [];
+                    for(var i=0;i<summary.length;i++)
+                    {
+                        if (!(client.indexOf(new require('mongodb').ObjectID(summary[i]._id.client)) > -1))
+                        {
+                            client.push(new require('mongodb').ObjectID(summary[i]._id.client));
+                        }
+                    }
+                    db.collection('clients', function (err, collection) {
+                        collection.find({_id: {$in:clientsIds}}).toArray(function (err, items) {
+                            for(var i=0;i<items.length;i++)
+                            {
+                                ret += items[i].name + " " + items[i].surn + ";";
+                                var sum = 0;
+                                for(var i2=0;i2<datas.length;i2++)
+                                {
+                                    if(datas[i2]._id.client.toString() == items[i]._id.toString())
                                     {
                                        sum += datas[i2].count;
                                     }
