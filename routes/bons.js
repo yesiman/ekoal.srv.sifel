@@ -441,7 +441,7 @@ exports.getStatGlobal = function (req, res) {
                                                                                     collection.find({_id: {$in:clientsIds}}).toArray(function (err, items) {
                                                                                         ret.clients = items;
                                                                                         ret.byClients = summary;
-                                                                                        res.set(ret);
+                                                                                        res.send(ret);
                                                                                     });
                                                                                 });
                                                                             });
