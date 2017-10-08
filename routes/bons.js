@@ -413,7 +413,39 @@ exports.getStatGlobal = function (req, res) {
                                                                 collection.find({_id: {$in:ids}}).toArray(function (err, items) {
                                                                     ret.produits = items;
                                                                     ret.byProduits = summary;
-                                                                    res.send(ret);
+                                                                    db.collection('bons', function (err, collection) {
+                                                                        query["$match"] = {};
+                                                                        query["$match"]["dateDoc"] = result.dateDoc;
+                                                                        group["$group"] = {};
+                                                                        group["$group"]["_id"] = {};
+                                                                        group["$group"]["_id"]["client"] = "$client";
+                                                                        group["$group"]["count"] = { $sum: "$palettes.poid"};
+                                                                        sort["$sort"] = {  
+                                                                            "_id.client" : 1 
+                                                                        };
+                                                                        collection.aggregate(
+                                                                            query,
+                                                                            {"$unwind": "$palettes"},
+                                                                            group,
+                                                                            sort,
+                                                                            function(err, summary) {
+                                                                                db.collection('users', function (err, collection) {
+                                                                                    var clientsIds = [];
+                                                                                    for(var i=0;i<summary.length;i++)
+                                                                                    {
+                                                                                        if (!(clientsIds.indexOf(new require('mongodb').ObjectID(summary[i]._id.client)) > -1))
+                                                                                        {
+                                                                                            clientsIds.push(new require('mongodb').ObjectID(summary[i]._id.client));
+                                                                                        }
+                                                                                    }
+                                                                                    collection.find({_id: {$in:clientsIds}}).toArray(function (err, items) {
+                                                                                        ret.clients = items;
+                                                                                        ret.byClients = summary;
+                                                                                        res.set(ret);
+                                                                                    });
+                                                                                });
+                                                                            });
+                                                                    });
                                                                 });
                                                             });                                                            
                                                         }
