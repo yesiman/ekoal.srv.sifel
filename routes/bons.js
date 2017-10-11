@@ -249,6 +249,18 @@ function getFinalFilters(body,decoded,callback) {
         }
         filters.station = { '$in': ids };
     }
+    if (body.producteurs && (body.producteurs.length > 0))
+    {   
+        ids = [];
+        for(var i=0;i<body.producteurs.length;i++)
+        {
+            if (!(ids.indexOf(body.producteurs[i]) > -1))
+            {
+                ids.push(new require('mongodb').ObjectID(body.producteurs[i]));
+            }
+        }
+        filters.producteur = { '$in': ids };
+    }
     if (clientMode)
     {   
         ids = [];
