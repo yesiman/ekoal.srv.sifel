@@ -289,7 +289,7 @@ exports.getAll = function (req, res) {
         db.collection('bons', function (err, collection) {
             collection.count(result, function (err, count) {
                 ret.count = count;
-                collection.find(result).skip(skip).limit(limit).toArray(function (err, items) {
+                collection.find(result).skip(skip).limit(limit).sort({dateDoc:1}).toArray(function (err, items) {
                     getBonsProducteursDatas(items).then(function (data) {
                         ret.items = data;
                         getBonsStationsDatas(items).then(function (data) {
