@@ -730,16 +730,22 @@ exports.getStatProduitsExp = function (req, res) {
                             for(var i=0;i<items.length;i++)
                             {
                                 ret += items[i].lib + ";";
-                                var sum = 0;
+                                var sumLoc = 0;
+                                var sumExp = 0;
                                 for(var i2=0;i2<datas.length;i2++)
                                 {
                                     if(datas[i2]._id.produit.toString() == items[i]._id.toString())
                                     {
-                                        sum += datas[i2].count;
-                                    }
-                                    
+                                        if(datas[i2]._id.destination == "local")
+                                        {
+                                            sumLoc += datas[i2].count;
+                                        }
+                                        else {
+                                            sumExp += datas[i2].count;
+                                        }
+                                    }   
                                 }
-                                ret += sum + "\n";
+                                ret += sumLoc + ";" + sumExp + "\n";
                             }
                             res.set('Content-Type', 'application/octet-stream');
                             res.send({content:ret});
