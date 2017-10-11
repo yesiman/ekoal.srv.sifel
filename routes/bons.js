@@ -699,11 +699,13 @@ exports.getStatProduitsExp = function (req, res) {
             group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
             group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
             group["$group"]["_id"]["produit"] = "$palettes.produits.produit";
+            group["$group"]["_id"]["destination"] = "$destination";
             sort["$sort"] = {  
                 "_id.year": 1, 
                 "_id.month": 1, 
                 "_id.day": 1,
-                "_id.produit" : 1 
+                "_id.produit" : 1,
+                "_id.destination" : 1 
             };
             group["$group"]["count"] = { $sum: "$palettes.produits.poid"};            
             collection.aggregate(
@@ -767,11 +769,13 @@ exports.getStatProducteursExp = function (req, res) {
             group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
             group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
             group["$group"]["_id"]["producteur"] = "$producteur";
+            group["$group"]["_id"]["destination"] = "$destination";
             sort["$sort"] = {  
                 "_id.year": 1, 
                 "_id.month": 1, 
                 "_id.day": 1,
-                "_id.producteur" : 1 
+                "_id.producteur" : 1 ,
+                "_id.destination" : 1 
             };
             group["$group"]["count"] = { $sum: "$palettes.poid"};            
             collection.aggregate(
@@ -833,11 +837,13 @@ exports.getStatClientsExp = function (req, res) {
             group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
             group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
             group["$group"]["_id"]["client"] = "$client";
+            group["$group"]["_id"]["destination"] = "$destination";
             sort["$sort"] = {  
                 "_id.year": 1, 
                 "_id.month": 1, 
                 "_id.day": 1,
-                "_id.client" : 1 
+                "_id.client" : 1 ,
+                "_id.destination" : 1 
             };
             group["$group"]["count"] = { $sum: "$palettes.poid"};            
             collection.aggregate(
@@ -899,11 +905,13 @@ exports.getStatStationsExp = function (req, res) {
             group["$group"]["_id"]["month"] = { $month: "$dateDoc" };
             group["$group"]["_id"]["day"] = { $dayOfMonth: "$dateDoc" };
             group["$group"]["_id"]["station"] = "$station";
+            group["$group"]["_id"]["destination"] = "$destination";
             sort["$sort"] = {  
                 "_id.year": 1, 
                 "_id.month": 1, 
                 "_id.day": 1,
-                "_id.station" : 1 
+                "_id.station" : 1,
+                "_id.destination" : 1 
             };
             group["$group"]["count"] = { $sum: "$palettes.poid"};            
             collection.aggregate(
