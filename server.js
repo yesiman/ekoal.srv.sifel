@@ -1,10 +1,13 @@
 //process.env.MONGOHQ_URL
 //const composeMongoCstr = process.env.MONGOHQ_URL;
 var clients = [];
-var port = (process.env.PORT ? process.env.PORT : 3000);
-const composeMongoCstr = process.env.MONGOHQ_URL;
+
 //
 require('dotenv').load();
+
+var port = (process.env.PORT ? process.env.PORT : 3000);
+const composeMongoCstr = process.env.MONGOHQ_URL;
+
 var express = require('express'),
     app = express(),
     server = require('http').createServer(app),
