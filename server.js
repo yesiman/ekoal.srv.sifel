@@ -41,6 +41,7 @@ io = require('socket.io').listen(server);
 shared = require('./routes/_shared');
 mailing = require('./routes/mailing');
 //
+console.log("composeMongoCstr",composeMongoCstr);
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {
     db = dbr;
