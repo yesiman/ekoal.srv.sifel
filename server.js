@@ -4,6 +4,7 @@ var clients = [];
 var port = (process.env.PORT ? process.env.PORT : 3000);
 const composeMongoCstr = process.env.MONGOHQ_URL;
 //
+require('dotenv').load();
 var express = require('express'),
     app = express(),
     server = require('http').createServer(app),
@@ -25,12 +26,12 @@ var express = require('express'),
     messaging = require('./routes/messaging'),
     importer = require('./routes/importer'),
     bodyParser = require('body-parser'),
-    mongoOplog = require('mongo-oplog'),
     cors = require('cors'),
     multer = require('multer'),
     upload = multer().any();
 //
-var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
+//mongoOplog = require('mongo-oplog'),
+//var oplogMessages = mongoOplog(composeMongoCstr, { ns: 'app52340846.messages' }).tail();
 //
 jwt = require('jsonwebtoken');
 io = require('socket.io').listen(server);
@@ -61,12 +62,10 @@ MongoClient.connect(composeMongoCstr, function (err, dbr) {
     });*/
 });
 //
-oplogMessages.on('update', function (doc) {
-    var data = { message:"message"};
-    io.sockets.emit('upd', data);
-    console.log("nouvelle upd");
-    console.log(doc);
-});
+//oplogMessages.on('update', function (doc) {
+//    var data = { message:"message"};
+//    io.sockets.emit('upd', data);//
+//});
 //client.ping({
 //    // ping usually has a 3000ms timeout
 //    requestTimeout: Infinity,
