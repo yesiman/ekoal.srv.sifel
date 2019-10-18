@@ -45,7 +45,7 @@ var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr,{
     useNewUrlParser: true
 }, function (err, dbr) {
-    db = dbr;
+    db = dbr.db("sifel");
     /*db.collection('products', function (err, collection) {
         collection.update(
             { },{ $set:{actif: true} }, {multi:true}, 
