@@ -35,7 +35,7 @@ exports.getAll = function (req, res) {
                         query,
                         group,
                         function(err, summary) {
-                            
+                            console.log("err",err);
                             for (var ipg = 0;ipg < ret.items.length;ipg++)
                             {
                                 var found = false;

@@ -45,6 +45,7 @@ console.log("composeMongoCstr",composeMongoCstr);
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr, function (err, dbr) {
     db = dbr;
+    console.log("dbr",dbr);
     /*db.collection('products', function (err, collection) {
         collection.update(
             { },{ $set:{actif: true} }, {multi:true}, 
