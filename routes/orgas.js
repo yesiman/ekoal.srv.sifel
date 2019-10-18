@@ -31,9 +31,10 @@ exports.getAll = function (req, res) {
                     group["$group"]["_id"] = {};
                     group["$group"]["_id"]["orga"] = "$orga";
                     group["$group"]["count"] = {"$sum":1};
+                    
                     collection.aggregate(
                         query,
-                        group,
+                        group,{ cursor:{} },
                         function(err, summary) {
                             console.log("err",err);
                             for (var ipg = 0;ipg < ret.items.length;ipg++)
