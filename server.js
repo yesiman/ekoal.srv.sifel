@@ -2,6 +2,7 @@
 //const composeMongoCstr = process.env.MONGOHQ_URL;
 var clients = [];
 
+
 //
 require('dotenv').load();
 
@@ -41,6 +42,15 @@ io = require('socket.io').listen(server);
 shared = require('./routes/_shared');
 mailing = require('./routes/mailing');
 //
+app.use(function forceLiveDomain(req, res, next) {
+    // Don't allow user to hit Heroku now that we have a domain
+    var host = req.get('Host');
+    if (host.indexOf('herokuapp') > -1) {
+      return res.redirect(301, 'http://sifel-srv.ekoal.org/' + req.originalUrl);
+    }
+    return next();
+  });
+
 var mongodb = require('mongodb'), MongoClient = mongodb.MongoClient
 MongoClient.connect(composeMongoCstr,{
     useNewUrlParser: true
@@ -93,6 +103,9 @@ console.log("Server listening:" + port);
 setInterval(function(){
     messaging.sendSmsToProducteurs();
 }, 30000);      
+
+
+
 
 //MIDDLE
 app.use(bodyParser.urlencoded({ extended: true }));
